@@ -1,0 +1,22 @@
+# Lockfile verificado: Python 3.14.5, pip 26.1.1, `pip check` sem conflitos,
+# testes existentes passando. Gerado de um venv limpo com requirements.txt.
+annotated-types==0.8.0
+anyio==4.15.1
+h11==0.16.0
+httpcore2==2.13.1
+httpx2==2.13.1
+idna==3.20
+jiter==0.17.0
+mutagen==1.48.1
+openai==3.32.0
+packaging==26.3
+pillow==13.0.0
+pydantic==2.14.1
+pydantic_core==2.50.1
+pypdfium2==5.14.0
+pytesseract==0.3.13
+python-dotenv==1.2.4
+sniffio==1.3.1
+truststore==0.10.5
+typing-inspection==0.4.4
+typing_extensions==4.16.0
