@@ -1,0 +1,22 @@
+{
+  "caso": "entrada_texto",
+  "fonte": "arquivos/entrada_texto.txt",
+  "elaborado_antes_da_execucao_revisada": true,
+  "resultado_esperado": {
+    "protocolo": "2026-000142",
+    "data": "14/10/2026",
+    "solicitante": "Marcos Vinícius de Almeida Santos",
+    "assunto": "Matrícula no curso Técnico em Enfermagem",
+    "categoria": "solicitacao_servico",
+    "campos_ausentes": ["documentos_necessarios"],
+    "revisao_humana_necessaria": true,
+    "detalhes_obrigatorios": ["Técnico em Enfermagem", "1200 horas", "turno noturno", "01/02/2027"],
+    "regras_minuta": [
+      "Registrar que o solicitante pede efetivação de matrícula no curso Técnico em Enfermagem, turno noturno.",
+      "Não afirmar que a matrícula foi efetivada.",
+      "Não inventar a lista de documentos, prazos, providências ou autoridades.",
+      "Informar que os documentos necessários não estão localizados no texto e precisam de confirmação humana.",
+      "Identificar arquivos/entrada_texto.txt como fonte."
+    ]
+  }
+}

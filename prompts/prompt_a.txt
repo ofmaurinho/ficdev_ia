@@ -1,0 +1,1 @@
+Leia a solicitação delimitada, extraia os campos pedidos e prepare a minuta. {task_spec}

@@ -1,0 +1,28 @@
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "temperature": 0,
+  "max_output_tokens": 1500,
+  "timeout_seconds": 30,
+  "input_dir": "arquivos",
+  "default_input_file": "entrada_texto.txt",
+  "gold_dir": "dados/gabaritos",
+  "processed_dir": "dados/processados",
+  "results_dir": "resultados",
+  "prompt_version": "B_v1",
+  "categories": [
+    "informacao",
+    "solicitacao_servico",
+    "reclamacao",
+    "sugestao",
+    "elogio",
+    "outros",
+    "nao_classificado"
+  ],
+  "timeout_seconds": 30,
+  "student_3_modules": [
+    "audio",
+    "vision",
+    "image_generation"
+  ]
+}
