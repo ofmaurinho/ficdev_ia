@@ -1,0 +1,33 @@
+{
+    "status": "VALIDADO_HUMANO",
+    "elaborado_por": "Leo",
+    "data_elaboracao": "2026-10-17T00:39:37.300374",
+    "arquivo_origem": "entrada_audio.mp3",
+    "idioma": "pt-BR",
+    "origem_transcricao": "transcricao_textual_fornecida_pelo_usuario",
+    "texto_referencia": "Bom dia, meu protocolo é 2026-000142, de 14 de outubro de 2026. Meu nome é Marcos Vinícius de Almeida Santos, nasci em 12 de agosto de 2008, em Cuiabá, e quero pedir a efetivação da minha matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde, com carga horária de 1.200 horas no turno noturno. Meu CPF é 123456789-00, meu RG é 1234567-8, o nome da minha mãe é Lúcia Helena de Almeida Santos e o meu e-mail é marcos.almeida.teste.exemplo.com. Declaro estar ciente de que a matrícula será cancelada automaticamente se eu faltar, sem justificativa comprovada, nos dois primeiros dias de aula consecutivos ou em três dias de aula consecutivos ou não nos dez primeiros dias de aula. Peço que informem quais os documentos ainda preciso apresentar. Muito obrigado.",
+    "campos_criticos": {
+        "protocolo": "2026-000142",
+        "data": "14/10/2026",
+        "solicitante": "Marcos Vinícius de Almeida Santos"
+    },
+    "outros_campos": {
+        "data_nascimento": "12/08/2008",
+        "naturalidade": "Cuiabá",
+        "curso": "Técnico em Enfermagem",
+        "eixo_tecnologico": "Saúde",
+        "carga_horaria_horas": 1200,
+        "turno": "noturno",
+        "cpf_informado": "123456789-00",
+        "rg_informado": "1234567-8",
+        "nome_mae": "Lúcia Helena de Almeida Santos",
+        "email_como_transcrito": "marcos.almeida.teste.exemplo.com",
+        "email_validado": false,
+        "pedido": "Informação sobre os documentos ainda necessários para efetivar a matrícula."
+    },
+    "observacoes_validacao": [
+        "A transcrição foi fornecida pelo usuário; não foi conferida diretamente contra o áudio nesta execução.",
+        "O e-mail informado não contém o caractere @ na transcrição; conferir a grafia ouvindo o áudio.",
+        "Após conferência humana, preencher elaborado_por e data_elaboracao e alterar status para VALIDADO_HUMANO."
+    ]
+}

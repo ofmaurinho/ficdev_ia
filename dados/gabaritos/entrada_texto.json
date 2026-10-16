@@ -1,22 +1,24 @@
 {
-  "caso": "entrada_texto",
-  "fonte": "arquivos/entrada_texto.txt",
-  "elaborado_antes_da_execucao_revisada": true,
-  "resultado_esperado": {
+  "status": "VALIDADO_HUMANO",
+  "elaborado_por": "Leo",
+  "data_elaboracao": "2026-10-17T00:29:41.081319",
+  "arquivo_origem": "entrada_texto.txt",
+  "sha256_origem": "8bc1318c6b3165a12d9a93b94cbc42ae9ee54d71d8eb55c428c332979a04e1b8",
+  "texto_referencia": "Canal: E-mail\nProtocolo: 2026-000142\nData: 14/10/2026\n\nPrezados,\n\nMeu nome é Marcos Vinícius de Almeida Santos, nasci em 12/08/2008, em Cuiabá, e solicito a efetivação da minha matrícula no curso Técnico em Enfermagem, eixo tecnológico Saúde, com carga horária de 1200 horas, turno noturno. O curso tem início em 01/02/2027 e a data da matrícula é 14/10/2026.\n\nMeus demais dados são: CPF 123.456.789-00; RG 1234567-8; nome da mãe, Lúcia Helena de Almeida Santos; e-mail marcos.almeida.teste@examplo.com.\n\nDeclaro estar ciente de que a matrícula será automaticamente cancelada se eu faltar, sem justificativa comprovada, nos dois primeiros dias de aula consecutivos ou em três dias de aula, consecutivos ou não, nos dez primeiros dias de aula.\n\nPeço que me informem quais documentos ainda preciso apresentar.\n\nAtenciosamente,\nMarcos Vinícius de Almeida Santos",
+  "campos_criticos": {
     "protocolo": "2026-000142",
     "data": "14/10/2026",
-    "solicitante": "Marcos Vinícius de Almeida Santos",
-    "assunto": "Matrícula no curso Técnico em Enfermagem",
-    "categoria": "solicitacao_servico",
-    "campos_ausentes": ["documentos_necessarios"],
-    "revisao_humana_necessaria": true,
-    "detalhes_obrigatorios": ["Técnico em Enfermagem", "1200 horas", "turno noturno", "01/02/2027"],
-    "regras_minuta": [
-      "Registrar que o solicitante pede efetivação de matrícula no curso Técnico em Enfermagem, turno noturno.",
-      "Não afirmar que a matrícula foi efetivada.",
-      "Não inventar a lista de documentos, prazos, providências ou autoridades.",
-      "Informar que os documentos necessários não estão localizados no texto e precisam de confirmação humana.",
-      "Identificar arquivos/entrada_texto.txt como fonte."
-    ]
-  }
+    "solicitante": "Marcos Vinícius de Almeida Santos"
+  },
+  "campos_adicionais": {
+    "tipo": "solicitacao de matricula",
+    "documentos_pendentes": "nao localizado",
+    "email": "marcos.almeida.teste@examplo.com",
+    "curso": "Tecnico em Enfermagem",
+    "inicio_curso": "01/02/2027"
+  },
+  "observacoes_revisao": [
+    "O campo texto_referencia foi copiado do TXT de entrada sem reescrita; conferir se os campos estruturados correspondem ao caso ficticio.",
+    "O e-mail esta preservado como @examplo.com, sem correcao automatica."
+  ]
 }

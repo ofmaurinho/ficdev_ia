@@ -1,0 +1,41 @@
+{
+    "status": "VALIDADO_HUMANO",
+    "elaborado_por": "Leo",
+    "data_elaboracao": "2026-10-17T00:27:04.987680",
+    "arquivo_origem": "entrada_pdf-imagem.pdf",
+    "sha256_origem": "a4b3bc0518df73244856ab27e010b561680b5f60ee8e730be4df83b3b567505f",
+    "texto_referencia": "GOVERNO DE MATO GROSSO\nSECRETARIA DE ESTADO DE CIÊNCIA, TECNOLOGIA E INOVAÇÃO - SECITECI/MT\nESCOLA TÉCNICA ESTADUAL DE CUIABÁ\n\nFICHA DE MATRÍCULA\nCÓDIGO: 2026-000142\nNOME: MARCOS VINÍCIUS DE ALMEIDA SANTOS\nDATA DE NASCIMENTO: 12/08/2008\nCPF: 123.456.789-00\nRG: 1234567-8\nÓRGÃO EXPEDIDOR:\nNATURALIDADE: CUIABÁ\nUF:\nNOME DA MÃE: LÚCIA HELENA DE ALMEIDA SANTOS\nNOME DO PAI:\nCURSO: TÉCNICO EM ENFERMAGEM\nCH: 1200 HORAS\nEIXO TECNOLÓGICO: SAÚDE\nTURMA:\nMUNICÍPIO:\nTURNO: NOTURNO\nINÍCIO DO CURSO: 01/02/2027\nTÉRMINO DO CURSO:\nTEL. CELULAR:\nTELEFONE RESIDENCIAL:\nE-MAIL: MARCOS.ALMEIDA.TESTE@EXEMPLO.COM\nDATA MATRÍCULA: 14/10/2026\n\nEstou ciente que minha matrícula será automaticamente cancelada se faltar, sem justificativa comprovada:\n- nos 02 (dois) primeiros dias de aula consecutivos;\n- 03 (três) dias de aula, consecutivos ou não, no período dos 10 (dez) primeiros dias de aula.\n\nASSINATURA DO ALUNO OU RESPONSÁVEL: manuscrita (Marcos, a confirmar)\nASSINATURA DA SECRETARIA ESCOLAR: campo em branco",
+    "campos_criticos": {
+        "protocolo": "2026-000142",
+        "data": "14/10/2026",
+        "solicitante": "Marcos Vinícius de Almeida Santos"
+    },
+    "campos_adicionais": {
+        "data_nascimento": "12/08/2008",
+        "cpf": "123.456.789-00",
+        "rg": "1234567-8",
+        "naturalidade": "Cuiabá",
+        "nome_mae": "Lúcia Helena de Almeida Santos",
+        "curso": "Técnico em Enfermagem",
+        "eixo_tecnologico": "Saúde",
+        "carga_horaria_horas": 1200,
+        "turno": "Noturno",
+        "inicio_curso": "01/02/2027",
+        "email": "marcos.almeida.teste@exemplo.com"
+    },
+    "campos_nao_localizados": [
+        "nome_pai",
+        "orgao_expedidor",
+        "uf",
+        "municipio",
+        "turma",
+        "termino_curso",
+        "telefone_celular",
+        "telefone_residencial"
+    ],
+    "observacoes_revisao": [
+        "Transcricao candidata produzida com auxilio de IA a partir da imagem. A equipe deve conferir cada campo diretamente no PDF antes de declarar VALIDADO_HUMANO.",
+        "Confirmar especialmente CPF, RG, e-mail, assinatura e pontuacao do texto impresso.",
+        "Atencao: o e-mail do PDF parece terminar em @exemplo.com, mas o texto de entrada termina em @examplo.com. Manter cada fonte como aparece e avaliar a divergencia."
+    ]
+}
