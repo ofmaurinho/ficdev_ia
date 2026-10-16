@@ -55,11 +55,18 @@ def _sanitize_exception_message(message: str) -> str:
     lowered = (message or "").lower()
     if "incorrect api key" in lowered or "authentication" in lowered or "unauthorized" in lowered:
         return "autenticacao"
-    if "rate limit" in lowered or "quota" in lowered or "too many requests" in lowered:
+    if "rate limit" in lowered or "ratelimit" in lowered or "quota" in lowered or "too many requests" in lowered or "429" in lowered:
         return "limite"
     if "timeout" in lowered or "timed out" in lowered or "deadline" in lowered:
         return "timeout"
-    if "connection" in lowered or "network" in lowered or "unavailable" in lowered:
+    if (
+        "connection" in lowered
+        or "network" in lowered
+        or "unavailable" in lowered
+        or "internalservererror" in lowered
+        or "overloaded" in lowered
+        or "503" in lowered
+    ):
         return "indisponibilidade"
     if "model" in lowered and "invalid" in lowered:
         return "modelo"
@@ -193,3 +200,182 @@ class OpenAIClient:
                 raise
             self._raise_for_error(exc)
             raise AssertionError("Erro de integração não tratado.")
+
+    # ------------------------------------------------------------------ multimodal
+    def _executar(self, chamada):
+        """Executa uma chamada ao SDK traduzindo falhas para as exceções do projeto."""
+        try:
+            return chamada()
+        except APIClientError:
+            raise
+        except Exception as exc:
+            self._raise_for_error(exc)
+            raise AssertionError("Erro de integração não tratado.")
+
+    @staticmethod
+    def _usage_dict(response: Any) -> dict:
+        usage = getattr(response, "usage", None)
+        if usage is None:
+            return {}
+        if hasattr(usage, "model_dump"):
+            return dict(usage.model_dump())
+        return dict(getattr(usage, "__dict__", {}))
+
+    def _metadata(self, response: Any, started_at: float, model: str, **extra: Any) -> Dict[str, Any]:
+        metadata = {
+            "provider": "openai",
+            "model": model,
+            "duration_seconds": round(time.perf_counter() - started_at, 3),
+            "response_id": getattr(response, "id", None),
+            "usage": self._usage_dict(response),
+            "custo_estimado": None,
+        }
+        metadata.update(extra)
+        return metadata
+
+    def transcribe(
+        self,
+        path: str,
+        *,
+        model: str,
+        language: Optional[str] = "pt",
+        prompt: Optional[str] = None,
+        response_format: str = "json",
+    ) -> Dict[str, Any]:
+        """Speech-to-text. Devolve a transcrição bruta, sem nenhuma revisão."""
+        started_at = time.perf_counter()
+
+        def chamada():
+            with open(path, "rb") as handle:
+                kwargs: Dict[str, Any] = {"model": model, "file": handle, "response_format": response_format}
+                if language:
+                    kwargs["language"] = language
+                if prompt:
+                    kwargs["prompt"] = prompt
+                return self.client.audio.transcriptions.create(**kwargs)
+
+        response = self._executar(chamada)
+        text = response if isinstance(response, str) else getattr(response, "text", None)
+        if not isinstance(text, str) or not text.strip():
+            raise EmptyResponseError("A transcrição retornou vazia.")
+        return {"text": text.strip(), "metadata": self._metadata(response, started_at, model, language=language)}
+
+    def speak(
+        self,
+        text: str,
+        out_path: str,
+        *,
+        model: str,
+        voice: str,
+        instructions: Optional[str] = None,
+        response_format: str = "mp3",
+    ) -> Dict[str, Any]:
+        """Text-to-speech. O texto é enviado exatamente como recebido (sem reescrita)."""
+        if not text or not text.strip():
+            raise ValueError("O texto para síntese de voz não pode estar vazio.")
+        started_at = time.perf_counter()
+        kwargs: Dict[str, Any] = {"model": model, "voice": voice, "input": text, "response_format": response_format}
+        if instructions:
+            kwargs["instructions"] = instructions
+        response = self._executar(lambda: self.client.audio.speech.create(**kwargs))
+        content = getattr(response, "content", None)
+        if content is None and hasattr(response, "read"):
+            content = response.read()
+        if not content:
+            raise EmptyResponseError("A síntese de voz retornou áudio vazio.")
+        import pathlib
+
+        destino = pathlib.Path(out_path)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_bytes(content)
+        return {
+            "path": str(destino),
+            "metadata": self._metadata(
+                response,
+                started_at,
+                model,
+                voice=voice,
+                instructions=instructions,
+                formato=response_format,
+                caracteres_enviados=len(text),
+                bytes_audio=len(content),
+            ),
+        }
+
+    def describe_image(
+        self,
+        image_bytes: bytes,
+        prompt: str,
+        *,
+        system_prompt: str = "",
+        mime: str = "image/png",
+        max_output_tokens: int = 1500,
+        model: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Visão multimodal: devolve o texto produzido pelo modelo para a imagem."""
+        if not image_bytes:
+            raise ValueError("A imagem enviada está vazia.")
+        if not prompt or not prompt.strip():
+            raise ValueError("O prompt de visão não pode estar vazio.")
+        import base64
+
+        modelo = model or self.model
+        data_url = f"data:{mime};base64,{base64.b64encode(image_bytes).decode('ascii')}"
+        mensagens = []
+        if system_prompt.strip():
+            mensagens.append({"role": "system", "content": system_prompt})
+        mensagens.append(
+            {
+                "role": "user",
+                "content": [
+                    {"type": "input_text", "text": prompt},
+                    {"type": "input_image", "image_url": data_url},
+                ],
+            }
+        )
+        started_at = time.perf_counter()
+        response = self._executar(
+            lambda: self.client.responses.create(
+                model=modelo,
+                input=mensagens,
+                max_output_tokens=max_output_tokens,
+                temperature=self.temperature,
+            )
+        )
+        return {
+            "text": self._coerce_response_text(response),
+            "metadata": self._metadata(response, started_at, modelo, bytes_imagem=len(image_bytes)),
+        }
+
+    def generate_image(
+        self,
+        prompt: str,
+        *,
+        model: str,
+        size: str = "1024x1024",
+        quality: str = "medium",
+    ) -> Dict[str, Any]:
+        """Gera uma imagem nova. Devolve os bytes PNG decodificados."""
+        if not prompt or not prompt.strip():
+            raise ValueError("O prompt de imagem não pode estar vazio.")
+        import base64
+
+        started_at = time.perf_counter()
+        response = self._executar(
+            lambda: self.client.images.generate(model=model, prompt=prompt, size=size, quality=quality, n=1)
+        )
+        dados = getattr(response, "data", None)
+        b64 = getattr(dados[0], "b64_json", None) if dados else None
+        if not b64:
+            raise EmptyResponseError("A geração de imagem retornou sem conteúdo.")
+        return {
+            "image_bytes": base64.b64decode(b64),
+            "metadata": self._metadata(
+                response,
+                started_at,
+                model,
+                size=size,
+                quality=quality,
+                revised_prompt=getattr(dados[0], "revised_prompt", None),
+            ),
+        }
