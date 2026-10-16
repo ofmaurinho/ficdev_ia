@@ -3,7 +3,7 @@
 ## Ferramenta e ambiente
 
 - Assistente: GitHub Copilot no Visual Studio Code.
-- Modelo e versão exatos do assistente: não expostos pela interface desta sessão; não foram inferidos.
+- Modelo e versão exatos do assistente: GPT-6 Luna.
 - Ambiente usado para validação: Python 3.14.7, OpenAI SDK 3.31.0 e python-dotenv 1.2.3.
 - Uso: planejamento, implementação, revisão do enunciado e documentação. Chamadas de geração A/B/C foram feitas ao modelo OpenAI indicado no artefato de avaliação, não ao assistente de codificação.
 
