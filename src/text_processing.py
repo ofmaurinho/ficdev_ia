@@ -217,3 +217,73 @@ Observações:
 
 def safe_json_blob(payload: Dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
+NAO_LOCALIZADO = "não localizado"
+
+
+def detectar_lacunas(texto: str, valores: Dict[str, str]) -> List[str]:
+    """Informações pedidas ou necessárias que a entrada não fornece (sem inventá-las)."""
+    lacunas = [f"{nome.capitalize()}: {NAO_LOCALIZADO}" for nome, valor in valores.items() if valor == NAO_LOCALIZADO]
+    if re.search(r"(?i)quais\s+documentos|documentos\s+(?:ainda\s+)?(?:que\s+)?(?:preciso|necess|exigid)", texto):
+        lacunas.append(f"Relação de documentos necessários: {NAO_LOCALIZADO}")
+    return lacunas
+
+
+def build_minuta_institucional(
+    *,
+    valores: Dict[str, str],
+    assunto: str,
+    solicitacao: str,
+    categoria: str,
+    fontes: List[str],
+    lacunas: List[str],
+) -> str:
+    """Minuta determinística: usa só os dados recebidos e marca explicitamente o que falta."""
+    corpo_lacunas = "\n".join(f"- {item}" for item in lacunas) if lacunas else "- nenhuma lacuna identificada"
+    corpo_fontes = "\n".join(f"- {item}" for item in fontes)
+    return (
+        "MINUTA INSTITUCIONAL (RASCUNHO)\n"
+        "\n"
+        f"Protocolo: {valores.get('protocolo', NAO_LOCALIZADO)}\n"
+        f"Data: {valores.get('data', NAO_LOCALIZADO)}\n"
+        f"Solicitante: {valores.get('solicitante', NAO_LOCALIZADO)}\n"
+        f"Assunto: {assunto}\n"
+        f"Categoria: {categoria}\n"
+        "\n"
+        "Solicitação registrada:\n"
+        f"{solicitacao}\n"
+        "\n"
+        "Informações não localizadas na solicitação:\n"
+        f"{corpo_lacunas}\n"
+        "\n"
+        "Esta minuta apenas registra o recebimento da solicitação. "
+        "Ela não confirma deferimento, prazos, providências nem documentos exigidos.\n"
+        "\n"
+        "Fontes utilizadas:\n"
+        f"{corpo_fontes}\n"
+        "\n"
+        "Rascunho elaborado com apoio de ferramentas de inteligência artificial. "
+        "Requer conferência e aprovação de servidor responsável antes de qualquer envio. "
+        "Nenhum envio automático é realizado.\n"
+    )
+
+
+def render_minuta_html(minuta_texto: str, brasao_path: str | None = None) -> str:
+    """Versão visual da minuta aprovada (brasão + texto), derivada do texto sem alterá-lo."""
+    import base64
+    import html
+    from pathlib import Path
+
+    imagem = ""
+    if brasao_path and Path(brasao_path).exists():
+        dados = base64.b64encode(Path(brasao_path).read_bytes()).decode("ascii")
+        imagem = f'<img src="data:image/png;base64,{dados}" alt="Brasão institucional" style="height:90px">'
+    corpo = html.escape(minuta_texto).replace("\n", "<br>\n")
+    return (
+        '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Minuta institucional (rascunho)</title></head>'
+        '<body style="font-family:sans-serif;max-width:760px;margin:2rem auto">'
+        f'<div style="text-align:center">{imagem}</div>'
+        '<p style="border:2px solid #b00;padding:6px;text-align:center"><b>RASCUNHO — requer aprovação humana. Não enviar automaticamente.</b></p>'
+        f"<div>{corpo}</div></body></html>\n"
+    )
