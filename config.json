@@ -19,7 +19,32 @@
     "outros",
     "nao_classificado"
   ],
-  "timeout_seconds": 30,
+  "audio": {
+    "extensoes": [".mp3", ".wav", ".m4a"],
+    "max_mb": 25,
+    "stt_model": "gpt-4o-transcribe",
+    "idioma": "pt",
+    "tts_model": "gpt-4o-mini-tts",
+    "tts_voice": "alloy",
+    "tts_instructions": "Fale em português do Brasil, em tom institucional: claro, calmo e cordial, em ritmo pausado. Leia números, datas e protocolos devagar."
+  },
+  "vision": {
+    "ocr_lang": "por",
+    "dpi": 200,
+    "confianca_minima_palavra": 60,
+    "max_proporcao_palavras_baixas": 0.25,
+    "min_caracteres_por_pagina": 80,
+    "max_proporcao_ruido": 0.2,
+    "vision_model": "gpt-4o-mini",
+    "max_paginas": 5
+  },
+  "image": {
+    "model": "gpt-image-1",
+    "size": "1024x1024",
+    "quality": "medium",
+    "rotulo": "Gerado por IA — conteúdo sintético",
+    "brasao": "arquivos/brasao.png"
+  },
   "student_3_modules": [
     "audio",
     "vision",
