@@ -1,10 +1,16 @@
 """Ponto de entrada principal do protótipo.
 
-O comando principal é:
-    python -m src.main
-
-Ele processa a entrada textual localmente e informa claramente quando a integração com
-OpenAI depender de configuração manual da chave da API.
+Comandos disponíveis:
+  processar-texto   — extração local de campos a partir de texto
+  prompts           — executa os três experimentos de prompt (A, B, C)
+  revisar           — registra a decisão humana sobre um prompt
+  logs              — exibe o log de auditoria
+  audio             — transcreve arquivo de áudio (STT) e salva campos críticos
+  ocr               — extrai texto de PDF ou imagem (OCR híbrido)
+  imagem            — gera peça visual institucional
+  voz               — sintetiza voz do roteiro aprovado (TTS)
+  aprovar-minuta    — registra versão e decisão humana sobre a minuta
+  avaliar           — avalia STT, OCR ou extração contra gabarito validado
 """
 
 from __future__ import annotations
@@ -32,6 +38,10 @@ from src.text_processing import (
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TEXT_PATH = ROOT / "arquivos" / "entrada_texto.txt"
 
+
+# ---------------------------------------------------------------------------
+# Configuração e utilitários
+# ---------------------------------------------------------------------------
 
 def load_config(config_path: Path | str = ROOT / "config.json") -> dict:
     path = Path(config_path)
@@ -81,6 +91,7 @@ def ensure_structure(config: dict | None = None) -> None:
         configured_path(settings, "gold_dir", "dados/gabaritos"),
         configured_path(settings, "processed_dir", "dados/processados"),
         results_dir / "minutas",
+        results_dir / "revisoes",
         results_dir / "logs",
         ROOT / "documentacao",
         ROOT / "prompts",
@@ -97,6 +108,24 @@ def save_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
 
+
+def _make_client(config: dict) -> OpenAIClient | None:
+    """Cria o cliente OpenAI se a chave estiver disponível; caso contrário retorna None."""
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return None
+    model = os.getenv("OPENAI_MODEL") or config.get("model") or DEFAULT_OPENAI_MODEL
+    return OpenAIClient(
+        api_key=api_key,
+        model=model,
+        timeout=float(config.get("timeout_seconds", 30)),
+        temperature=float(config.get("temperature", 0)),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Experimentos de prompt (legado)
+# ---------------------------------------------------------------------------
 
 def validate_prompt_output(text: str, expected: dict | None = None, source_name: str | None = None) -> dict:
     try:
@@ -337,48 +366,494 @@ def record_prompt_review(prompt_label: str, decision: str, justification: str) -
     return review
 
 
+# ---------------------------------------------------------------------------
+# Comandos multimodais
+# ---------------------------------------------------------------------------
+
+def cmd_audio(args: argparse.Namespace, config: dict) -> int:
+    """STT: transcreve arquivo de áudio e salva campos críticos."""
+    from src.audio import transcrever_audio, AudioInvalidoError
+
+    arquivo = args.arquivo
+    if not arquivo:
+        print("Erro: --arquivo é obrigatório para o comando audio.")
+        return 1
+    client = _make_client(config)
+    if client is None:
+        print("OPENAI_API_KEY não configurada. Configure a chave e tente novamente.")
+        return 1
+
+    caso_id = args.caso or Path(arquivo).stem
+    results_dir = configured_path(config, "results_dir", "resultados")
+    saida_dir = configured_path(config, "processed_dir", "dados/processados")
+    audio_cfg = config.get("audio", {})
+
+    execution = ExecutionAudit(log_dir=str(results_dir / "logs"))
+    execution.start(
+        modalidade="audio",
+        arquivo_origem=Path(arquivo).name,
+        provider="openai",
+        modelo=audio_cfg.get("stt_model", "gpt-4o-transcribe"),
+    )
+    try:
+        resultado = transcrever_audio(
+            arquivo,
+            client=client,
+            audio_cfg=audio_cfg,
+            caso_id=caso_id,
+            saida_dir=saida_dir,
+            revisar=not args.sem_revisao,
+            origem_ref=Path(arquivo).name,
+        )
+        execution.success(
+            arquivo_saida=str(saida_dir / f"{caso_id}_transcricao.json"),
+            duracao_segundos=resultado.get("duracao_processamento_segundos"),
+            decisao_humana="pendente",
+        )
+        print("\n--- TRANSCRIÇÃO BRUTA ---")
+        print(resultado["texto_bruto"])
+        if resultado.get("texto_revisado"):
+            print("\n--- TRANSCRIÇÃO REVISADA ---")
+            print(resultado["texto_revisado"])
+        print("\n--- CAMPOS EXTRAÍDOS ---")
+        print(safe_json_blob(resultado["campos"]))
+        print(f"\nArquivos salvos em: {saida_dir}")
+        return 0
+    except AudioInvalidoError as exc:
+        execution.fail(erro="AudioInvalidoError", mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Áudio inválido: {exc}")
+        return 1
+    except APIClientError as exc:
+        execution.fail(erro=type(exc).__name__, mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Falha no provedor: {exc}")
+        return 1
+
+
+def cmd_ocr(args: argparse.Namespace, config: dict) -> int:
+    """OCR híbrido: Tesseract local + fallback Vision."""
+    from src.vision import extrair_texto_documento, DocumentoInvalidoError
+
+    arquivo = args.arquivo
+    if not arquivo:
+        print("Erro: --arquivo é obrigatório para o comando ocr.")
+        return 1
+
+    client = _make_client(config)
+    caso_id = args.caso or Path(arquivo).stem
+    results_dir = configured_path(config, "results_dir", "resultados")
+    saida_dir = configured_path(config, "processed_dir", "dados/processados")
+    vision_cfg = config.get("vision", {})
+
+    execution = ExecutionAudit(log_dir=str(results_dir / "logs"))
+    execution.start(
+        modalidade="ocr",
+        arquivo_origem=Path(arquivo).name,
+        provider="tesseract+openai" if client else "tesseract",
+        modelo=vision_cfg.get("vision_model", "gpt-4o-mini"),
+    )
+    try:
+        resultado = extrair_texto_documento(
+            arquivo,
+            client=client,
+            vision_cfg=vision_cfg,
+            caso_id=caso_id,
+            saida_dir=saida_dir,
+            forcar_vision=args.forcar_vision,
+            corrigir=not args.sem_correcao,
+            origem_ref=Path(arquivo).name,
+        )
+        execution.success(
+            arquivo_saida=str(saida_dir / f"{caso_id}_ocr.json"),
+            decisao_humana="pendente",
+        )
+        print(f"\n--- OCR: {Path(arquivo).name} ({resultado['paginas_processadas']} pág.) ---")
+        if resultado["gatilhos_pre_vision"]:
+            print(f"Gatilhos Vision: {', '.join(resultado['gatilhos_pre_vision'])}")
+        print("\n--- TEXTO TESSERACT ---")
+        print(resultado["texto_tesseract"][:1000] + ("…" if len(resultado["texto_tesseract"]) > 1000 else ""))
+        if resultado.get("texto_vision"):
+            print("\n--- TEXTO VISION ---")
+            print(resultado["texto_vision"][:1000] + ("…" if len(resultado["texto_vision"]) > 1000 else ""))
+        if resultado.get("texto_corrigido"):
+            print("\n--- TEXTO CORRIGIDO ---")
+            print(resultado["texto_corrigido"][:1000] + ("…" if len(resultado["texto_corrigido"]) > 1000 else ""))
+        print("\n--- CAMPOS EXTRAÍDOS ---")
+        print(safe_json_blob(resultado["campos"]))
+        print(f"\n{resultado['aviso_privacidade']}")
+        print(f"\nArquivos salvos em: {saida_dir}")
+        return 0
+    except DocumentoInvalidoError as exc:
+        execution.fail(erro="DocumentoInvalidoError", mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Documento inválido: {exc}")
+        return 1
+    except APIClientError as exc:
+        execution.fail(erro=type(exc).__name__, mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Falha no provedor: {exc}")
+        return 1
+
+
+def cmd_imagem(args: argparse.Namespace, config: dict) -> int:
+    """Gera peça visual institucional com fundo gerado por IA e composição local."""
+    from src.image_generation import gerar_imagem, PROMPT_PADRAO
+
+    client = _make_client(config)
+    if client is None:
+        print("OPENAI_API_KEY não configurada. Configure a chave e tente novamente.")
+        return 1
+
+    caso_id = args.caso or "caso"
+    results_dir = configured_path(config, "results_dir", "resultados")
+    image_cfg = config.get("image", {})
+    brasao_path = ROOT / image_cfg.get("brasao", "arquivos/brasao.png")
+    out_path = results_dir / "minutas" / f"peca_{caso_id}.png"
+
+    titulo = args.titulo or "Secretaria Municipal de Educação"
+    texto = args.texto_imagem or (
+        "Matrícula aberta para cursos técnicos. "
+        "Acesse o portal ou compareça à secretaria com RG e comprovante de residência."
+    )
+    prompt = args.prompt_imagem or PROMPT_PADRAO
+
+    execution = ExecutionAudit(log_dir=str(results_dir / "logs"))
+    execution.start(
+        modalidade="imagem",
+        arquivo_origem="prompt_usuario",
+        provider="openai",
+        modelo=image_cfg.get("model", "gpt-image-1"),
+    )
+    try:
+        nota = gerar_imagem(
+            prompt,
+            client=client,
+            image_cfg=image_cfg,
+            titulo=titulo,
+            texto=texto,
+            out_path=out_path,
+            caso_id=caso_id,
+            brasao_path=brasao_path if brasao_path.exists() else None,
+            base_dir=results_dir / "minutas",
+        )
+        nota_path = Path(str(out_path) + ".proveniencia.json")
+        execution.success(arquivo_saida=str(out_path), decisao_humana="pendente")
+        print(f"\nPeça visual gerada: {out_path}")
+        print(f"Nota de proveniência: {nota_path}")
+        print(f"Rótulo sintético: {nota['identificacao']}")
+        print("Revisão visual humana: PENDENTE (veja nota de proveniência antes de usar)")
+        return 0
+    except APIClientError as exc:
+        execution.fail(erro=type(exc).__name__, mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Falha no provedor: {exc}")
+        return 1
+    except ValueError as exc:
+        execution.fail(erro="ValueError", mensagem=str(exc), decisao_humana="não aplicável")
+        print(f"Configuração de imagem inválida: {exc}")
+        return 1
+
+
+def cmd_voz(args: argparse.Namespace, config: dict) -> int:
+    """TTS: sintetiza a voz do roteiro aprovado."""
+    from src.audio import sintetizar_roteiro
+    from src.review import Revisoes, AprovacaoInvalidaError, RevisaoError
+
+    caso_id = args.caso
+    if not caso_id:
+        print("Erro: --caso é obrigatório para o comando voz.")
+        return 1
+    client = _make_client(config)
+    if client is None:
+        print("OPENAI_API_KEY não configurada. Configure a chave e tente novamente.")
+        return 1
+
+    results_dir = configured_path(config, "results_dir", "resultados")
+    revisoes = Revisoes(results_dir)
+    audio_cfg = config.get("audio", {})
+
+    try:
+        versao = revisoes.resolver_versao(caso_id, args.versao, exigir_aprovacao=True)
+        selecao = revisoes.descrever_selecao(caso_id, versao)
+        print(f"\nSintetizando: caso={caso_id}, versão={versao}, vigente={selecao['vigente']}")
+        print(f"  Minuta : {selecao['minuta']}")
+        print(f"  Roteiro: {selecao['roteiro']}")
+        print(f"  SHA-256 roteiro: {selecao['roteiro_sha256']}")
+
+        out_path = results_dir / "minutas" / f"voz_{caso_id}_v{versao}.mp3"
+        execution = ExecutionAudit(log_dir=str(results_dir / "logs"))
+        execution.start(
+            modalidade="tts",
+            arquivo_origem=f"roteiro_{caso_id}_v{versao}.txt",
+            provider="openai",
+            modelo=audio_cfg.get("tts_model", "gpt-4o-mini-tts"),
+        )
+        registro = sintetizar_roteiro(
+            caso_id, versao, out_path, client=client, revisoes=revisoes, audio_cfg=audio_cfg
+        )
+        execution.success(arquivo_saida=str(out_path), decisao_humana="pendente")
+        print(f"\nÁudio salvo: {out_path}")
+        print(f"Metadados  : {str(out_path)}.json")
+        print(f"Hash íntegro: {registro['texto_enviado_identico_ao_roteiro_aprovado']}")
+        print("Escuta humana: PENDENTE (registre após ouvir o áudio)")
+        return 0
+    except (AprovacaoInvalidaError, RevisaoError) as exc:
+        print(f"Não foi possível sintetizar a voz: {exc}")
+        return 1
+    except APIClientError as exc:
+        print(f"Falha no provedor: {exc}")
+        return 1
+
+
+def cmd_aprovar_minuta(args: argparse.Namespace, config: dict) -> int:
+    """Registra versão da minuta e decisão humana de aprovação ou rejeição."""
+    from src.review import Revisoes, RevisaoError
+    from src.roteiro import gerar_roteiro_leitura
+
+    caso_id = args.caso
+    if not caso_id:
+        print("Erro: --caso é obrigatório para o comando aprovar-minuta.")
+        return 1
+    operador = args.operador
+    if not operador:
+        print("Erro: --operador é obrigatório.")
+        return 1
+    decisao = args.decisao
+    if not decisao:
+        print("Erro: --decisao (aprovar|rejeitar) é obrigatório.")
+        return 1
+    justificativa = args.justificativa
+    if not justificativa:
+        print("Erro: --justificativa é obrigatória.")
+        return 1
+
+    results_dir = configured_path(config, "results_dir", "resultados")
+    revisoes = Revisoes(results_dir)
+
+    try:
+        # Se --arquivo-minuta fornecido, registra nova versão
+        if args.arquivo_minuta:
+            minuta_path = Path(args.arquivo_minuta)
+            if not minuta_path.exists():
+                print(f"Arquivo de minuta não encontrado: {minuta_path}")
+                return 1
+            minuta_texto = minuta_path.read_text(encoding="utf-8")
+            roteiro = gerar_roteiro_leitura(minuta_texto)
+            versao = revisoes.registrar_versao(caso_id, minuta_texto, roteiro)
+            print(f"Nova versão registrada: v{versao} para o caso {caso_id}")
+        elif args.versao is not None:
+            versao = args.versao
+        else:
+            print("Erro: informe --arquivo-minuta (nova versão) ou --versao (versão existente).")
+            return 1
+
+        entrada = revisoes.registrar_decisao(
+            caso_id,
+            versao,
+            decisao,
+            justificativa,
+            operador,
+            tornar_vigente=(decisao == "aprovar"),
+        )
+        estado = revisoes.estado_atendimento(caso_id)
+        print(f"\nDecisão registrada: {entrada['decisao'].upper()} (versão {versao})")
+        print(f"Operador  : {operador}")
+        print(f"Estado    : {estado}")
+        print(f"SHA-256 minuta : {entrada['minuta_sha256']}")
+        print(f"SHA-256 roteiro: {entrada['roteiro_sha256']}")
+        if decisao == "aprovar":
+            print("A versão vigente foi definida automaticamente. Use 'voz' para sintetizar o roteiro.")
+        return 0
+    except RevisaoError as exc:
+        print(f"Erro na aprovação: {exc}")
+        return 1
+
+
+def cmd_avaliar(args: argparse.Namespace, config: dict) -> int:
+    """Avalia STT, OCR ou extração JSON contra gabarito validado por humanos."""
+    from src.gabarito import carregar_gabarito_validado, verificar_validade_temporal, GabaritoInvalidoError
+    from src.evaluation import (
+        avaliar_stt, avaliar_ocr, avaliar_extracao_json,
+        avaliar_seguranca, pontuacao_qualidade,
+    )
+
+    modalidade = args.modalidade
+    if not modalidade:
+        print("Erro: --modalidade (stt|ocr|extracao|seguranca) é obrigatória para avaliar.")
+        return 1
+    gabarito_path = args.gabarito
+    if not gabarito_path:
+        print("Erro: --gabarito é obrigatório no modo de avaliação.")
+        return 1
+
+    results_dir = configured_path(config, "results_dir", "resultados")
+    log_path = results_dir / "logs" / "audit.jsonl"
+
+    try:
+        gab = carregar_gabarito_validado(gabarito_path)
+        conteudo_gab = gab["conteudo"]
+    except GabaritoInvalidoError as exc:
+        print(f"Gabarito inválido: {exc}")
+        return 1
+
+    validade = verificar_validade_temporal(gabarito_path, ROOT, log_path, args.origem or "")
+    if validade.get("avisos"):
+        for aviso in validade["avisos"]:
+            print(f"[AVISO TEMPORAL] {aviso}")
+
+    resultado_avaliacao: dict = {"modalidade": modalidade, "gabarito": gab["arquivo"]}
+
+    try:
+        if modalidade == "stt":
+            if not args.arquivo:
+                print("Erro: --arquivo com a transcrição bruta é obrigatório para avaliar stt.")
+                return 1
+            transcricao = Path(args.arquivo).read_text(encoding="utf-8")
+            resultado_avaliacao["metricas"] = avaliar_stt(transcricao, conteudo_gab)
+            erros = resultado_avaliacao["metricas"]["campos_criticos"]["erros"]
+
+        elif modalidade == "ocr":
+            if not args.arquivo:
+                print("Erro: --arquivo com o texto OCR é obrigatório para avaliar ocr.")
+                return 1
+            texto_ocr = Path(args.arquivo).read_text(encoding="utf-8")
+            resultado_avaliacao["metricas"] = avaliar_ocr(texto_ocr, conteudo_gab)
+            erros = resultado_avaliacao["metricas"]["campos_criticos"]["erros"]
+
+        elif modalidade == "extracao":
+            if not args.arquivo:
+                print("Erro: --arquivo com o JSON extraído é obrigatório para avaliar extracao.")
+                return 1
+            obtido = json.loads(Path(args.arquivo).read_text(encoding="utf-8"))
+            campos_avaliar = list(conteudo_gab.get("resultado_esperado", {}).keys())
+            resultado_avaliacao["metricas"] = avaliar_extracao_json(
+                obtido, conteudo_gab.get("resultado_esperado", {}), campos_avaliar
+            )
+            erros = resultado_avaliacao["metricas"]["erros"]
+
+        elif modalidade == "seguranca":
+            if not args.arquivo:
+                print("Erro: --arquivo com a saída a testar é obrigatório para avaliar seguranca.")
+                return 1
+            saida = Path(args.arquivo).read_text(encoding="utf-8")
+            padroes = conteudo_gab.get("padroes_proibidos", [])
+            resultado_avaliacao["metricas"] = avaliar_seguranca(saida, padroes)
+            erros = [{"severidade": "critico", "campo": p} for p in resultado_avaliacao["metricas"]["seguidas"]]
+
+        else:
+            print(f"Modalidade desconhecida: {modalidade}. Use stt, ocr, extracao ou seguranca.")
+            return 1
+
+        resultado_avaliacao["pontuacao"] = pontuacao_qualidade(erros)
+        resultado_avaliacao["validade_temporal"] = validade
+
+        avaliacao_path = results_dir / f"avaliacao_{modalidade}_{args.caso or 'caso'}.json"
+        save_json(avaliacao_path, resultado_avaliacao)
+
+        print(f"\n--- AVALIAÇÃO {modalidade.upper()} ---")
+        print(safe_json_blob(resultado_avaliacao["metricas"]))
+        pontos = resultado_avaliacao["pontuacao"]
+        status = "APROVADO" if pontos["aprovado"] else "REPROVADO"
+        print(f"\nPontuação: {pontos['pontuacao']}/100 — {status}")
+        if pontos["reprovado_por_erro_critico"]:
+            print("⚠ Reprovado por erro em campo crítico.")
+        print(f"Evidência salva: {avaliacao_path}")
+        return 0
+
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        print(f"Falha na avaliação: {exc}")
+        return 1
+
+
+# ---------------------------------------------------------------------------
+# Ponto de entrada
+# ---------------------------------------------------------------------------
+
 def print_help() -> None:
     print(
         """
 Uso:
-  python -m src.main processar-texto
-  python -m src.main prompts
-    python -m src.main revisar --prompt B --decisao aprovar --justificativa "..."
+  python -m src.main processar-texto   [--arquivo F] [--texto T]
+  python -m src.main prompts           [--arquivo F]
+  python -m src.main revisar           --prompt (A|B|C) --decisao D --justificativa J
   python -m src.main logs
-  python -m src.main --help
-
-Opções:
-  --arquivo      Caminho do arquivo de entrada (opcional)
-  --texto        Texto bruto a ser processado (opcional)
-  --listar-logs  Exibe o último log de auditoria
+  python -m src.main audio             --arquivo F [--caso ID] [--sem-revisao]
+  python -m src.main ocr               --arquivo F [--caso ID] [--forcar-vision] [--sem-correcao]
+  python -m src.main imagem            [--caso ID] [--titulo T] [--texto-imagem T]
+  python -m src.main voz               --caso ID  [--versao N]
+  python -m src.main aprovar-minuta    --caso ID  --operador OP --decisao (aprovar|rejeitar)
+                                       --justificativa J
+                                       (--arquivo-minuta F | --versao N)
+  python -m src.main avaliar           --modalidade (stt|ocr|extracao|seguranca)
+                                       --gabarito G --arquivo A [--caso ID] [--origem O]
 """
     )
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Central inteligente de atendimento institucional",
+        add_help=True,
+    )
+    parser.add_argument(
+        "command",
+        nargs="?",
+        default="processar-texto",
+        choices=[
+            "processar-texto", "prompts", "revisar", "logs",
+            "audio", "ocr", "imagem", "voz", "aprovar-minuta", "avaliar",
+        ],
+    )
+    # Entradas genéricas
+    parser.add_argument("--arquivo", type=str, default=None, help="Caminho do arquivo de entrada")
+    parser.add_argument("--texto", type=str, default=None, help="Texto bruto a ser processado")
+    parser.add_argument("--listar-logs", action="store_true", help="Mostra os logs de auditoria")
+
+    # Revisão de prompts
+    parser.add_argument("--prompt", choices=["A", "B", "C"], help="Prompt do experimento a revisar")
+    parser.add_argument(
+        "--decisao",
+        choices=["aprovar", "rejeitar", "gerar_novamente"],
+        help="Decisão humana (prompts e aprovar-minuta)",
+    )
+    parser.add_argument("--justificativa", type=str, help="Justificativa da decisão humana")
+
+    # Identificação do caso
+    parser.add_argument("--caso", type=str, default=None, help="Identificador do caso/cidadão")
+    parser.add_argument("--versao", type=int, default=None, help="Versão da minuta a usar")
+    parser.add_argument("--operador", type=str, default=None, help="Nome do operador responsável")
+
+    # Audio
+    parser.add_argument("--sem-revisao", action="store_true", help="Pula a revisão LLM da transcrição")
+
+    # OCR / Vision
+    parser.add_argument("--forcar-vision", action="store_true", help="Força o uso do Vision mesmo sem gatilhos")
+    parser.add_argument("--sem-correcao", action="store_true", help="Pula a correção LLM do OCR")
+
+    # Imagem
+    parser.add_argument("--titulo", type=str, default=None, help="Título da peça visual")
+    parser.add_argument("--texto-imagem", type=str, default=None, help="Texto de orientação na peça")
+    parser.add_argument("--prompt-imagem", type=str, default=None, help="Prompt personalizado para a IA de imagem")
+
+    # Aprovar minuta
+    parser.add_argument("--arquivo-minuta", type=str, default=None, help="Arquivo .txt da minuta (nova versão)")
+
+    # Avaliar
+    parser.add_argument(
+        "--modalidade",
+        choices=["stt", "ocr", "extracao", "seguranca"],
+        help="Modalidade de avaliação",
+    )
+    parser.add_argument("--gabarito", type=str, default=None, help="Caminho do arquivo de gabarito validado")
+    parser.add_argument("--origem", type=str, default=None, help="Arquivo de origem registrado no log de auditoria")
+
+    return parser
 
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
     config = load_config()
-    parser = argparse.ArgumentParser(description="Central inteligente de atendimento institucional")
-    parser.add_argument(
-        "command",
-        nargs="?",
-        default="processar-texto",
-        choices=["processar-texto", "prompts", "revisar", "logs"],
-    )
-    parser.add_argument("--arquivo", type=str, default=None, help="Caminho do arquivo de entrada")
-    parser.add_argument("--texto", type=str, default=None, help="Texto bruto a ser processado")
-    parser.add_argument("--listar-logs", action="store_true", help="Mostra os logs de auditoria")
-    parser.add_argument("--prompt", choices=["A", "B", "C"], help="Prompt do experimento a revisar")
-    parser.add_argument(
-        "--decisao",
-        choices=["aprovar", "rejeitar", "gerar_novamente"],
-        help="Decisão humana sobre o resultado",
-    )
-    parser.add_argument("--justificativa", type=str, help="Justificativa da decisão humana")
+    parser = _build_parser()
     args = parser.parse_args()
-
     ensure_structure(config)
 
+    # --- Comandos legados ---
     if args.command == "prompts":
         try:
             results = run_prompt_experiments(args.arquivo)
@@ -421,12 +896,34 @@ def main() -> int:
             print("Nenhum log de auditoria foi gerado ainda.")
         return 0
 
+    # --- Novos comandos multimodais ---
+    if args.command == "audio":
+        return cmd_audio(args, config)
+
+    if args.command == "ocr":
+        return cmd_ocr(args, config)
+
+    if args.command == "imagem":
+        return cmd_imagem(args, config)
+
+    if args.command == "voz":
+        return cmd_voz(args, config)
+
+    if args.command == "aprovar-minuta":
+        return cmd_aprovar_minuta(args, config)
+
+    if args.command == "avaliar":
+        return cmd_avaliar(args, config)
+
+    # --- processar-texto (padrão) ---
     started_at = perf_counter()
     results_dir = configured_path(config, "results_dir", "resultados")
     execution = ExecutionAudit(log_dir=str(results_dir / "logs"))
     execution.start(
         modalidade="texto",
-        arquivo_origem="texto_fornecido_cli" if args.texto is not None else path_reference(Path(args.arquivo) if args.arquivo else default_input_path(config)),
+        arquivo_origem="texto_fornecido_cli" if args.texto is not None else path_reference(
+            Path(args.arquivo) if args.arquivo else default_input_path(config)
+        ),
         provider="local",
         prompt_version="local_v1",
         modelo="processamento_local",
@@ -436,7 +933,11 @@ def main() -> int:
         raw_text = args.texto if args.texto is not None else read_text_input(args.arquivo)
         data = extract_structured_data(raw_text)
         minuta = build_minuta(data)
-        source_reference = "texto fornecido diretamente" if args.texto is not None else path_reference(Path(args.arquivo) if args.arquivo else default_input_path(config))
+        source_reference = (
+            "texto fornecido diretamente"
+            if args.texto is not None
+            else path_reference(Path(args.arquivo) if args.arquivo else default_input_path(config))
+        )
         minuta = f"{minuta}\n\nFonte: {source_reference}."
 
         output_path = configured_path(config, "processed_dir", "dados/processados") / "solicitacao_extraida.json"
