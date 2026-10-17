@@ -1,0 +1,28 @@
+{
+  "protocolo": {
+    "valor": "2026-000142",
+    "origem": "entrada_audio.mp3",
+    "origem_sha256": "aa396a4bc0d990ef05b031d8771cbad2d46ebc45ec1ad1adf4d23cb3c7cd2fa6",
+    "metodo": "stt",
+    "status": "extraido",
+    "trecho_tempo": {
+      "inicio_s": 0.0,
+      "fim_s": 89.16
+    }
+  },
+  "data": {
+    "valor": "não localizado",
+    "status": "ausente"
+  },
+  "solicitante": {
+    "valor": "Marcos Vinícius de Almeida Santos",
+    "origem": "entrada_audio.mp3",
+    "origem_sha256": "aa396a4bc0d990ef05b031d8771cbad2d46ebc45ec1ad1adf4d23cb3c7cd2fa6",
+    "metodo": "stt",
+    "status": "extraido",
+    "trecho_tempo": {
+      "inicio_s": 0.0,
+      "fim_s": 89.16
+    }
+  }
+}

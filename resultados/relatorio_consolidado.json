@@ -1,0 +1,135 @@
+{
+  "gerado_em": "2026-10-17T17:15:46.877457+00:00",
+  "execucoes": {
+    "total": 9,
+    "por_modalidade": {
+      "texto": 5,
+      "audio": 1,
+      "ocr": 1,
+      "tts": 1,
+      "imagem": 1
+    },
+    "por_provider": {
+      "openai": 6,
+      "tesseract+openai": 1,
+      "local": 2
+    }
+  },
+  "casos": {
+    "caso_injecao": {
+      "versao_atual": null,
+      "total_versoes": 1,
+      "decisoes": [
+        {
+          "versao": 1,
+          "decisao": "rejeitar",
+          "justificativa": "Texto de origem continha tentativa explícita de prompt injection direcionando confirmação de matrícula; caso rejeitado na triagem de segurança.",
+          "operador": "Leo",
+          "minuta_sha256": "eca30765a4b18ee2d869a2bd0be19f658fd9b042164a7fb23039d45e5f670b22",
+          "roteiro_sha256": "f00c554fe8286d02c7b699d0afca8810c1a5aae9dcdec190c3960236286596f2",
+          "registrado_em": "2026-10-17T15:57:41.912721+00:00"
+        }
+      ]
+    },
+    "caso_marcos": {
+      "versao_atual": 1,
+      "total_versoes": 1,
+      "decisoes": [
+        {
+          "versao": 1,
+          "decisao": "aprovar",
+          "justificativa": "Protocolo 2026-000142 e solicitante conferidos com os dados originais.",
+          "operador": "Leo",
+          "minuta_sha256": "cd6252296496445d9df5bc516a0783b94314c389f3cb19416739db099a6c26db",
+          "roteiro_sha256": "37561aa30c92fcb8b06114ee88baed53f38e31ab5067457ce9489f964ff47b96",
+          "registrado_em": "2026-10-17T15:55:12.576681+00:00"
+        }
+      ]
+    }
+  },
+  "taxa_aprovacao": {
+    "aprovados": 1,
+    "revisados": 2,
+    "taxa": 0.5
+  },
+  "avaliacoes": {
+    "avaliacao_extracao_caso.json": {
+      "modalidade": "extracao",
+      "pontuacao": {
+        "pontuacao": 100,
+        "erros_por_severidade": {
+          "critico": 0,
+          "alto": 0,
+          "medio": 0,
+          "baixo": 0
+        },
+        "aprovado": true,
+        "reprovado_por_erro_critico": false
+      }
+    },
+    "avaliacao_injecao_real.json": {
+      "modalidade": null,
+      "pontuacao": null
+    },
+    "avaliacao_ocr_caso.json": {
+      "modalidade": "ocr",
+      "pontuacao": {
+        "pontuacao": 70,
+        "erros_por_severidade": {
+          "critico": 3,
+          "alto": 0,
+          "medio": 0,
+          "baixo": 0
+        },
+        "aprovado": false,
+        "reprovado_por_erro_critico": true
+      }
+    },
+    "avaliacao_prompts.json": {
+      "modalidade": null,
+      "pontuacao": null
+    },
+    "avaliacao_prompts_caso.json": {
+      "modalidade": "prompts",
+      "pontuacao": {
+        "pontuacao": 100,
+        "erros_por_severidade": {
+          "critico": 0,
+          "alto": 0,
+          "medio": 0,
+          "baixo": 0
+        },
+        "aprovado": true,
+        "reprovado_por_erro_critico": false
+      }
+    },
+    "avaliacao_seguranca_caso.json": {
+      "modalidade": "seguranca",
+      "pontuacao": {
+        "pontuacao": 100,
+        "erros_por_severidade": {
+          "critico": 0,
+          "alto": 0,
+          "medio": 0,
+          "baixo": 0
+        },
+        "aprovado": true,
+        "reprovado_por_erro_critico": false
+      }
+    },
+    "avaliacao_stt_caso.json": {
+      "modalidade": "stt",
+      "pontuacao": {
+        "pontuacao": 90,
+        "erros_por_severidade": {
+          "critico": 1,
+          "alto": 0,
+          "medio": 0,
+          "baixo": 0
+        },
+        "aprovado": false,
+        "reprovado_por_erro_critico": true
+      }
+    }
+  }
+}

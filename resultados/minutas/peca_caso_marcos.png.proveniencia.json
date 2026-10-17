@@ -1,0 +1,61 @@
+{
+  "caso_id": "caso_marcos",
+  "tipo": "gerada_por_ia",
+  "identificacao": "Gerado por IA — conteúdo sintético",
+  "arquivo_peca": "peca_caso_marcos.png",
+  "arquivo_peca_sha256": "d8ea7e3fdce65dae0a4a1ecdcc315c192ba9ea37a807391ad414989281b27f43",
+  "arquivo_fundo_ia": "peca_caso_marcos_fundo_ia.png",
+  "arquivo_fundo_sha256": "97956fb87ad3eff3f3d03bc1a399420fa2b1c620c751ece166fab5a46a709b03",
+  "prompt": "Sujeito: Ilustração institucional acolhedora sobre matrícula em curso técnico: prancheta, calendário e ícones de saúde (cruz, estetoscópio), sem pessoas.\nComposição: Elementos centralizados, espaço livre no terço superior e inferior para texto sobreposto.\nEstilo: Ilustração vetorial plana, paleta azul e verde sóbria, aspecto de comunicação pública.\nIluminação: Luz difusa e uniforme, sem sombras fortes.\nProporção: Quadrada, 1:1.\nRestrições: nenhum texto, letras ou números na imagem; nenhuma pessoa, rosto ou mão; nenhum brasão, logotipo ou símbolo oficial; sem marcas d'água",
+  "modelo": "gpt-image-1",
+  "parametros": {
+    "size": "1024x1024",
+    "quality": "medium"
+  },
+  "gerada_em": "2026-10-17T15:56:26.526447+00:00",
+  "elementos_sobrepostos_localmente": [
+    "titulo",
+    "texto_orientacao",
+    "brasao",
+    "rotulo_sintetico"
+  ],
+  "brasao_origem": "brasao.png",
+  "pessoa_real": false,
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-image-1",
+    "duration_seconds": 17.488,
+    "response_id": null,
+    "usage": {
+      "input_tokens": 151,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 151
+      },
+      "output_tokens": 1056,
+      "total_tokens": 1207,
+      "output_tokens_details": {
+        "image_tokens": 1056,
+        "text_tokens": 0
+      }
+    },
+    "custo_estimado": null,
+    "size": "1024x1024",
+    "quality": "medium",
+    "revised_prompt": null
+  },
+  "revisao_visual": {
+    "status": "aprovada",
+    "itens": {
+      "texto": true,
+      "simbolos": true,
+      "maos": true,
+      "objetos": true,
+      "coerencia_visual": true
+    },
+    "operador": "Leo",
+    "observacao": "Texto institucional sobreposto legível, sem pessoas reais, brasão oficial posicionado e tarja de conteúdo sintético visível.",
+    "revisada_em": "2026-10-17T15:57:08.165956+00:00"
+  },
+  "utilizavel": true
+}

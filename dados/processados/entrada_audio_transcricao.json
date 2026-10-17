@@ -1,0 +1,79 @@
+{
+  "arquivo": "entrada_audio.mp3",
+  "origem_sha256": "aa396a4bc0d990ef05b031d8771cbad2d46ebc45ec1ad1adf4d23cb3c7cd2fa6",
+  "validacao": {
+    "arquivo": "entrada_audio.mp3",
+    "extensao": ".mp3",
+    "tamanho_bytes": 2853120
+  },
+  "idioma": "pt",
+  "modelo_stt": "gpt-4o-transcribe",
+  "duracao_audio_segundos": 89.16,
+  "duracao_processamento_segundos": 7.777,
+  "campos": {
+    "protocolo": {
+      "valor": "2026-000142",
+      "origem": "entrada_audio.mp3",
+      "origem_sha256": "aa396a4bc0d990ef05b031d8771cbad2d46ebc45ec1ad1adf4d23cb3c7cd2fa6",
+      "metodo": "stt",
+      "status": "extraido",
+      "trecho_tempo": {
+        "inicio_s": 0.0,
+        "fim_s": 89.16
+      }
+    },
+    "data": {
+      "valor": "não localizado",
+      "status": "ausente"
+    },
+    "solicitante": {
+      "valor": "Marcos Vinícius de Almeida Santos",
+      "origem": "entrada_audio.mp3",
+      "origem_sha256": "aa396a4bc0d990ef05b031d8771cbad2d46ebc45ec1ad1adf4d23cb3c7cd2fa6",
+      "metodo": "stt",
+      "status": "extraido",
+      "trecho_tempo": {
+        "inicio_s": 0.0,
+        "fim_s": 89.16
+      }
+    }
+  },
+  "metadata_stt": {
+    "provider": "openai",
+    "model": "gpt-4o-transcribe",
+    "duration_seconds": 4.839,
+    "response_id": null,
+    "usage": {
+      "input_tokens": 891,
+      "output_tokens": 200,
+      "total_tokens": 1091,
+      "type": "tokens",
+      "input_token_details": {
+        "audio_tokens": 891,
+        "text_tokens": 0
+      }
+    },
+    "custo_estimado": null,
+    "language": "pt"
+  },
+  "metadata_revisao": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 2.916,
+    "response_id": "resp_04ac141c8a48dea4006ad39a0cf86087d2b5a16f797d41173c",
+    "usage": {
+      "input_tokens": 350,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 201,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 551
+    },
+    "custo_estimado": null
+  },
+  "confirmacao_humana_pendente": true
+}

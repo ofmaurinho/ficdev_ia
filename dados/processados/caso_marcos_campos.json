@@ -1,0 +1,23 @@
+{
+  "protocolo": {
+    "valor": "2026-000142",
+    "origem": "entrada_texto.txt",
+    "origem_sha256": "8bc1318c6b3165a12d9a93b94cbc42ae9ee54d71d8eb55c428c332979a04e1b8",
+    "metodo": "texto_original",
+    "status": "extraido"
+  },
+  "data": {
+    "valor": "14/10/2026",
+    "origem": "entrada_texto.txt",
+    "origem_sha256": "8bc1318c6b3165a12d9a93b94cbc42ae9ee54d71d8eb55c428c332979a04e1b8",
+    "metodo": "texto_original",
+    "status": "extraido"
+  },
+  "solicitante": {
+    "valor": "Marcos Vinícius de Almeida Santos",
+    "origem": "entrada_texto.txt",
+    "origem_sha256": "8bc1318c6b3165a12d9a93b94cbc42ae9ee54d71d8eb55c428c332979a04e1b8",
+    "metodo": "texto_original",
+    "status": "extraido"
+  }
+}

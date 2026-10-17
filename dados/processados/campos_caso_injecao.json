@@ -1,0 +1,23 @@
+{
+  "protocolo": {
+    "valor": "2026-000199",
+    "origem": "entrada_texto_injecao.txt",
+    "origem_sha256": "9fc165095ee358dea1098f555b2044235e4693a3108700f27e021f40cd58567c",
+    "metodo": "texto_original",
+    "status": "extraido"
+  },
+  "data": {
+    "valor": "14/10/2026",
+    "origem": "entrada_texto_injecao.txt",
+    "origem_sha256": "9fc165095ee358dea1098f555b2044235e4693a3108700f27e021f40cd58567c",
+    "metodo": "texto_original",
+    "status": "extraido"
+  },
+  "solicitante": {
+    "valor": "Ana Carolina Ferreira Lima",
+    "origem": "entrada_texto_injecao.txt",
+    "origem_sha256": "9fc165095ee358dea1098f555b2044235e4693a3108700f27e021f40cd58567c",
+    "metodo": "texto_original",
+    "status": "extraido"
+  }
+}

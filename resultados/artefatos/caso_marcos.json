@@ -1,0 +1,109 @@
+{
+  "caso_id": "caso_marcos",
+  "originais": [
+    {
+      "id": "orig-8bc1318c6b31",
+      "arquivo": "arquivos/entrada_texto.txt",
+      "sha256": "8bc1318c6b3165a12d9a93b94cbc42ae9ee54d71d8eb55c428c332979a04e1b8",
+      "tamanho_bytes": 881,
+      "registrado_em": "2026-10-17T15:54:58.757430+00:00"
+    }
+  ],
+  "artefatos": {
+    "estruturado:v1": {
+      "tipo": "estruturado",
+      "versao": 1,
+      "estado": "GERADO",
+      "tentativas": 1,
+      "historico": [
+        {
+          "estado": "GERANDO",
+          "em": "2026-10-17T15:54:58.757700+00:00"
+        },
+        {
+          "estado": "GERADO",
+          "em": "2026-10-17T15:54:58.759797+00:00"
+        }
+      ],
+      "atualizado_em": "2026-10-17T15:54:58.759797+00:00",
+      "arquivo": "dados/processados/caso_marcos_estruturado.json",
+      "sha256": "f0f02420c8f127af282f4304ea52b58f3c7be5ab930a669a481ebca6c8bddacd"
+    },
+    "minuta:v1": {
+      "tipo": "minuta",
+      "versao": 1,
+      "estado": "GERADO",
+      "tentativas": 1,
+      "historico": [
+        {
+          "estado": "GERANDO",
+          "em": "2026-10-17T15:54:58.760495+00:00"
+        },
+        {
+          "estado": "GERADO",
+          "em": "2026-10-17T15:54:58.760761+00:00"
+        }
+      ],
+      "atualizado_em": "2026-10-17T15:54:58.760761+00:00",
+      "arquivo": "resultados/minutas/minuta_caso_marcos_v1.txt",
+      "sha256": "cd6252296496445d9df5bc516a0783b94314c389f3cb19416739db099a6c26db"
+    },
+    "roteiro_leitura:v1": {
+      "tipo": "roteiro_leitura",
+      "versao": 1,
+      "estado": "GERADO",
+      "tentativas": 1,
+      "historico": [
+        {
+          "estado": "GERANDO",
+          "em": "2026-10-17T15:54:58.760971+00:00"
+        },
+        {
+          "estado": "GERADO",
+          "em": "2026-10-17T15:54:58.761251+00:00"
+        }
+      ],
+      "atualizado_em": "2026-10-17T15:54:58.761251+00:00",
+      "arquivo": "resultados/minutas/roteiro_caso_marcos_v1.txt",
+      "sha256": "37561aa30c92fcb8b06114ee88baed53f38e31ab5067457ce9489f964ff47b96"
+    },
+    "audio:v1": {
+      "tipo": "audio",
+      "versao": 1,
+      "estado": "GERADO",
+      "tentativas": 1,
+      "historico": [
+        {
+          "estado": "GERANDO",
+          "em": "2026-10-17T15:55:47.478092+00:00"
+        },
+        {
+          "estado": "GERADO",
+          "em": "2026-10-17T15:55:56.540560+00:00"
+        }
+      ],
+      "atualizado_em": "2026-10-17T15:55:56.540560+00:00",
+      "arquivo": "resultados/minutas/voz_caso_marcos_v1.mp3",
+      "sha256": "8e21e4cd6d30aeb1587b5c1cbc6e2ff2cfa46bf87731021afc01ecf63b715cd3"
+    },
+    "imagem:v1": {
+      "tipo": "imagem",
+      "versao": 1,
+      "estado": "GERADO",
+      "tentativas": 1,
+      "historico": [
+        {
+          "estado": "GERANDO",
+          "em": "2026-10-17T15:56:08.600117+00:00"
+        },
+        {
+          "estado": "GERADO",
+          "em": "2026-10-17T15:56:26.527622+00:00"
+        }
+      ],
+      "atualizado_em": "2026-10-17T15:56:26.527622+00:00",
+      "arquivo": "resultados/minutas/peca_caso_marcos.png",
+      "sha256": "d8ea7e3fdce65dae0a4a1ecdcc315c192ba9ea37a807391ad414989281b27f43"
+    }
+  }
+}
