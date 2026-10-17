@@ -236,8 +236,11 @@ def verificar_cli() -> None:
     else:
         _fail(f"--help falhou: {result.stderr[:200]}")
 
-    comandos = ["processar-texto", "prompts", "revisar", "logs",
-                "audio", "ocr", "imagem", "voz", "aprovar-minuta", "avaliar"]
+    comandos = [
+        "processar-texto", "prompts", "revisar", "logs",
+        "audio", "ocr", "imagem", "voz", "aprovar-minuta", "avaliar",
+        "fluxo", "vigente", "relatorio",
+    ]
     help_text = result.stdout + result.stderr
     for cmd in comandos:
         if cmd in help_text:
@@ -420,13 +423,15 @@ def verificar_documentacao() -> None:
     roteiro_path = ROOT / "documentacao" / "roteiro_apresentacao.md"
     if roteiro_path.exists():
         conteudo = roteiro_path.read_text("utf-8")
-        minutos = re.findall(r"(\d+)\s*min", conteudo, re.IGNORECASE)
+        # Captura apenas tempos de bloco principal: "Bloco X — Título (N min)"
+        minutos = re.findall(r"Bloco\s+\d+[^(]*\((\d+)\s*min\)", conteudo)
         total = sum(int(m) for m in minutos)
         if total > 0:
             if total <= 12:
                 _ok(f"Tempo total do roteiro: {total} min (≤ 12 min)")
             else:
                 _warn(f"Tempo total do roteiro: {total} min (excede 12 min)")
+
 
 
 # ---------------------------------------------------------------------------
