@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import re
 from typing import Any, Dict, List
 
@@ -287,3 +288,161 @@ def render_minuta_html(minuta_texto: str, brasao_path: str | None = None) -> str
         '<p style="border:2px solid #b00;padding:6px;text-align:center"><b>RASCUNHO — requer aprovação humana. Não enviar automaticamente.</b></p>'
         f"<div>{corpo}</div></body></html>\n"
     )
+
+
+def render_minuta_pdf(
+    minuta_texto: str,
+    out_path: str | Path,
+    brasao_path: str | Path | None = None,
+) -> Path:
+    """Gera um PDF institucional formal da minuta contendo o brasão oficial e carimbo de rascunho."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    out_p = Path(out_path)
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+
+    # Dimensões A4 em 150 DPI: 1240 x 1754 pixels
+    width, height = 1240, 1754
+    canvas = Image.new("RGB", (width, height), color=(255, 255, 255))
+    draw = ImageDraw.Draw(canvas)
+
+    # Seleção de fontes TTF do sistema com fallback
+    candidatos_bold = [
+        "/usr/share/fonts/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
+    ]
+    candidatos_regular = [
+        "/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    ]
+
+    fonte_bold_path = next((p for p in candidatos_bold if Path(p).exists()), None)
+    fonte_reg_path = next((p for p in candidatos_regular if Path(p).exists()), None)
+
+    if fonte_bold_path and fonte_reg_path:
+        font_header_bold = ImageFont.truetype(fonte_bold_path, 22)
+        font_header_reg = ImageFont.truetype(fonte_reg_path, 18)
+        font_title = ImageFont.truetype(fonte_bold_path, 26)
+        font_warn = ImageFont.truetype(fonte_bold_path, 17)
+        font_label = ImageFont.truetype(fonte_bold_path, 20)
+        font_body = ImageFont.truetype(fonte_reg_path, 20)
+        font_footer = ImageFont.truetype(fonte_reg_path, 14)
+    else:
+        font_header_bold = font_header_reg = font_title = font_warn = font_label = font_body = font_footer = ImageFont.load_default()
+
+    margin_left = 100
+    margin_right = width - 100
+    max_content_width = margin_right - margin_left
+    y = 50
+
+    # 1. Brasão Oficial Centralizado
+    brasao_p = Path(brasao_path) if brasao_path else None
+    if brasao_p and brasao_p.exists():
+        try:
+            b_img = Image.open(brasao_p).convert("RGBA")
+            target_h = 110
+            ratio = target_h / b_img.height
+            target_w = int(b_img.width * ratio)
+            b_resized = b_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            b_x = int((width - target_w) / 2)
+            canvas.paste(b_resized, (b_x, y), b_resized)
+            y += target_h + 15
+        except Exception:
+            y += 10
+    else:
+        y += 20
+
+    # 2. Cabeçalho Institucional
+    def draw_centered(text: str, font, fill=(30, 41, 59)):
+        nonlocal y
+        bbox = draw.textbbox((0, 0), text, font=font)
+        text_w = bbox[2] - bbox[0]
+        draw.text(((width - text_w) / 2, y), text, font=font, fill=fill)
+        y += (bbox[3] - bbox[1]) + 6
+
+    draw_centered("ESTADO DE MATO GROSSO", font_header_bold, fill=(15, 23, 42))
+    draw_centered("SECRETARIA DE ESTADO DE EDUCAÇÃO", font_header_reg, fill=(71, 85, 105))
+    draw_centered("CENTRAL INTELIGENTE DE ATENDIMENTO INSTITUCIONAL", font_header_bold, fill=(30, 58, 138))
+    y += 10
+
+    # 3. Faixa de Aviso de Rascunho / Não Envio Automático
+    box_top = y
+    box_h = 44
+    draw.rectangle([margin_left, box_top, margin_right, box_top + box_h], fill=(255, 241, 242), outline=(185, 28, 28), width=2)
+    warn_text = "RASCUNHO — REQUER APROVAÇÃO HUMANA. NÃO ENVIAR AUTOMATICAMENTE."
+    warn_bbox = draw.textbbox((0, 0), warn_text, font=font_warn)
+    warn_w = warn_bbox[2] - warn_bbox[0]
+    draw.text(((width - warn_w) / 2, box_top + 12), warn_text, font=font_warn, fill=(153, 27, 27))
+    y += box_h + 25
+
+    # 4. Título do Documento
+    draw_centered("MINUTA DE RESPOSTA INSTITUCIONAL", font_title, fill=(15, 23, 42))
+    y += 8
+    draw.line([(margin_left, y), (margin_right, y)], fill=(203, 213, 225), width=2)
+    y += 20
+
+    # 5. Helper de Quebra de Linha
+    def wrap_lines(text: str, font, max_w: int):
+        lines = []
+        for raw_line in text.split("\n"):
+            if not raw_line.strip():
+                lines.append("")
+                continue
+            words = raw_line.split()
+            cur = []
+            for w in words:
+                cand = " ".join(cur + [w])
+                bb = draw.textbbox((0, 0), cand, font=font)
+                if (bb[2] - bb[0]) <= max_w:
+                    cur.append(w)
+                else:
+                    if cur:
+                        lines.append(" ".join(cur))
+                        cur = [w]
+                    else:
+                        lines.append(w)
+                        cur = []
+            if cur:
+                lines.append(" ".join(cur))
+        return lines
+
+    # 6. Renderização do Corpo da Minuta
+    linhas = wrap_lines(minuta_texto.strip(), font_body, max_content_width)
+    for linha in linhas:
+        if y > height - 120:
+            break
+        if not linha:
+            y += 12
+            continue
+
+        # Destaque para campos chave
+        is_campo_header = any(linha.startswith(prefix) for prefix in (
+            "Protocolo:", "Data:", "Solicitante:", "Assunto:", "Categoria:",
+            "Solicitação:", "Observações:", "Fonte:", "Informações não localizadas"
+        ))
+
+        if is_campo_header:
+            draw.text((margin_left, y), linha, font=font_label, fill=(15, 23, 42))
+            y += 28
+        elif linha.startswith("- "):
+            draw.text((margin_left + 15, y), "•", font=font_label, fill=(71, 85, 105))
+            draw.text((margin_left + 35, y), linha[2:], font=font_body, fill=(51, 65, 85))
+            y += 26
+        else:
+            draw.text((margin_left, y), linha, font=font_body, fill=(51, 65, 85))
+            y += 26
+
+    # 7. Rodapé Institucional
+    footer_y = height - 85
+    draw.line([(margin_left, footer_y), (margin_right, footer_y)], fill=(226, 232, 240), width=1)
+    footer_text1 = "Documento preliminar gerado com assistência de inteligência artificial em conformidade com a LGPD."
+    footer_text2 = "Decisão final, assinatura e expedição condicionadas à revisão e aprovação exclusiva de servidor responsável."
+    bb1 = draw.textbbox((0, 0), footer_text1, font=font_footer)
+    bb2 = draw.textbbox((0, 0), footer_text2, font=font_footer)
+    draw.text(((width - (bb1[2] - bb1[0])) / 2, footer_y + 12), footer_text1, font=font_footer, fill=(100, 116, 139))
+    draw.text(((width - (bb2[2] - bb2[0])) / 2, footer_y + 32), footer_text2, font=font_footer, fill=(148, 163, 184))
+
+    canvas.save(out_p, "PDF", resolution=150.0)
+    return out_p

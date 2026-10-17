@@ -115,6 +115,16 @@ class TextProcessingTests(unittest.TestCase):
         self.assertIn("rascunho", minuta.lower())
         self.assertIn("Marcos", minuta)
 
+    def test_render_minuta_pdf_creates_valid_pdf(self):
+        from src.text_processing import render_minuta_pdf
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            out_pdf = Path(tmp_dir) / "test_minuta.pdf"
+            brasao_path = Path(__file__).resolve().parents[1] / "arquivos" / "brasao.png"
+            texto = "MINUTA INSTITUCIONAL\nProtocolo: 2026-000142\nSolicitante: Marcos"
+            res = render_minuta_pdf(texto, out_pdf, brasao_path=brasao_path)
+            self.assertTrue(res.exists())
+            self.assertGreater(res.stat().st_size, 1000)
+
 
 class OpenAIClientTests(unittest.TestCase):
     def test_missing_api_key_raises(self):
