@@ -1,13 +1,14 @@
-# Local credentials
+# Credenciais locais e segredos
 .env
 .env.*
 !.env.example
 
-# Virtual environments
+# Ambientes virtuais
 .venv/
 venv/
+env/
 
-# Python caches and bytecode
+# Caches e bytecode Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -19,14 +20,18 @@ __pycache__/
 htmlcov/
 coverage.xml
 
-# Regenerable project data and outputs
-/dados/originais/
-/dados/processados/
-/resultados/
+# Arquivos intermediários de imagem
+*_fundo_ia.png
 
-# Local editor and operating system files
+# Cópias redundantes de arquivos originais (já versionados em arquivos/)
+/dados/originais/
+
+# Arquivos temporários de editores e SO
 .idea/
+.vscode/
 .DS_Store
 Thumbs.db
 *.swp
 *.tmp
+*~
+*.bak
