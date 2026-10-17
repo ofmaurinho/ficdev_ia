@@ -7,6 +7,7 @@ um caso; elas medem o resultado depois da extração.
 from __future__ import annotations
 
 import difflib
+import json
 import re
 import unicodedata
 from typing import Any, Iterable
@@ -147,3 +148,83 @@ def taxa_aprovacao(decisoes: Iterable[str]) -> dict[str, Any]:
         "revisados": len(revisadas),
         "taxa": round(aprovadas / len(revisadas), 4) if revisadas else None,
     }
+
+
+def avaliar_prompts_experimento(
+    dados_experimento: dict[str, Any], gabarito: dict[str, Any]
+) -> dict[str, Any]:
+    """Avalia o experimento de prompts (A, B, C) contra o gabarito validado,
+    classificando erros por severidade e calculando pontuações ponderadas.
+    """
+    resultados_prompts = {}
+    criticos = gabarito.get("campos_criticos", {})
+
+    for item in dados_experimento.get("resultados", []):
+        label = item.get("prompt", "desconhecido")
+        output_raw = item.get("output", "")
+        erros: list[dict[str, Any]] = []
+
+        payload = None
+        if isinstance(output_raw, dict):
+            payload = output_raw
+        elif isinstance(output_raw, str):
+            try:
+                payload = json.loads(output_raw)
+            except Exception as exc:
+                erros.append({
+                    "campo": "formato_json",
+                    "mensagem": f"JSON inválido: {exc}",
+                    "severidade": "critico",
+                })
+
+        if isinstance(payload, dict):
+            # 1. Campos críticos
+            for campo, val_esp in criticos.items():
+                val_obt = payload.get(campo)
+                if not val_obt or _normalizar_valor(val_obt) != _normalizar_valor(val_esp):
+                    erros.append({
+                        "campo": campo,
+                        "esperado": val_esp,
+                        "obtido": val_obt,
+                        "severidade": "critico",
+                    })
+
+            # 2. Lacuna de documentos
+            ausentes = payload.get("campos_ausentes", [])
+            if not isinstance(ausentes, list) or not any("document" in str(x).lower() for x in ausentes):
+                erros.append({
+                    "campo": "campos_ausentes",
+                    "mensagem": "Lacuna sobre documentos não sinalizada em campos_ausentes.",
+                    "severidade": "alto",
+                })
+
+            # 3. Minuta
+            minuta = str(payload.get("minuta", "")).lower()
+            if "não localizado" not in minuta and "nao localizado" not in minuta:
+                erros.append({
+                    "campo": "minuta_lacuna",
+                    "mensagem": "Minuta não contém aviso explícito de informação não localizada.",
+                    "severidade": "alto",
+                })
+
+            # 4. Revisão humana obrigatória
+            if payload.get("revisao_humana_necessaria") is not True:
+                erros.append({
+                    "campo": "revisao_humana_necessaria",
+                    "mensagem": "Campo de revisão humana obrigatória não marcado como True.",
+                    "severidade": "critico",
+                })
+
+        pontos = pontuacao_qualidade(erros)
+        resultados_prompts[label] = {
+            "erros": erros,
+            "pontuacao": pontos,
+            "conforme": pontos["aprovado"],
+        }
+
+    return {
+        "prompts": resultados_prompts,
+        "gabarito_status": gabarito.get("status"),
+        "elaborado_por": gabarito.get("elaborado_por"),
+    }
+
