@@ -1,0 +1,137 @@
+{
+  "schema_version": "rag-scenario-review.v1",
+  "measured_at": "2026-10-30T04:25:41.036078+00:00",
+  "source_gabarito": "desafio2_rag.json",
+  "evaluation_basis": "Agregacao local das oito consultas persistidas, associadas ao gabarito por SHA-256; sem chamadas API nesta etapa.",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "summary": {
+    "total": 8,
+    "status_matches": 8,
+    "grounded": 5,
+    "no_evidence": 2,
+    "conflicts": 1,
+    "expected_chunks_retrieved": 5,
+    "grounded_citations_valid": 5,
+    "generation_skipped_for_no_evidence_or_conflict": true
+  },
+  "semantic_review": "pending_human_review",
+  "results": [
+    {
+      "question_id": "RAG-01",
+      "execution_id": "209926a6-dd0b-47c2-8195-1c893256c010",
+      "expected_status": "fundamentada",
+      "actual_status": "fundamentada",
+      "status_match": true,
+      "generation_called": true,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": [
+        "A resposta cobre os fatos esperados; existe uma segunda afirmacao/citacao sobre acompanhamento por protocolo que nao era necessaria. Conferir alinhamento da citacao."
+      ]
+    },
+    {
+      "question_id": "RAG-02",
+      "execution_id": "c3c5e98d-433b-442c-ab8f-2a66a222638b",
+      "expected_status": "fundamentada",
+      "actual_status": "fundamentada",
+      "status_match": true,
+      "generation_called": true,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    },
+    {
+      "question_id": "RAG-03",
+      "execution_id": "91cea85d-de22-4b4b-b5da-b89e19536a26",
+      "expected_status": "fundamentada",
+      "actual_status": "fundamentada",
+      "status_match": true,
+      "generation_called": true,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    },
+    {
+      "question_id": "RAG-04",
+      "execution_id": "e26193b7-86b2-4b45-aa2f-614892dc6990",
+      "expected_status": "fundamentada",
+      "actual_status": "fundamentada",
+      "status_match": true,
+      "generation_called": true,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    },
+    {
+      "question_id": "RAG-05",
+      "execution_id": "2a576ee9-c11e-4233-8bb9-42ead23de2c3",
+      "expected_status": "fundamentada",
+      "actual_status": "fundamentada",
+      "status_match": true,
+      "generation_called": true,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": [
+        "A resposta cobre os canais, mas omite que a unidade registra e encaminha o pedido a coordenacao responsavel, fato do gabarito e da fonte."
+      ]
+    },
+    {
+      "question_id": "RAG-06",
+      "execution_id": "5566d10a-c808-4f7f-8200-585682e39374",
+      "expected_status": "sem_evidencia",
+      "actual_status": "sem_evidencia",
+      "status_match": true,
+      "generation_called": false,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    },
+    {
+      "question_id": "RAG-07",
+      "execution_id": "edc1218e-fff5-40c2-b761-ed6527953338",
+      "expected_status": "sem_evidencia",
+      "actual_status": "sem_evidencia",
+      "status_match": true,
+      "generation_called": false,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    },
+    {
+      "question_id": "RAG-08",
+      "execution_id": "0722f336-c141-4aa2-9dba-742a837bc2f9",
+      "expected_status": "conflito_de_fontes",
+      "actual_status": "conflito_de_fontes",
+      "status_match": true,
+      "generation_called": false,
+      "expected_chunks_retrieved": true,
+      "citation_ids_within_retrieved_sources": true,
+      "invalid_citations": [],
+      "human_decision": "pendente",
+      "semantic_review": "pending_human_review",
+      "observations": []
+    }
+  ]
+}

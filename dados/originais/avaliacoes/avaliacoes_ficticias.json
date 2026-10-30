@@ -1,0 +1,18 @@
+{
+  "schema_version": "avaliacoes-atendimento.v1",
+  "uso": "Dados fictícios para classificação futura pelo Estudante 3; não foram submetidos a modelo nesta etapa.",
+  "avaliacoes": [
+    {"id": "AVA-001", "texto": "A equipe explicou cada etapa com paciência e resolveu minha dúvida.", "rotulo_gabarito": "positiva", "justificativa": null},
+    {"id": "AVA-002", "texto": "Fui bem atendida e recebi a orientação que precisava.", "rotulo_gabarito": "positiva", "justificativa": null},
+    {"id": "AVA-003", "texto": "O atendimento foi cordial e muito organizado.", "rotulo_gabarito": "positiva", "justificativa": null},
+    {"id": "AVA-004", "texto": "Esperei muito e saí sem resposta para o meu pedido.", "rotulo_gabarito": "negativa", "justificativa": null},
+    {"id": "AVA-005", "texto": "A informação recebida estava incompleta e precisei voltar.", "rotulo_gabarito": "negativa", "justificativa": null},
+    {"id": "AVA-006", "texto": "O atendente foi ríspido e não explicou o procedimento.", "rotulo_gabarito": "negativa", "justificativa": null},
+    {"id": "AVA-007", "texto": "Compareci ao balcão às 10h e entreguei o formulário.", "rotulo_gabarito": "neutra", "justificativa": null},
+    {"id": "AVA-008", "texto": "Recebi o protocolo FIC-2026-044 por e-mail.", "rotulo_gabarito": "neutra", "justificativa": null},
+    {"id": "AVA-009", "texto": "A unidade informou que o setor responsável fará contato.", "rotulo_gabarito": "neutra", "justificativa": null},
+    {"id": "AVA-010", "texto": "Resolveram minha dúvida, mas a espera foi longa.", "rotulo_gabarito": "ambigua_mista", "justificativa": "Há avaliação positiva do resultado e negativa do tempo de espera; manter mista/revisão."},
+    {"id": "AVA-011", "texto": "Que atendimento maravilhoso: mandaram voltar pela terceira vez.", "rotulo_gabarito": "ambigua_mista", "justificativa": "A expressão inicial pode ser ironia; a crítica explícita pede contexto e revisão."},
+    {"id": "AVA-012", "texto": "Foi diferente desta vez.", "rotulo_gabarito": "ambigua_mista", "justificativa": "Sem contexto ou valência clara; não forçar polaridade, classificar como indeterminada/revisão."}
+  ]
+}

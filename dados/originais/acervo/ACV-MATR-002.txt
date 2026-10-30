@@ -1,0 +1,14 @@
+ID do documento: ACV-MATR-002
+Título: Relação fictícia de documentos para matrícula
+Versão: 1.0
+Vigência: 2026-01-01 a 2026-12-31
+Prioridade: orientação de balcão, sem precedência sobre outra orientação de mesma vigência.
+Chave de conflito: documentos_matricula
+Valor conflitante: identidade_cpf_residencia_historico
+Prioridade numérica: 1
+
+# Documentos de identificação
+Para iniciar matrícula no curso técnico fictício, apresentar documento oficial de identificação com foto e comprovante de inscrição no CPF. Cópias simples podem ser apresentadas para conferência presencial.
+
+# Comprovantes escolares e endereço
+Apresentar comprovante de residência recente e histórico escolar. Se algum comprovante não estiver disponível no primeiro atendimento, a unidade registra a pendência e encaminha o caso para revisão; este texto não autoriza indeferimento automático.

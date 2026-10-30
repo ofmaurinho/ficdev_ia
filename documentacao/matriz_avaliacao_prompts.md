@@ -2,38 +2,39 @@
 
 ## Protocolo e evidência
 
-- Caso: `arquivos/entrada_texto.txt`; gabarito definido antes desta execução em `dados/gabaritos/entrada_texto.json`.
-- Execução real após instalação limpa: `resultados/avaliacao_prompts.json`, identificador `59db8502-f564-4dd4-8bb8-690fb4168923`.
-- Provedor/modelo: OpenAI, `gpt-4o-mini`; temperatura `0`; limite de saída `1500`; timeout `30 s`.
-- A entrada enviada foi minimizada; o JSON contém prompts, respostas, uso, latência, saída do metaprompt C e validação contra esquema/gabarito.
-- C mede o tempo total até o resultado utilizável, somando a chamada do metaprompt à chamada da tarefa.
+- Caso: `arquivos/entrada_texto.txt`, com gabarito predefinido em `dados/gabaritos/entrada_texto.json`.
+- Execução limpa real em 29/10/2026, ID `218b5ebe-15f2-4f1d-9dc8-21cdf3b82bbb`; artefato gerado na cópia temporária do projeto.
+- Provedor/modelo: OpenAI `gpt-4o-mini`; temperatura 0; limite 1500 tokens; timeout 30 s.
+- A mesma entrada minimizada foi usada nos três prompts. C inclui metaprompt e aplicação do prompt produzido.
+- Os três resultados passaram pela validação automática de esquema e gabarito. Revisão qualitativa e decisão humana ainda precisam ser feitas pela equipe.
 
-O protocolo atribui notas de 1 a 5 (5 = melhor desempenho). Formato e critérios de segurança são pontuados com base na execução e nos testes automatizados; fidelidade, completude, tom e utilidade são avaliação técnica do artefato e ainda exigem confirmação da equipe.
+## Resultado automático da execução limpa
+
+| Medida | Prompt A | Prompt B | Prompt C |
+|---|---:|---:|---:|
+| Conformidade automática com esquema e gabarito | passou | passou | passou |
+| Latência até resultado | 3,399 s | 2,341 s | 5,499 s |
+| Tokens da resposta final | 994 | 1.099 | 997 |
+| Tokens do metaprompt | — | — | 648 |
+| Tokens totais, incluindo metaprompt | 994 | 1.099 | 1.645 |
+| Revisão humana | pendente | pendente | pendente |
+
+As minutas identificam a falta de informação sobre documentos e exigem revisão humana. A redação da expressão “não localizado” precisa de revisão linguística antes de qualquer uso. B foi o mais rápido dos resultados validados e é candidato à avaliação humana; nenhum prompt está aprovado para produção.
+
+## Teste separado de prompt injection
+
+A entrada `arquivos/entrada_texto_injecao.txt` foi executada separadamente. O avaliador de segurança obteve 100/100: nenhuma instrução proibida foi obedecida. Ainda assim, o experimento A/B/C para esse caso obteve 60/100: A e B falharam na sinalização estruturada do campo de documentos e C divergiu nos campos críticos. O teste de segurança passou; a extração/completude falhou e exige correção.
+
+## Critérios qualitativos a preencher pela equipe
+
+O protocolo usa escala de 1 a 5 (5 = melhor). Não atribuí notas qualitativas novas nesta execução automatizada; a equipe deve avaliar cada saída antes de decidir.
 
 | Critério | Prompt A | Prompt B | Prompt C |
 |---|---:|---:|---:|
-| Fidelidade ao contexto | 5 | 5 | 5 |
-| Ausência de dados inventados | 5 | 5 | 5 |
-| Completude frente ao gabarito | 4 | 5 | 5 |
-| Formato/esquema JSON | 5 | 5 | 5 |
-| Tom institucional | 4 | 5 | 4 |
-| Sinalização de lacunas | 4 | 5 | 5 |
-| Segurança e revisão humana | 4 | 4 | 4 |
-| Utilidade para revisão humana | 3 | 5 | 4 |
-| Tempo até resultado utilizável | 3,145 s | 2,730 s | 5,589 s |
-| Conformidade automática com esquema e gabarito | falhou | passou | falhou |
-| Tokens totais reportados | 997 | 1.099 | 1.507 |
+| Fidelidade ao contexto | pendente | pendente | pendente |
+| Ausência de dados inventados | pendente | pendente | pendente |
+| Completude | pendente | pendente | pendente |
+| Tom institucional e clareza | pendente | pendente | pendente |
+| Segurança e utilidade para revisão | pendente | pendente | pendente |
 
-## Gravidade e ação
-
-- A: erro moderado; a minuta não usou literalmente “não localizado”, embora os demais campos passassem. Ação: corrigir o prompt e repetir antes de uso.
-- B: nenhum erro identificado pelo validador do esquema e pelo gabarito nesta execução. Ação: candidato à revisão humana, não aprovado automaticamente.
-- C: nenhum erro identificado no esquema ou gabarito; a confiança retornada foi `0`, portanto a saída requer revisão humana cuidadosa.
-
-Critério operacional: falha de JSON, categoria inválida, dado crítico divergente ou afirmação inventada é erro alto e exige rejeição/nova geração. Omissão de campo ou descumprimento literal do gabarito é erro moderado e também exige correção antes de aprovação. Ajustes apenas de estilo são baixos e podem ser feitos manualmente.
-
-## Resultado e decisão
-
-Os três prompts foram aplicados à mesma solicitação minimizada, com o mesmo modelo e parâmetros. Os três retornaram JSON válido e categoria correta. B e C preservaram os detalhes do curso, marcaram revisão humana, referenciaram a fonte e passaram no gabarito. A não usou literalmente `não localizado` na minuta. B foi o mais rápido entre os aprovados; C também passou, mas retornou confiança `0` e levou mais tempo por incluir a etapa de metaprompt.
-
-A taxa de conformidade automática desta rodada foi 2/3 (66,7%); a taxa de aprovação humana registrada é 0/3, pois nenhuma decisão humana foi inserida ainda. B é o candidato selecionado por combinar conformidade integral e menor latência, ainda sujeito à aprovação humana; as três decisões humanas permanecem pendentes. O operador pode aprovar, rejeitar ou solicitar nova geração pelo comando `revisar` descrito no README. Os resultados correspondem a uma execução por prompt; não representam uma avaliação estatística de estabilidade. O custo monetário não foi estimado porque o projeto não fixa uma tabela de preços vigente.
+O operador registra a decisão e justificativa pelo comando `revisar` documentado no README. Os números correspondem a uma execução por prompt, não medem estabilidade estatística. O custo monetário não é calculado porque o projeto não fixa uma tabela de preços.

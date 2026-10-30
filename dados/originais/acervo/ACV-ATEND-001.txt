@@ -1,0 +1,10 @@
+ID do documento: ACV-ATEND-001
+Título: Horários fictícios do Núcleo de Atendimento
+Versão: 1.0
+Vigência: 2026-01-01 a 2026-12-31
+
+# Horário de atendimento presencial
+O Núcleo Fictício de Atendimento de Serra Clara funciona de segunda a sexta-feira, das 8h às 16h, exceto feriados informados no calendário institucional. Não é necessário agendamento para obter orientação geral.
+
+# Atendimento por protocolo
+Solicitações registradas recebem um número de protocolo. O acompanhamento presencial é feito no balcão de atendimento, de segunda a sexta-feira, das 8h às 16h. O prazo de resposta depende da unidade responsável e não é definido por este documento.

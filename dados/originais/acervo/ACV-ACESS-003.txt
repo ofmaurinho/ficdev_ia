@@ -1,0 +1,10 @@
+ID do documento: ACV-ACESS-003
+Título: Orientação fictícia para solicitar acessibilidade
+Versão: 1.0
+Vigência: 2026-01-01 a 2026-12-31
+
+# Solicitação de recurso de acessibilidade
+O estudante pode solicitar recurso de acessibilidade pelo canal de atendimento da unidade, informando qual recurso precisa. A equipe deve registrar o pedido e encaminhá-lo à coordenação responsável, sem exigir diagnóstico médico neste fluxo informativo.
+
+# Prazo e confirmação
+Quando possível, encaminhe a solicitação com cinco dias úteis de antecedência da atividade. Se o prazo não puder ser cumprido, a equipe deve registrar a situação para avaliação individual; não há garantia automática de disponibilidade do recurso.

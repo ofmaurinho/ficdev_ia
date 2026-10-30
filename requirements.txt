@@ -6,3 +6,6 @@ Pillow>=12,<14
 pytesseract>=0.3.13,<0.4
 pypdfium2>=5,<6
 mutagen>=1.47,<2
+pydantic>=2.10,<3
+chromadb>=1.0,<2
+PyMuPDF>=1.25,<2

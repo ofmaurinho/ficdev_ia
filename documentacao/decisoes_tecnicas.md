@@ -22,7 +22,7 @@ A implementação multimodal completa (áudio, OCR/visão, síntese de voz e ger
 | Modelo hospedado de maior porte | Custo possivelmente maior; não medido | Continua dependendo de provedor externo e licença proprietária | Poderia melhorar qualidade, mas não foi integrado | Não testado |
 | Modelo local de pesos abertos | Sem tarifa por chamada, mas requer hardware | Pode manter o texto localmente | Depende de escolher modelo e integrar runtime | Não testado |
 
-`gpt-4o-mini` foi escolhido como baseline reproduzível. Para STT: `gpt-4o-transcribe`. Para TTS: `gpt-4o-mini-tts`. Para imagem: `gpt-image-1`.
+`gpt-4o-mini` foi escolhido como baseline reproduzível. Para STT: `gpt-4o-transcribe`. Para TTS: `gpt-4o-mini-tts`. Para imagem: `gpt-image-2.5-flare`, modelo rápido indicado pela documentação atual da OpenAI. O antigo `gpt-image-1` foi retirado da API em 23/10/2026.
 
 ## Dados, auditoria e validação
 
@@ -34,7 +34,7 @@ A implementação multimodal completa (áudio, OCR/visão, síntese de voz e ger
 
 ## Ambiente verificado
 
-Python 3.14.7, OpenAI SDK 3.31.0 e python-dotenv 1.2.3. As dependências runtime diretas e transitivas estão fixadas em `requirements.txt` e `requirements.lock`; o ambiente mínimo documentado é Python 3.10.
+Ambiente validado em 29/10/2026: Python 3.14.7, OpenAI SDK 3.41.0 e python-dotenv 1.2.4. `requirements.txt` define faixas compatíveis; `requirements.lock` fixa o conjunto exato instalado. A suíte de 146 testes passou com esse lockfile.
 
 ---
 

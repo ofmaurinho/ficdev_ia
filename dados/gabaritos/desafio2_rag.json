@@ -1,0 +1,191 @@
+{
+  "schema_version": "gabarito-rag.v1",
+  "perguntas_avaliacao": [
+    {
+      "id": "RAG-01",
+      "classe": "respondível",
+      "pergunta": "Em quais dias e horários funciona o Núcleo Fictício de Atendimento?",
+      "resposta_esperada": "De segunda a sexta-feira, das 8h às 16h, exceto feriados do calendário institucional.",
+      "fatos_essenciais": [
+        "segunda a sexta-feira",
+        "8h às 16h",
+        "exceto feriados"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-ATEND-001",
+          "version": "1.0",
+          "section_contains": "Horário de atendimento presencial",
+          "page": null
+        }
+      ],
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-9e6d25e7554c41ae8851f68c"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-46bc0bb02c5cd161f3b1433c"
+        ]
+      }
+    },
+    {
+      "id": "RAG-02",
+      "classe": "respondível",
+      "pergunta": "Quando começa o curso técnico fictício de Enfermagem e qual é o turno?",
+      "resposta_esperada": "O início informado é 2027-02-01 e o turno é noturno.",
+      "fatos_essenciais": [
+        "2027-02-01",
+        "turno da noite"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-MATR-004",
+          "version": "1.0",
+          "section_contains": "Course start date",
+          "page": 1
+        }
+      ],
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-c609e7f00a0bd43b8c87ae70"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-f640ad438ab46c6c6a72266c"
+        ]
+      }
+    },
+    {
+      "id": "RAG-03",
+      "classe": "respondível",
+      "pergunta": "Qual é o endereço do balcão principal em Serra Clara?",
+      "resposta_esperada": "Rua das Acacias, 120, Centro, Serra Clara.",
+      "fatos_essenciais": [
+        "Rua das Acacias, 120",
+        "Centro",
+        "Serra Clara"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-ATEND-005",
+          "version": "1.0",
+          "section_contains": "Main service desk",
+          "page": 1
+        }
+      ],
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-fb59f32888fd655cfa45becb"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-2361730c47b377871b15d08b"
+        ]
+      }
+    },
+    {
+      "id": "RAG-04",
+      "classe": "respondível",
+      "pergunta": "Com quanta antecedência devo pedir um recurso de acessibilidade?",
+      "resposta_esperada": "Quando possível, cinco dias úteis antes da atividade; se não for possível, a equipe registra para avaliação individual.",
+      "fatos_essenciais": [
+        "cinco dias úteis",
+        "avaliação individual quando fora do prazo"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-ACESS-003",
+          "version": "1.0",
+          "section_contains": "Prazo e confirmação",
+          "page": null
+        }
+      ],
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-28c9f3bec14f97b7c9e93cab"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-e8753e40143f3ee3e55f7986"
+        ]
+      }
+    },
+    {
+      "id": "RAG-05",
+      "classe": "respondível",
+      "pergunta": "Por quais canais posso encaminhar o pedido de acessibilidade?",
+      "resposta_esperada": "No balcão principal ou pelo endereço acessibilidade@serraclara.example; a unidade registra e encaminha à coordenação responsável.",
+      "fatos_essenciais": [
+        "balcão principal",
+        "acessibilidade@serraclara.example",
+        "encaminhamento à coordenação"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-ATEND-005",
+          "version": "1.0",
+          "section_contains": "Accessibility requests",
+          "page": 1
+        }
+      ],
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-15726baca91f32809a8c6775"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-4d6ddfc0b444d75f811280d3"
+        ]
+      }
+    },
+    {
+      "id": "RAG-06",
+      "classe": "sem_resposta",
+      "pergunta": "Qual o valor da bolsa mensal de transporte estudantil?",
+      "resposta_esperada": null,
+      "fatos_essenciais": [],
+      "referencias": [],
+      "expected_status": "sem_evidencia"
+    },
+    {
+      "id": "RAG-07",
+      "classe": "sem_resposta",
+      "pergunta": "Quais refeições são servidas no refeitório da escola?",
+      "resposta_esperada": null,
+      "fatos_essenciais": [],
+      "referencias": [],
+      "expected_status": "sem_evidencia"
+    },
+    {
+      "id": "RAG-08",
+      "classe": "conflito",
+      "pergunta": "Quais documentos são obrigatórios para iniciar a matrícula?",
+      "resposta_esperada": null,
+      "fatos_essenciais": [
+        "fontes vigentes divergem",
+        "não há precedência entre versões"
+      ],
+      "referencias": [
+        {
+          "document_id": "ACV-MATR-002",
+          "version": "1.0",
+          "section_contains": "Documentos de identificação",
+          "page": null
+        },
+        {
+          "document_id": "ACV-MATR-006",
+          "version": "1.0",
+          "section_contains": "Documents for enrollment",
+          "page": 1
+        }
+      ],
+      "expected_status": "conflito_de_fontes",
+      "expected_chunk_ids": {
+        "structural": [
+          "chunk-4de33a3469b54457673218bc",
+          "chunk-ee286e172c1b4a942300965f"
+        ],
+        "fixed_400_overlap_80": [
+          "chunk-156d5b9492aec2156dcc62e0",
+          "chunk-354748778d385e0d00df7e44"
+        ]
+      }
+    }
+  ]
+}

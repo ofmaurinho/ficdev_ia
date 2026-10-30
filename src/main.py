@@ -559,7 +559,7 @@ def cmd_imagem(args: argparse.Namespace, config: dict) -> int:
         modalidade="imagem",
         arquivo_origem="prompt_usuario",
         provider="openai",
-        modelo=image_cfg.get("model", "gpt-image-1"),
+        modelo=image_cfg.get("model", "gpt-image-2.5-flare"),
     )
     try:
         nota = gerar_imagem(

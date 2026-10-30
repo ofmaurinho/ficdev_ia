@@ -1,0 +1,412 @@
+{
+  "acertos_categoria": 6,
+  "total": 6,
+  "solicitacoes_avaliadas": 6,
+  "solicitacoes_com_falha": 0,
+  "acuracia": 1.0,
+  "metricas": {
+    "categoria": {
+      "acertos": 6,
+      "denominador": 6,
+      "acuracia": 1.0
+    },
+    "campos_literais": {
+      "acertos": 19,
+      "denominador": 25,
+      "acuracia": 0.76
+    },
+    "fatos_essenciais_com_correspondencia_literal_no_resumo": {
+      "acertos": 6,
+      "denominador": 20,
+      "taxa": 0.3,
+      "nota": "Sinal lexical; não mede equivalência semântica. Revisão humana continua pendente."
+    },
+    "entidades_literais": {
+      "esperadas_nao_omitidas": 25,
+      "esperadas_total": 25,
+      "saidas_nao_gabaritadas": 0,
+      "saidas_total": 25,
+      "revocacao": 1.0,
+      "precisao": 1.0,
+      "tipos_incorretos": 0
+    },
+    "fidelidade_semantica_do_resumo": "pendente de revisão humana",
+    "afirmacoes_sem_suporte": "pendente de revisão humana"
+  },
+  "resultados": [
+    {
+      "solicitacao_id": "SOL-001",
+      "categoria": {
+        "esperada": "solicitacao_servico",
+        "obtida": "solicitacao_servico",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": "2026-000142",
+          "obtido": "2026-000142",
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": "14/10/2026",
+          "obtido": "14 de outubro de 2026",
+          "acerto_literal": false
+        },
+        "solicitante": {
+          "esperado": "Marcos Vinícius de Almeida Santos",
+          "obtido": "Marcos Vinícius de Almeida Santos",
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": "efetivação de matrícula em curso técnico",
+          "obtido": "Efetivação de matrícula no curso técnico em enfermagem",
+          "acerto_literal": false
+        }
+      },
+      "campos_incorretos": [
+        "data",
+        "assunto"
+      ],
+      "fatos_essenciais": [
+        {
+          "fato": "pedido de efetivação de matrícula",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "curso técnico em enfermagem",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "turno noturno",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "carga horária de 1.200 horas",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "solicita relação de documentos",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "menciona regra de cancelamento por faltas",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 9,
+      "entidades_esperadas_total": 9,
+      "entidades_obtidas_total": 9,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "Confirmar transcrição, dados críticos e documentos exigidos no acervo.",
+      "avaliacao_humana_pendente": true
+    },
+    {
+      "solicitacao_id": "SOL-002",
+      "categoria": {
+        "esperada": "solicitacao_servico",
+        "obtida": "solicitacao_servico",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": "FIC-2026-038",
+          "obtido": "FIC-2026-038",
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": "19/10/2026",
+          "obtido": "19/10/2026",
+          "acerto_literal": true
+        },
+        "solicitante": {
+          "esperado": "Bruno Costa",
+          "obtido": "Bruno Costa",
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": "Matrícula no curso Técnico em Administração",
+          "obtido": "Matrícula no curso Técnico em Administração",
+          "acerto_literal": true
+        }
+      },
+      "campos_incorretos": [],
+      "fatos_essenciais": [
+        {
+          "fato": "pedido de matrícula",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "curso Técnico em Administração",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "turno noturno",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "formulário de inscrição já entregue",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 5,
+      "entidades_esperadas_total": 5,
+      "entidades_obtidas_total": 5,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "Confirmar dados e próxima etapa no acervo antes de responder.",
+      "avaliacao_humana_pendente": true
+    },
+    {
+      "solicitacao_id": "SOL-003",
+      "categoria": {
+        "esperada": "informacao",
+        "obtida": "informacao",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": "FIC-2026-031",
+          "obtido": "FIC-2026-031",
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": "18/10/2026",
+          "obtido": "18/10/2026",
+          "acerto_literal": true
+        },
+        "solicitante": {
+          "esperado": "Ana Clara Ribeiro",
+          "obtido": "Ana Clara Ribeiro",
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": "Informações sobre início e turno do curso Técnico em Administração",
+          "obtido": "Informação sobre início do curso Técnico em Administração",
+          "acerto_literal": false
+        }
+      },
+      "campos_incorretos": [
+        "assunto"
+      ],
+      "fatos_essenciais": [
+        {
+          "fato": "pergunta data de início",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "curso Técnico em Administração",
+          "presente_no_resumo": true
+        },
+        {
+          "fato": "pergunta turno",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 4,
+      "entidades_esperadas_total": 4,
+      "entidades_obtidas_total": 4,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "A orientação deve vir do acervo e ser revisada antes de envio.",
+      "avaliacao_humana_pendente": true
+    },
+    {
+      "solicitacao_id": "SOL-004",
+      "categoria": {
+        "esperada": "solicitacao_servico",
+        "obtida": "solicitacao_servico",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": "FIC-2026-044",
+          "obtido": "FIC-2026-044",
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": "20/10/2026",
+          "obtido": "20/10/2026",
+          "acerto_literal": true
+        },
+        "solicitante": {
+          "esperado": "Rafael Nunes",
+          "obtido": "Rafael Nunes",
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": "Registro de recurso de acessibilidade",
+          "obtido": "Recurso de acessibilidade",
+          "acerto_literal": false
+        }
+      },
+      "campos_incorretos": [
+        "assunto"
+      ],
+      "fatos_essenciais": [
+        {
+          "fato": "solicita orientação para encaminhar recurso de acessibilidade",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "não informa diagnóstico",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 4,
+      "entidades_esperadas_total": 4,
+      "entidades_obtidas_total": 4,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "Não inferir condição de saúde; confirmar disponibilidade do recurso com a unidade.",
+      "avaliacao_humana_pendente": true
+    },
+    {
+      "solicitacao_id": "SOL-005",
+      "categoria": {
+        "esperada": "informacao",
+        "obtida": "informacao",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": null,
+          "obtido": null,
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": null,
+          "obtido": null,
+          "acerto_literal": true
+        },
+        "solicitante": {
+          "esperado": null,
+          "obtido": null,
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": "informações sobre matrícula",
+          "obtido": "Matrícula no curso técnico",
+          "acerto_literal": false
+        }
+      },
+      "campos_incorretos": [
+        "assunto"
+      ],
+      "fatos_essenciais": [
+        {
+          "fato": "solicita informação sobre matrícula",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "protocolo, nome e data ausentes",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 0,
+      "entidades_esperadas_total": 0,
+      "entidades_obtidas_total": 0,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "Solicitar os identificadores faltantes sem inventá-los.",
+      "avaliacao_humana_pendente": true
+    },
+    {
+      "solicitacao_id": "SOL-006",
+      "categoria": {
+        "esperada": "revisao",
+        "obtida": "revisao",
+        "acerto": true
+      },
+      "campos": {
+        "protocolo": {
+          "esperado": "FIC-2026-052",
+          "obtido": "FIC-2026-052",
+          "acerto_literal": true
+        },
+        "data": {
+          "esperado": "22/10/2026",
+          "obtido": "22/10/2026",
+          "acerto_literal": true
+        },
+        "solicitante": {
+          "esperado": "Joana Lima",
+          "obtido": "Joana Lima",
+          "acerto_literal": true
+        },
+        "assunto": {
+          "esperado": null,
+          "obtido": null,
+          "acerto_literal": true
+        },
+        "pedido": {
+          "esperado": "Minha matrícula está com problema e os documentos estão diferentes; solicita resolução sem especificar quais documentos divergem ou qual providência deve ser adotada.",
+          "obtido": "Minha matrícula está com problema e os documentos estão diferentes. Resolva isso para mim, por favor.",
+          "acerto_literal": false
+        }
+      },
+      "campos_incorretos": [
+        "pedido"
+      ],
+      "fatos_essenciais": [
+        {
+          "fato": "relata divergência em documentos de matrícula",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "não especifica quais documentos divergem",
+          "presente_no_resumo": false
+        },
+        {
+          "fato": "pede resolução sem indicar providência",
+          "presente_no_resumo": false
+        }
+      ],
+      "entidades_omitidas": [],
+      "entidades_nao_gabaritadas": [],
+      "entidades_corretas": 3,
+      "entidades_esperadas_total": 3,
+      "entidades_obtidas_total": 3,
+      "tipos_entidade_incorretos": {},
+      "afirmacoes_sem_suporte": null,
+      "afirmacoes_sem_suporte_status": "revisao_humana_pendente",
+      "fidelidade_resumo": "pendente de revisão semântica; correspondência literal é apenas um sinal diagnóstico",
+      "decisao_revisao_esperada": true,
+      "motivo_revisao_esperado": "Pedido ambíguo; pedir esclarecimento e não prometer resolução.",
+      "avaliacao_humana_pendente": true
+    }
+  ],
+  "metricas_reais": true,
+  "schema_version": "avaliacao-nlp.v1",
+  "measured_at": "2026-10-30T04:29:28.978690+00:00",
+  "source_gabarito": "desafio2_solicitacoes.json",
+  "gabarito_schema_version": "gabarito-solicitacoes.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "nlp_schema_version": "solicitacao.v2",
+  "evaluation_basis": "Reavaliacao local das seis fichas desta execucao contra gabarito v2 corrigido; normalizacao deterministica de entidades v2; sem chamadas API nesta etapa."
+}

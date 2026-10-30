@@ -1,0 +1,66 @@
+{
+  "schema_version": "acervo-manifest.v1",
+  "origem": "materiais fictícios criados para o Desafio Prático 2; não incluir os demais arquivos da pasta arquivos/",
+  "documentos": [
+    {
+      "document_id": "ACV-ATEND-001",
+      "title": "Horários fictícios do Núcleo de Atendimento",
+      "version": "1.0",
+      "file": "ACV-ATEND-001.txt",
+      "topic": "atendimento",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    },
+    {
+      "document_id": "ACV-MATR-002",
+      "title": "Relação fictícia de documentos para matrícula",
+      "version": "1.0",
+      "file": "ACV-MATR-002.txt",
+      "topic": "matricula",
+      "conflict_key": "documentos_matricula",
+      "conflict_value": "identidade_cpf_residencia_historico",
+      "authority_rank": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    },
+    {
+      "document_id": "ACV-ACESS-003",
+      "title": "Orientação fictícia para solicitar acessibilidade",
+      "version": "1.0",
+      "file": "ACV-ACESS-003.txt",
+      "topic": "acessibilidade",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    },
+    {
+      "document_id": "ACV-MATR-004",
+      "title": "Calendário fictício de matrícula e início do curso",
+      "version": "1.0",
+      "file": "ACV-MATR-004.pdf",
+      "topic": "matricula",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    },
+    {
+      "document_id": "ACV-ATEND-005",
+      "title": "Localização fictícia dos pontos de atendimento",
+      "version": "1.0",
+      "file": "ACV-ATEND-005.pdf",
+      "topic": "atendimento",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    },
+    {
+      "document_id": "ACV-MATR-006",
+      "title": "Orientação fictícia alternativa de documentos de matrícula",
+      "version": "1.0",
+      "file": "ACV-MATR-006.pdf",
+      "topic": "matricula",
+      "conflict_key": "documentos_matricula",
+      "conflict_value": "certidao_cpf_declaracao_residencia",
+      "authority_rank": 1,
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31"
+    }
+  ]
+}

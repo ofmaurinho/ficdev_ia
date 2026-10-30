@@ -23,8 +23,26 @@ coverage.xml
 # Arquivos intermediários de imagem
 *_fundo_ia.png
 
-# Cópias redundantes de arquivos originais (já versionados em arquivos/)
-/dados/originais/
+# Cópias redundantes herdadas do Desafio 1 (já versionadas em arquivos/)
+/dados/originais/*
+!/dados/originais/acervo/
+!/dados/originais/solicitacoes/
+!/dados/originais/avaliacoes/
+
+# Estado e saídas regeneráveis do Desafio 2
+/dados/indice/
+
+# Fichas e intermediários derivados; os TXT revisados manualmente ficam versionáveis
+/dados/processados/*.json
+/dados/processados/entrada_audio_transcricao_bruta.txt
+/dados/processados/entrada_pdf_ocr_tesseract.txt
+/dados/processados/entrada_pdf_ocr_vision.txt
+
+# Artefatos de execução, logs e relatórios reproduzíveis
+/resultados/logs/
+/resultados/rag/
+/resultados/artefatos/
+/resultados/minutas/
 
 # Arquivos temporários de editores e SO
 .idea/

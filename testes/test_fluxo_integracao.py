@@ -108,7 +108,7 @@ class TestFluxoIntegracao(unittest.TestCase):
             "gold_dir": str(self.gabaritos_dir),
             "audio": {"stt_model": "gpt-4o-transcribe", "tts_model": "gpt-4o-mini-tts"},
             "vision": {"vision_model": "gpt-4o-mini"},
-            "image": {"model": "gpt-image-1"},
+            "image": {"model": "gpt-image-2.5-flare"},
         }
 
     # 1. Fluxo feliz: texto → minuta → aprovação → roteiro → TTS
@@ -134,6 +134,17 @@ class TestFluxoIntegracao(unittest.TestCase):
         reg = sintetizar_roteiro(caso_id, versao, out_path, client=client, revisoes=revisoes)
         self.assertTrue(out_path.exists())
         self.assertTrue(reg["texto_enviado_identico_ao_roteiro_aprovado"])
+
+    def test_pdf_de_minuta_pode_ser_rastreado_como_artefato(self):
+        registry = ArtifactRegistry(self.results_dir, "caso_pdf_minuta")
+        pdf_path = self.results_dir / "minutas" / "minuta.pdf"
+        pdf_path.parent.mkdir(parents=True, exist_ok=True)
+        pdf_path.write_bytes(b"%PDF-1.4 teste")
+
+        registry.iniciar("minuta_pdf", versao=1)
+        registry.concluir("minuta_pdf", versao=1, arquivo=pdf_path)
+
+        self.assertEqual(registry.estado("minuta_pdf", versao=1), "GERADO")
 
     # 2. TTS bloqueado sem aprovação, e após editar minuta ou roteiro (hash diferente)
     def test_tts_bloqueado_sem_aprovacao_e_apos_edicao(self):

@@ -5,37 +5,56 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
 
-def _safe_value(value: Any) -> Any:
+_SAFE_USAGE_FIELDS = {
+    "input_tokens", "output_tokens", "total_tokens", "cached_tokens",
+    "reasoning_tokens", "cache_write_tokens",
+}
+_CONTENT_KEYS = {
+    "question", "pergunta", "consulta_redigida", "raw_question", "raw_text",
+    "text", "texto", "input", "input_text", "output_text", "full_text", "body",
+    "request_body", "response_body", "conteudo", "texto_original", "entrada_original_local",
+    "prompt", "prompt_text", "excerpt", "source_excerpt", "resposta", "answer",
+    "transcript", "transcricao", "solicitante", "nome", "name", "endereco", "address",
+    "protocolo", "protocol",
+    "justification", "human_justification", "justificativa",
+}
+_SECRET_VALUE_PATTERNS = (
+    (re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+"), "Bearer [REDACTED]"),
+    (re.compile(r"\bsk-(?:proj-|live-|test-|svcacct-)?[A-Za-z0-9_-]{16,}\b"), "[API_KEY_REDACTED]"),
+    (re.compile(r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b"), "[CPF_REDACTED]"),
+    (re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}"), "[EMAIL_REDACTED]"),
+)
+
+
+def sanitize_log_payload(value: Any) -> Any:
+    """Sanitiza recursivamente a auditoria sem copiar conteúdo bruto."""
     if isinstance(value, dict):
         sanitized = {}
         for key, item in value.items():
             lowered = str(key).lower()
-            safe_usage_fields = {
-                "input_tokens",
-                "output_tokens",
-                "total_tokens",
-                "cached_tokens",
-                "reasoning_tokens",
-                "cache_write_tokens",
-            }
             sensitive_field = any(
                 marker in lowered
                 for marker in ("api_key", "secret", "password", "authorization", "header")
-            ) or ("token" in lowered and lowered not in safe_usage_fields)
-            if sensitive_field:
+            ) or ("token" in lowered and lowered not in _SAFE_USAGE_FIELDS)
+            if sensitive_field or lowered in _CONTENT_KEYS:
                 continue
-            sanitized[key] = _safe_value(item)
+            sanitized[key] = sanitize_log_payload(item)
         return sanitized
     if isinstance(value, list):
-        return [_safe_value(item) for item in value]
+        return [sanitize_log_payload(item) for item in value]
     if isinstance(value, tuple):
-        return [_safe_value(item) for item in value]
+        return [sanitize_log_payload(item) for item in value]
+    if isinstance(value, str):
+        for pattern, replacement in _SECRET_VALUE_PATTERNS:
+            value = pattern.sub(replacement, value)
+        return value
     if isinstance(value, (str, int, float, bool)) or value is None:
         return value
     return str(value)
@@ -49,7 +68,7 @@ class AuditLogger:
         self.log_dir_path.mkdir(parents=True, exist_ok=True)
 
     def log_event(self, event_type: str, status: str, payload: Optional[Dict[str, Any]] = None, *, execution_id: Optional[str] = None) -> str:
-        safe_payload = _safe_value(payload or {})
+        safe_payload = sanitize_log_payload(payload or {})
         entry = {
             "execution_id": execution_id or str(uuid.uuid4()),
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -92,6 +111,7 @@ TIPOS_ARTEFATO = (
     "texto_ocr",
     "estruturado",
     "minuta",
+    "minuta_pdf",
     "roteiro_leitura",
     "audio",
     "imagem",
@@ -130,7 +150,7 @@ class ArtifactRegistry:
     def _save(self, data: dict[str, Any]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         tmp = self.path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(_safe_value(data), ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp.write_text(json.dumps(sanitize_log_payload(data), ensure_ascii=False, indent=2), encoding="utf-8")
         os.replace(tmp, self.path)
 
     def _referencia(self, path: Path) -> str:

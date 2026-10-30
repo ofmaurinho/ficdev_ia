@@ -9,6 +9,7 @@ from src.audit import AuditLogger
 from src.llm_client import (
     AuthenticationError,
     EmptyResponseError,
+    InvalidModelError,
     MissingAPIKeyError,
     OpenAIClient,
     RateLimitError,
@@ -156,6 +157,12 @@ class OpenAIClientTests(unittest.TestCase):
         client = OpenAIClient(api_key="sk-test")
         with self.assertRaises(ServiceUnavailableError):
             client._raise_for_error(Exception("Service unavailable"))
+
+    def test_invalid_model_parameter_is_reported_clearly(self):
+        client = OpenAIClient(api_key="sk-test")
+        error = type("InvalidModelParameterError", (Exception,), {"param": "model", "code": "invalid_value"})
+        with self.assertRaises(InvalidModelError):
+            client._raise_for_error(error("model unavailable"))
 
     def test_empty_provider_response_is_rejected(self):
         client = OpenAIClient(api_key="sk-test")

@@ -39,11 +39,75 @@
     "max_paginas": 5
   },
   "image": {
-    "model": "gpt-image-1",
+    "model": "gpt-image-2.5-flare",
     "size": "1024x1024",
     "quality": "medium",
     "rotulo": "Gerado por IA — conteúdo sintético",
     "brasao": "arquivos/brasao.png"
+  },
+  "desafio2": {
+    "versions": {
+      "nlp_prompt": "compreensao_solicitacao.v3",
+      "nlp_schema": "solicitacao.v2",
+      "rag_prompt": "rag_institucional.v2",
+      "rag_schema": "rag-answer.v1"
+    },
+    "privacy": {
+      "persist_original_request": false,
+      "audit_query_content": false
+    },
+    "llm": {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "api_mode": "responses",
+      "reasoning_effort": null,
+      "max_output_tokens": 3000,
+      "timeout_seconds": 30,
+      "max_retries": 1,
+      "max_calls_per_run": 20
+    },
+    "embeddings": {
+      "provider": "openai",
+      "model": "text-embedding-3-small",
+      "dimensions": 1536,
+      "batch_size": 16
+    },
+    "vector_store": {
+      "provider": "chroma",
+      "persist_directory": "dados/indice/chroma",
+      "collection_name": "acervo_institucional",
+      "distance_metric": "cosine"
+    },
+    "retrieval": {
+      "top_k": 3,
+      "min_similarity": 0.4,
+      "threshold_calibrated": true,
+      "threshold_calibration_note": "Ajustado com o conjunto fictício versionado: cinco consultas respondíveis tiveram similaridade máxima >= 0.444; duas sem resposta ficaram <= 0.334. Revisar antes de uso fora deste conjunto."
+    },
+    "conflict_query_terms": {
+      "documentos_matricula": ["documento", "matricula", "inscricao"]
+    },
+    "chunking": {
+      "strategy_selected": "structural",
+      "strategies": {
+        "structural": {"unit": "section_paragraph", "overlap": 0},
+        "fixed_400_overlap_80": {"unit": "characters", "size": 400, "overlap": 80}
+      }
+    },
+    "generation": {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "simulated_model": "dry-run-v1"
+    },
+    "paths": {
+      "acervo_directory": "dados/originais/acervo",
+      "solicitacoes_directory": "dados/originais/solicitacoes",
+      "avaliacoes_directory": "dados/originais/avaliacoes",
+      "gabaritos_directory": "dados/gabaritos",
+      "processados_directory": "dados/processados",
+      "results_directory": "resultados",
+      "retrieval_evaluation": "resultados/avaliacoes_recuperacao.json"
+    }
   },
   "student_3_modules": [
     "audio",

@@ -24,8 +24,14 @@ FONTES_CANDIDATAS = (
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/TTF/DejaVuSans.ttf",
+    "C:/Windows/Fonts/arial.ttf",
+    "C:/Windows/Fonts/segoeui.ttf",
 )
-FONTES_NEGRITO = tuple(p.replace("DejaVuSans.ttf", "DejaVuSans-Bold.ttf") for p in FONTES_CANDIDATAS)
+FONTES_NEGRITO = (
+    *(p.replace("DejaVuSans.ttf", "DejaVuSans-Bold.ttf") for p in FONTES_CANDIDATAS[:3]),
+    "C:/Windows/Fonts/arialbd.ttf",
+    "C:/Windows/Fonts/segoeuib.ttf",
+)
 
 
 def montar_prompt(
@@ -140,7 +146,7 @@ def gerar_imagem(
 ) -> dict[str, Any]:
     """Gera a imagem de fundo, compõe a peça e grava a nota de proveniência (revisão pendente)."""
     cfg = image_cfg or {}
-    modelo = cfg.get("model", "gpt-image-1")
+    modelo = cfg.get("model", "gpt-image-2.5-flare")
     resposta = client.generate_image(
         prompt, model=modelo, size=cfg.get("size", "1024x1024"), quality=cfg.get("quality", "medium")
     )

@@ -1,0 +1,199 @@
+{
+  "schema_version": "gabarito-solicitacoes.v2",
+  "observacao": "Gabarito manual fictício preparado antes de qualquer chamada de NLP do Desafio 2. Os casos herdados de áudio/OCR preservam a incerteza de origem.",
+  "solicitacoes": [
+    {
+      "solicitacao_id": "SOL-001",
+      "origem": "audio_desafio1_revisado",
+      "completude": "completa",
+      "categoria": "solicitacao_servico",
+      "campos": {
+        "protocolo": "2026-000142",
+        "data": "14/10/2026",
+        "solicitante": "Marcos Vinícius de Almeida Santos",
+        "assunto": "efetivação de matrícula em curso técnico"
+      },
+      "entidades": [
+        "2026-000142",
+        "14 de outubro de 2026",
+        "Marcos Vinícius de Almeida Santos",
+        "Cuiabá",
+        "curso técnico em enfermagem",
+        "Eixo Tecnológico de Saúde",
+        "1.200 horas",
+        "12 de agosto de 2008",
+        "noturno"
+      ],
+      "fatos_essenciais": [
+        "pedido de efetivação de matrícula",
+        "curso técnico em enfermagem",
+        "turno noturno",
+        "carga horária de 1.200 horas",
+        "solicita relação de documentos",
+        "menciona regra de cancelamento por faltas"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "Confirmar transcrição, dados críticos e documentos exigidos no acervo.",
+      "assunto": "efetivação de matrícula em curso técnico",
+      "entidades_tipos": {
+        "2026-000142": "protocolo",
+        "14 de outubro de 2026": "data",
+        "Marcos Vinícius de Almeida Santos": "pessoa",
+        "Cuiabá": "local",
+        "12 de agosto de 2008": "data",
+        "curso técnico em enfermagem": "curso",
+        "Eixo Tecnológico de Saúde": "outro",
+        "1.200 horas": "carga_horaria",
+        "noturno": "turno"
+      }
+    },
+    {
+      "solicitacao_id": "SOL-002",
+      "origem": "texto_ficticio",
+      "completude": "completa",
+      "categoria": "solicitacao_servico",
+      "campos": {
+        "protocolo": "FIC-2026-038",
+        "data": "19/10/2026",
+        "solicitante": "Bruno Costa",
+        "assunto": "Matrícula no curso Técnico em Administração"
+      },
+      "entidades": [
+        "FIC-2026-038",
+        "19/10/2026",
+        "Bruno Costa",
+        "Técnico em Administração",
+        "turno noturno"
+      ],
+      "fatos_essenciais": [
+        "pedido de matrícula",
+        "curso Técnico em Administração",
+        "turno noturno",
+        "formulário de inscrição já entregue"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "Confirmar dados e próxima etapa no acervo antes de responder.",
+      "assunto": "Matrícula no curso Técnico em Administração",
+      "entidades_tipos": {
+        "FIC-2026-038": "protocolo",
+        "19/10/2026": "data",
+        "Bruno Costa": "pessoa",
+        "turno noturno": "turno",
+        "Técnico em Administração": "curso"
+      }
+    },
+    {
+      "solicitacao_id": "SOL-003",
+      "origem": "texto_ficticio",
+      "completude": "completa",
+      "categoria": "informacao",
+      "campos": {
+        "protocolo": "FIC-2026-031",
+        "data": "18/10/2026",
+        "solicitante": "Ana Clara Ribeiro",
+        "assunto": "Informações sobre início e turno do curso Técnico em Administração"
+      },
+      "entidades": [
+        "FIC-2026-031",
+        "18/10/2026",
+        "Ana Clara Ribeiro",
+        "Técnico em Administração"
+      ],
+      "fatos_essenciais": [
+        "pergunta data de início",
+        "curso Técnico em Administração",
+        "pergunta turno"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "A orientação deve vir do acervo e ser revisada antes de envio.",
+      "assunto": "Informações sobre início e turno do curso Técnico em Administração",
+      "entidades_tipos": {
+        "FIC-2026-031": "protocolo",
+        "18/10/2026": "data",
+        "Ana Clara Ribeiro": "pessoa",
+        "Técnico em Administração": "curso"
+      }
+    },
+    {
+      "solicitacao_id": "SOL-004",
+      "origem": "texto_ficticio",
+      "completude": "completa",
+      "categoria": "solicitacao_servico",
+      "campos": {
+        "protocolo": "FIC-2026-044",
+        "data": "20/10/2026",
+        "solicitante": "Rafael Nunes",
+        "assunto": "Registro de recurso de acessibilidade"
+      },
+      "entidades": [
+        "FIC-2026-044",
+        "20/10/2026",
+        "Rafael Nunes",
+        "atividade escolar"
+      ],
+      "fatos_essenciais": [
+        "solicita orientação para encaminhar recurso de acessibilidade",
+        "não informa diagnóstico"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "Não inferir condição de saúde; confirmar disponibilidade do recurso com a unidade.",
+      "assunto": "Registro de recurso de acessibilidade",
+      "entidades_tipos": {
+        "FIC-2026-044": "protocolo",
+        "20/10/2026": "data",
+        "Rafael Nunes": "pessoa",
+        "atividade escolar": "atividade"
+      }
+    },
+    {
+      "solicitacao_id": "SOL-005",
+      "origem": "texto_ficticio",
+      "completude": "incompleta",
+      "categoria": "informacao",
+      "campos": {
+        "protocolo": null,
+        "data": null,
+        "solicitante": null,
+        "assunto": "informações sobre matrícula"
+      },
+      "entidades": [],
+      "fatos_essenciais": [
+        "solicita informação sobre matrícula",
+        "protocolo, nome e data ausentes"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "Solicitar os identificadores faltantes sem inventá-los.",
+      "entidades_tipos": {}
+    },
+    {
+      "solicitacao_id": "SOL-006",
+      "origem": "texto_ficticio",
+      "completude": "ambigua",
+      "categoria": "revisao",
+      "campos": {
+        "protocolo": "FIC-2026-052",
+        "data": "22/10/2026",
+        "solicitante": "Joana Lima",
+        "assunto": null,
+        "pedido": "Minha matrícula está com problema e os documentos estão diferentes; solicita resolução sem especificar quais documentos divergem ou qual providência deve ser adotada."
+      },
+      "entidades": [
+        "FIC-2026-052",
+        "22/10/2026",
+        "Joana Lima"
+      ],
+      "fatos_essenciais": [
+        "relata divergência em documentos de matrícula",
+        "não especifica quais documentos divergem",
+        "pede resolução sem indicar providência"
+      ],
+      "revisao_esperada": true,
+      "motivo_revisao": "Pedido ambíguo; pedir esclarecimento e não prometer resolução.",
+      "entidades_tipos": {
+        "FIC-2026-052": "protocolo",
+        "22/10/2026": "data",
+        "Joana Lima": "pessoa"
+      }
+    }
+  ]
+}

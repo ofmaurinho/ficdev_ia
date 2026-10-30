@@ -1,0 +1,55 @@
+%PDF-1.4
+% fictitious training corpus
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 622 >>
+stream
+BT
+/F1 11 Tf
+52 780 Td
+16 TL
+(ID: ACV-MATR-006) Tj
+T*
+(Title: Alternative fictional enrollment document guidance) Tj
+T*
+(Version: 1.0; effective 2026-01-01 through 2026-12-31) Tj
+T*
+(Priority: same-level service guidance; no precedence over other current guidance.) Tj
+T*
+(Conflict key: documentos_matricula; priority rank: 1.) Tj
+T*
+(# Documents for enrollment) Tj
+T*
+(To begin enrollment, present a birth certificate, CPF registration and a) Tj
+T*
+(signed declaration of residence. A school transcript is not listed here.) Tj
+T*
+(If the applicant cannot present one item, the unit records the case for review.) Tj
+T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000038 00000 n 
+0000000087 00000 n 
+0000000144 00000 n 
+0000000270 00000 n 
+0000000942 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1039
+%%EOF

@@ -70,7 +70,7 @@ Ausência de campo nunca bloqueia a minuta; campo incerto em dado crítico sim.
 | Transcrição de áudio (STT) | `gpt-4o-transcribe` | idioma=pt |
 | Síntese de voz (TTS) | `gpt-4o-mini-tts` | voz=alloy, instruções de tom institucional |
 | OCR (fallback Vision) | `gpt-4o-mini` | max_tokens=2000 por página |
-| Geração de imagem | `gpt-image-1` | 1024×1024, qualidade=medium |
+| Geração de imagem | `gpt-image-2.5-flare` | 1024×1024, qualidade=medium |
 | Revisão de transcrição/OCR | `gpt-4o-mini` | temperature=0 |
 
 **Escolha do modelo:** `gpt-4o-mini` foi escolhido pelo equilíbrio entre custo e capacidade suficiente para o protótipo. Ver `documentacao/decisoes_tecnicas.md` para a tabela comparativa completa.
@@ -108,18 +108,11 @@ Todos os dados utilizados são **fictícios** (nome, CPF, RG, e-mail, protocolo)
 
 ---
 
-## 6. Custos estimados
+## 6. Custos e uso do provedor
 
-| Rota | Serviços chamados | Estimativa por execução |
-|---|---|---|
-| `processar-texto` | Nenhum (local) | R$ 0 |
-| `prompts` (A+B+C) | LLM × 4 (inclui metaprompt C) | < R$ 0,05 |
-| `audio` | STT + LLM (revisão) | < R$ 0,05 |
-| `ocr` (com Vision) | Tesseract + Vision + LLM | < R$ 0,05 |
-| `voz` | TTS | < R$ 0,02 |
-| `imagem` | Geração de imagem | < R$ 0,10 |
+O protótipo registra duração e tokens quando o provedor os retorna, mas não calcula custo monetário. Não há tabela de preços versionada na configuração, e os preços e o consumo variam por modelo, tamanho da entrada/saída e modalidade. Antes de uma execução com cobrança, a equipe deve consultar os preços vigentes e estimar o custo a partir do uso esperado. `processar-texto` é local e não faz chamada ao provedor.
 
-Estimativas baseadas em tabela de preços da OpenAI para modelos mini/medium. Custos reais dependem do tamanho da entrada e da resposta.
+Na reexecução limpa integral de 29/10/2026, prompts A/B/C, STT, OCR/Vision e geração de imagem concluíram. O TTS foi bloqueado pela ausência de aprovação humana válida, conforme esperado pelo controle de fluxo. A avaliação de STT registrou WER 0,0154 e um erro crítico; OCR obteve 70/100 e divergência nos três campos críticos. A imagem foi gerada com `gpt-image-2.5-flare`, com hash de proveniência válido e revisão visual pendente. O log não deve ser interpretado como valor financeiro da execução.
 
 ---
 
@@ -144,3 +137,13 @@ Testes automatizados:
 ```bash
 python -m unittest discover -s testes -v
 ```
+
+---
+
+## 9. Continuidade — Desafio Prático 2
+
+Esta versão acrescenta serviços de extração estruturada/NLP (RF14/15) e ingestão, chunking, Chroma persistente, avaliação de recuperação e RAG configurável/auditado (RF17/18/19/21), sem substituir os fluxos do Desafio 1. O estado por requisito, contratos para Streamlit e pendências do Estudante 3 estão em `documentacao/CONTINUIDADE_ESTUDANTE_3.md`.
+
+O acervo fictício contém seis documentos listados em `dados/originais/acervo/manifest.json`; arquivos de aulas, desafios e editais em `arquivos/` não são incluídos automaticamente. As solicitações, gabaritos e casos adversariais do Desafio 2 estão em seus diretórios dedicados. A indexação usa PyMuPDF para PDFs com camada textual e ChromaDB persistente, com embeddings calculados explicitamente pela OpenAI. O índice não foi populado nesta etapa.
+
+Validação não paga: módulos foram carregados para a demonstração do schema; o CLI demonstrou três casos de JSON válido recusados pelo schema, e a extração local gerou 17 chunks estruturais e 11 fixos. Não foram chamadas APIs, criados embeddings, executadas consultas, medidas taxas/latências/custos ou adicionados arquivos de teste. A disponibilidade e as permissões de `gpt-4o-mini`/`text-embedding-3-small` devem ser verificadas após a configuração manual de `OPENAI_API_KEY`.

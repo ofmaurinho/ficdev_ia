@@ -1,0 +1,57 @@
+%PDF-1.4
+% fictitious training corpus
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 600 >>
+stream
+BT
+/F1 11 Tf
+52 780 Td
+16 TL
+(ID: ACV-MATR-004) Tj
+T*
+(Title: Fictional enrollment calendar) Tj
+T*
+(Version: 1.0; effective 2026-01-01 through 2026-12-31) Tj
+T*
+(# Course start date) Tj
+T*
+(The fictional Nursing Technician course begins on 2027-02-01.) Tj
+T*
+(The schedule is the evening shift. The enrollment confirmation is issued) Tj
+T*
+(by the school unit after the submitted documents are checked.) Tj
+T*
+(# Enrollment follow-up) Tj
+T*
+(The applicant may check the enrollment status using the protocol at the) Tj
+T*
+(service desk. This document does not establish a response deadline.) Tj
+T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000038 00000 n 
+0000000087 00000 n 
+0000000144 00000 n 
+0000000270 00000 n 
+0000000920 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1017
+%%EOF

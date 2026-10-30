@@ -1,0 +1,434 @@
+{
+  "schema_version": "retrieval-evaluation.v1",
+  "measured_at": "2026-10-30T04:17:19.626944+00:00",
+  "embedding_provider": "openai",
+  "embedding_model": "text-embedding-3-small",
+  "top_k": 3,
+  "metric_definition": "Acerto = pergunta com pelo menos um chunk de referência entre top-k; distância cosine; similaridade = 1 - distância.",
+  "strategies": [
+    {
+      "strategy": "structural",
+      "unit": "section_paragraph",
+      "size": null,
+      "overlap": 0,
+      "embedding_model": "text-embedding-3-small",
+      "embedding_dimensions": 1536,
+      "top_k": 3,
+      "collection": "avaliacao_structural_structural",
+      "total_chunks": 17,
+      "hits": 5,
+      "denominator": 5,
+      "accuracy": 1.0,
+      "results": [
+        {
+          "question_id": "RAG-01",
+          "question": "Em quais dias e horários funciona o Núcleo Fictício de Atendimento?",
+          "expected_chunk_ids": [
+            "chunk-9e6d25e7554c41ae8851f68c"
+          ],
+          "returned_chunk_ids": [
+            "chunk-9e6d25e7554c41ae8851f68c",
+            "chunk-d878fcbad887a1b100d38e86",
+            "chunk-3df52570f9d5a1ca9a9a358e"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+              "distance": 0.2678842544555664,
+              "similarity": 0.7321157455444336,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            },
+            {
+              "chunk_id": "chunk-d878fcbad887a1b100d38e86",
+              "distance": 0.2809722423553467,
+              "similarity": 0.7190277576446533,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Atendimento por protocolo"
+            },
+            {
+              "chunk_id": "chunk-3df52570f9d5a1ca9a9a358e",
+              "distance": 0.3475029468536377,
+              "similarity": 0.6524970531463623,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": null
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-02",
+          "question": "Quando começa o curso técnico fictício de Enfermagem e qual é o turno?",
+          "expected_chunk_ids": [
+            "chunk-c609e7f00a0bd43b8c87ae70"
+          ],
+          "returned_chunk_ids": [
+            "chunk-c609e7f00a0bd43b8c87ae70",
+            "chunk-ee286e172c1b4a942300965f",
+            "chunk-9e6d25e7554c41ae8851f68c"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-c609e7f00a0bd43b8c87ae70",
+              "distance": 0.4157264232635498,
+              "similarity": 0.5842735767364502,
+              "document_id": "ACV-MATR-004",
+              "page": 1,
+              "section": "Course start date"
+            },
+            {
+              "chunk_id": "chunk-ee286e172c1b4a942300965f",
+              "distance": 0.5284155607223511,
+              "similarity": 0.4715844392776489,
+              "document_id": "ACV-MATR-002",
+              "page": null,
+              "section": "Documentos de identificação"
+            },
+            {
+              "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+              "distance": 0.5547894835472107,
+              "similarity": 0.4452105164527893,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-03",
+          "question": "Qual é o endereço do balcão principal em Serra Clara?",
+          "expected_chunk_ids": [
+            "chunk-fb59f32888fd655cfa45becb"
+          ],
+          "returned_chunk_ids": [
+            "chunk-fb59f32888fd655cfa45becb",
+            "chunk-9e6d25e7554c41ae8851f68c",
+            "chunk-15726baca91f32809a8c6775"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+              "distance": 0.378079354763031,
+              "similarity": 0.621920645236969,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Main service desk"
+            },
+            {
+              "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+              "distance": 0.4113231897354126,
+              "similarity": 0.5886768102645874,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            },
+            {
+              "chunk_id": "chunk-15726baca91f32809a8c6775",
+              "distance": 0.4617655277252197,
+              "similarity": 0.5382344722747803,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Accessibility requests"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-04",
+          "question": "Com quanta antecedência devo pedir um recurso de acessibilidade?",
+          "expected_chunk_ids": [
+            "chunk-28c9f3bec14f97b7c9e93cab"
+          ],
+          "returned_chunk_ids": [
+            "chunk-28c9f3bec14f97b7c9e93cab",
+            "chunk-9b747c73a5e0a67a0a20e3cc",
+            "chunk-2d1a92b28c9981183caea9ab"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
+              "distance": 0.2852070927619934,
+              "similarity": 0.7147929072380066,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Prazo e confirmação"
+            },
+            {
+              "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
+              "distance": 0.3478337526321411,
+              "similarity": 0.6521662473678589,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Solicitação de recurso de acessibilidade"
+            },
+            {
+              "chunk_id": "chunk-2d1a92b28c9981183caea9ab",
+              "distance": 0.4533042311668396,
+              "similarity": 0.5466957688331604,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": null
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-05",
+          "question": "Por quais canais posso encaminhar o pedido de acessibilidade?",
+          "expected_chunk_ids": [
+            "chunk-15726baca91f32809a8c6775"
+          ],
+          "returned_chunk_ids": [
+            "chunk-9b747c73a5e0a67a0a20e3cc",
+            "chunk-28c9f3bec14f97b7c9e93cab",
+            "chunk-15726baca91f32809a8c6775"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
+              "distance": 0.3389168977737427,
+              "similarity": 0.6610831022262573,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Solicitação de recurso de acessibilidade"
+            },
+            {
+              "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
+              "distance": 0.4001747965812683,
+              "similarity": 0.5998252034187317,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Prazo e confirmação"
+            },
+            {
+              "chunk_id": "chunk-15726baca91f32809a8c6775",
+              "distance": 0.40988874435424805,
+              "similarity": 0.590111255645752,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Accessibility requests"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "strategy": "fixed_400_overlap_80",
+      "unit": "characters",
+      "size": 400,
+      "overlap": 80,
+      "embedding_model": "text-embedding-3-small",
+      "embedding_dimensions": 1536,
+      "top_k": 3,
+      "collection": "avaliacao_fixed_400_overlap_80_fixed_400_overlap_80",
+      "total_chunks": 11,
+      "hits": 5,
+      "denominator": 5,
+      "accuracy": 1.0,
+      "results": [
+        {
+          "question_id": "RAG-01",
+          "question": "Em quais dias e horários funciona o Núcleo Fictício de Atendimento?",
+          "expected_chunk_ids": [
+            "chunk-46bc0bb02c5cd161f3b1433c"
+          ],
+          "returned_chunk_ids": [
+            "chunk-46bc0bb02c5cd161f3b1433c",
+            "chunk-e13d159c27f636d824ed9d69",
+            "chunk-2361730c47b377871b15d08b"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
+              "distance": 0.2644408345222473,
+              "similarity": 0.7355591654777527,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            },
+            {
+              "chunk_id": "chunk-e13d159c27f636d824ed9d69",
+              "distance": 0.28064924478530884,
+              "similarity": 0.7193507552146912,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Atendimento por protocolo"
+            },
+            {
+              "chunk_id": "chunk-2361730c47b377871b15d08b",
+              "distance": 0.3696337938308716,
+              "similarity": 0.6303662061691284,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Main service desk"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-02",
+          "question": "Quando começa o curso técnico fictício de Enfermagem e qual é o turno?",
+          "expected_chunk_ids": [
+            "chunk-f640ad438ab46c6c6a72266c"
+          ],
+          "returned_chunk_ids": [
+            "chunk-f640ad438ab46c6c6a72266c",
+            "chunk-156d5b9492aec2156dcc62e0",
+            "chunk-46bc0bb02c5cd161f3b1433c"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-f640ad438ab46c6c6a72266c",
+              "distance": 0.4156803488731384,
+              "similarity": 0.5843196511268616,
+              "document_id": "ACV-MATR-004",
+              "page": 1,
+              "section": "Course start date"
+            },
+            {
+              "chunk_id": "chunk-156d5b9492aec2156dcc62e0",
+              "distance": 0.5284390449523926,
+              "similarity": 0.4715609550476074,
+              "document_id": "ACV-MATR-002",
+              "page": null,
+              "section": "Documentos de identificação"
+            },
+            {
+              "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
+              "distance": 0.5552663803100586,
+              "similarity": 0.4447336196899414,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-03",
+          "question": "Qual é o endereço do balcão principal em Serra Clara?",
+          "expected_chunk_ids": [
+            "chunk-2361730c47b377871b15d08b"
+          ],
+          "returned_chunk_ids": [
+            "chunk-2361730c47b377871b15d08b",
+            "chunk-46bc0bb02c5cd161f3b1433c",
+            "chunk-4d6ddfc0b444d75f811280d3"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-2361730c47b377871b15d08b",
+              "distance": 0.3781728744506836,
+              "similarity": 0.6218271255493164,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Main service desk"
+            },
+            {
+              "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
+              "distance": 0.41043221950531006,
+              "similarity": 0.5895677804946899,
+              "document_id": "ACV-ATEND-001",
+              "page": null,
+              "section": "Horário de atendimento presencial"
+            },
+            {
+              "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
+              "distance": 0.4618109464645386,
+              "similarity": 0.5381890535354614,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Accessibility requests"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-04",
+          "question": "Com quanta antecedência devo pedir um recurso de acessibilidade?",
+          "expected_chunk_ids": [
+            "chunk-e8753e40143f3ee3e55f7986"
+          ],
+          "returned_chunk_ids": [
+            "chunk-e8753e40143f3ee3e55f7986",
+            "chunk-2a3ce9d9aad317e61bf53e31",
+            "chunk-4d6ddfc0b444d75f811280d3"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-e8753e40143f3ee3e55f7986",
+              "distance": 0.2852070927619934,
+              "similarity": 0.7147929072380066,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Prazo e confirmação"
+            },
+            {
+              "chunk_id": "chunk-2a3ce9d9aad317e61bf53e31",
+              "distance": 0.3478337526321411,
+              "similarity": 0.6521662473678589,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Solicitação de recurso de acessibilidade"
+            },
+            {
+              "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
+              "distance": 0.509521484375,
+              "similarity": 0.490478515625,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Accessibility requests"
+            }
+          ]
+        },
+        {
+          "question_id": "RAG-05",
+          "question": "Por quais canais posso encaminhar o pedido de acessibilidade?",
+          "expected_chunk_ids": [
+            "chunk-4d6ddfc0b444d75f811280d3"
+          ],
+          "returned_chunk_ids": [
+            "chunk-2a3ce9d9aad317e61bf53e31",
+            "chunk-e8753e40143f3ee3e55f7986",
+            "chunk-4d6ddfc0b444d75f811280d3"
+          ],
+          "hit": true,
+          "retrieved": [
+            {
+              "chunk_id": "chunk-2a3ce9d9aad317e61bf53e31",
+              "distance": 0.3389168977737427,
+              "similarity": 0.6610831022262573,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Solicitação de recurso de acessibilidade"
+            },
+            {
+              "chunk_id": "chunk-e8753e40143f3ee3e55f7986",
+              "distance": 0.4001747965812683,
+              "similarity": 0.5998252034187317,
+              "document_id": "ACV-ACESS-003",
+              "page": null,
+              "section": "Prazo e confirmação"
+            },
+            {
+              "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
+              "distance": 0.40988874435424805,
+              "similarity": 0.590111255645752,
+              "document_id": "ACV-ATEND-005",
+              "page": 1,
+              "section": "Accessibility requests"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "preferred_strategy": null,
+  "preference_decision": "pendente de revisão dos resultados e preservação de contexto; sem vencedor por intuição."
+}

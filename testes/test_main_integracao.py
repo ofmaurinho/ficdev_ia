@@ -346,7 +346,7 @@ class TestComandoImagem(unittest.TestCase):
             "results_dir": str(tmp / "resultados"),
             "audio": {},
             "vision": {},
-            "image": {"model": "gpt-image-1", "size": "1024x1024", "quality": "medium",
+            "image": {"model": "gpt-image-2.5-flare", "size": "1024x1024", "quality": "medium",
                       "rotulo": "Gerado por IA — conteúdo sintético", "brasao": "arquivos/brasao.png"},
         }
 

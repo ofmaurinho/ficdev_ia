@@ -51,6 +51,10 @@ class StructuredOutputError(APIClientError):
     """Falha ao interpretar a saída estruturada."""
 
 
+class CallLimitExceededError(APIClientError):
+    """Limite de chamadas reais configurado para a execução foi atingido."""
+
+
 def _sanitize_exception_message(message: str) -> str:
     lowered = (message or "").lower()
     if "incorrect api key" in lowered or "authentication" in lowered or "unauthorized" in lowered:
@@ -83,6 +87,7 @@ class OpenAIClient:
         model: Optional[str] = None,
         timeout: float = 30.0,
         temperature: float = 0,
+        max_calls_per_run: int | None = None,
     ):
         if api_key is None:
             resolved_api_key = os.getenv("OPENAI_API_KEY")
@@ -93,6 +98,10 @@ class OpenAIClient:
         self.model = model or os.getenv("OPENAI_MODEL") or DEFAULT_OPENAI_MODEL
         self.timeout = timeout
         self.temperature = temperature
+        if max_calls_per_run is not None and max_calls_per_run < 1:
+            raise ValueError("max_calls_per_run deve ser pelo menos 1.")
+        self.max_calls_per_run = max_calls_per_run
+        self.api_calls_made = 0
         if not self.api_key:
             raise MissingAPIKeyError(
                 "A chave da API da OpenAI não foi configurada. Adicione OPENAI_API_KEY ao arquivo .env antes de usar o provedor."
@@ -101,13 +110,31 @@ class OpenAIClient:
         try:
             from openai import OpenAI
 
-            self.client = OpenAI(api_key=self.api_key, timeout=self.timeout)
+            sdk_options = {"api_key": self.api_key, "timeout": self.timeout}
+            # Desativa repetições internas para que cada tentativa seja contabilizada pelo projeto.
+            if self.max_calls_per_run is not None:
+                sdk_options["max_retries"] = 0
+            self.client = OpenAI(**sdk_options)
         except Exception as exc:  # pragma: no cover - depends on environment
             raise RuntimeError("Não foi possível importar ou inicializar o SDK oficial da OpenAI.") from exc
+
+    def begin_run(self, max_calls: int | None = None) -> None:
+        """Inicia um orçamento explícito; as tentativas feitas pelos serviços são contabilizadas."""
+        if max_calls is not None and max_calls < 1:
+            raise ValueError("max_calls_per_run deve ser pelo menos 1.")
+        self.max_calls_per_run = max_calls
+        self.api_calls_made = 0
+
+    def _reserve_call(self) -> None:
+        if self.max_calls_per_run is not None and self.api_calls_made >= self.max_calls_per_run:
+            raise CallLimitExceededError("Limite de chamadas da execução atingido.")
+        self.api_calls_made += 1
 
     def _raise_for_error(self, exc: Exception) -> None:
         if isinstance(exc, TimeoutError):
             raise RequestTimeoutError("A requisição excedeu o tempo limite do provedor.") from exc
+        if getattr(exc, "param", None) == "model" or getattr(exc, "code", None) in {"model_not_found", "invalid_model"}:
+            raise InvalidModelError("O modelo configurado não é aceito ou não está disponível no provedor.") from exc
         label = _sanitize_exception_message(f"{type(exc).__name__}: {exc}")
         if label == "autenticacao":
             raise AuthenticationError("Falha de autenticação no provedor. Verifique a chave configurada.") from exc
@@ -165,6 +192,7 @@ class OpenAIClient:
             messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
         try:
+            self._reserve_call()
             request = {
                 "model": self.model,
                 "input": messages,
@@ -201,10 +229,86 @@ class OpenAIClient:
             self._raise_for_error(exc)
             raise AssertionError("Erro de integração não tratado.")
 
+    def parse_structured(
+        self,
+        *,
+        prompt: str,
+        system_prompt: str,
+        text_format: type,
+        max_output_tokens: int = 2000,
+        reasoning_effort: str | None = None,
+    ) -> Dict[str, Any]:
+        """Executa Responses.parse e rejeita recusa, saída incompleta ou sem objeto tipado."""
+        if not prompt.strip():
+            raise ValueError("O prompt para saída estruturada não pode estar vazio.")
+        started_at = time.perf_counter()
+        request: dict[str, Any] = {
+            "model": self.model,
+            "instructions": system_prompt,
+            "input": prompt,
+            "text_format": text_format,
+            "max_output_tokens": int(max_output_tokens),
+        }
+        if reasoning_effort:
+            request["reasoning"] = {"effort": reasoning_effort}
+        try:
+            self._reserve_call()
+            response = self.client.responses.parse(**request)
+            status = getattr(response, "status", None)
+            if status == "incomplete" or getattr(response, "incomplete_details", None):
+                raise StructuredOutputError("A resposta estruturada foi interrompida antes de concluir.")
+            for item in getattr(response, "output", []) or []:
+                for content in getattr(item, "content", []) or []:
+                    if getattr(content, "type", None) == "refusal":
+                        raise StructuredOutputError("O provedor recusou a solicitação.")
+            parsed = getattr(response, "output_parsed", None)
+            if parsed is None:
+                raise EmptyResponseError("A API não retornou objeto estruturado utilizável.")
+            return {
+                "parsed": parsed,
+                "metadata": self._metadata(response, started_at, self.model, status=status),
+            }
+        except APIClientError:
+            raise
+        except Exception as exc:
+            self._raise_for_error(exc)
+            raise AssertionError("Erro de integração não tratado.")
+
+    def create_embeddings(
+        self,
+        texts: list[str],
+        *,
+        model: str,
+        dimensions: int | None = None,
+    ) -> Dict[str, Any]:
+        """Calcula vetores explicitamente; não há embedding implícito no ChromaDB."""
+        if not texts or any(not isinstance(text, str) or not text.strip() for text in texts):
+            raise ValueError("O lote de embeddings deve conter textos não vazios.")
+        started_at = time.perf_counter()
+        request: dict[str, Any] = {"model": model, "input": texts}
+        if dimensions is not None:
+            request["dimensions"] = int(dimensions)
+        try:
+            self._reserve_call()
+            response = self.client.embeddings.create(**request)
+            vectors = [list(item.embedding) for item in response.data]
+            if len(vectors) != len(texts) or (dimensions is not None and any(len(vector) != dimensions for vector in vectors)):
+                raise StructuredOutputError("Quantidade ou dimensão dos embeddings diverge da configuração.")
+            return {
+                "vectors": vectors,
+                "metadata": self._metadata(response, started_at, model),
+            }
+        except APIClientError:
+            raise
+        except Exception as exc:
+            self._raise_for_error(exc)
+            raise AssertionError("Erro de integração não tratado.")
+
     # ------------------------------------------------------------------ multimodal
     def _executar(self, chamada):
         """Executa uma chamada ao SDK traduzindo falhas para as exceções do projeto."""
         try:
+            self._reserve_call()
             return chamada()
         except APIClientError:
             raise
@@ -228,6 +332,7 @@ class OpenAIClient:
             "duration_seconds": round(time.perf_counter() - started_at, 3),
             "response_id": getattr(response, "id", None),
             "usage": self._usage_dict(response),
+            "api_calls_made": self.api_calls_made,
             "custo_estimado": None,
         }
         metadata.update(extra)
