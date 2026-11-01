@@ -1,105 +1,55 @@
 # Roteiro de Apresentação — 12 minutos
 
-**Desafio Prático 1 — FIC_DEV | IA Generativa**
+**Central Inteligente de Atendimento e Comunicação Institucional (Desafios 1 e 2)**
 
-> Tempo total: 12 min. Ensaiar antes da apresentação para cumprir os tempos.
+> Tempo total: 12 min.
 
----
+## Bloco 1 — Problema, arquitetura e schema (2 min)
 
-## Bloco 1 — Contexto e arquitetura (2 min)
-
-**O que apresentar:**
-- O problema: central de atendimento institucional com entradas em texto, áudio e imagem.
-- Decisão arquitetural central: o sistema opera sem gabarito; o gabarito existe só para avaliação.
-- Diagrama rápido: fluxo de dados → extração → minuta → aprovação → TTS/imagem.
-- Stack escolhida: OpenAI (LLM, STT, TTS, imagem), Tesseract local, Pillow.
-
-**Pontos de destaque:**
-- Separação entre estado do atendimento e estado dos artefatos.
-- Aprovação vinculada a hash SHA-256: qualquer alteração invalida a aprovação.
-
----
-
-## Bloco 2 — Demonstração multimodal ao vivo (6 min)
-
-### 2a. Texto → minuta → aprovação (2 min)
+- Contexto: triagem de solicitações em texto, áudio e PDF/imagem, fundamentação no acervo fictício e revisão humana obrigatória antes de qualquer resposta.
+- Diferença entre JSON válido, conformidade ao schema Pydantic (`solicitacao.v2`) e regra de negócio pós-schema:
 ```bash
-python -m src.main processar-texto --arquivo arquivos/entrada_texto.txt
-python -m src.main prompts --arquivo arquivos/entrada_texto.txt
-python -m src.main aprovar-minuta --caso entrada_texto --arquivo-minuta resultados/minutas/minuta_rascunho.txt \
-  --operador "equipe" --decisao aprovar --justificativa "Minuta adequada"
+python -m src.desafio2_cli demonstrar-schema
 ```
-- Mostrar: dados extraídos, minuta, hash registrado.
 
-### 2b. Áudio → STT → campos críticos (1 min 30 s)
+## Bloco 2 — Compreensão de solicitações, busca vetorial e RAG (4 min)
+
+- Processamento das solicitações (`SOL-001` a `SOL-006`) e entradas herdadas do Desafio 1 (texto, áudio STT e OCR):
 ```bash
-python -m src.main audio --arquivo arquivos/entrada_audio.mp3 --caso entrada_audio
+python -m src.desafio2_cli avaliar-solicitacoes
+python -m src.desafio2_cli regressao
 ```
-- Mostrar: transcrição bruta, campos com proveniência (origem, método, status).
-
-### 2c. PDF/imagem → OCR → fallback Vision (1 min)
+- Mostrar uma ficha completa (`SOL-002_ficha.json`, aprovada) e uma incompleta/ambígua (`SOL-005_ficha.json` / `SOL-006_ficha.json`, com minuta bloqueada).
+- Comparação de segmentação (`structural` vs. `fixed_400_overlap_80`, `5/5` hits@3) e execução dos 8 cenários RAG (citações, abstenção em `RAG-06`/`RAG-07` e conflito em `RAG-08`):
 ```bash
-python -m src.main ocr --arquivo arquivos/entrada_pdf-imagem.pdf --caso entrada_pdf
+python -m src.desafio2_cli listar
+python -m src.desafio2_cli avaliar-cenarios-rag
 ```
-- Mostrar: gatilhos disparados, texto Tesseract vs Vision, aviso de privacidade.
 
-### 2d. TTS + peça visual (1 min 30 s)
+## Bloco 3 — Guardrails, sentimentos, exclusão e Streamlit (4 min)
+
+- Contenção de prompt injection e controle de escopo/recursos (`ADV-01` a `ADV-03`):
 ```bash
-python -m src.main voz --caso entrada_texto --versao 1
-python -m src.main imagem --caso entrada_texto
+python -m src.desafio2_cli avaliar-guardrails
 ```
-- Mostrar: áudio MP3 gerado, nota de proveniência, rótulo "Gerado por IA — conteúdo sintético".
-
----
-
-## Bloco 3 — Segurança e revisão humana (2 min)
-
-### 3a. Teste de prompt injection (1 min)
+- Classificação individual das 12 avaliações fictícias (`12/12`) e agregação determinística em Python:
 ```bash
-python -m src.main prompts --arquivo arquivos/entrada_texto_injecao.txt
+python -m src.desafio2_cli classificar-sentimentos
 ```
-- Mostrar: instrução injetada no corpo da mensagem.
-- Mostrar: minuta **não** obedeceu à instrução.
-
+- Demonstração de exclusão lógica de `ACV-ATEND-005` e invalidação de respostas derivadas:
 ```bash
-python -m src.main avaliar --modalidade seguranca \
-  --gabarito dados/gabaritos/entrada_texto_injecao.json \
-  --arquivo resultados/avaliacao_prompts.json --caso injecao
+python -m src.desafio2_cli excluir-documento --documento ACV-ATEND-005 --demonstrar
 ```
-- Resultado: `passou` com 0 instruções seguidas.
-
-### 3b. Revisão humana e taxa de aprovação (1 min)
+- Navegação rápida pelas 4 abas da interface local:
 ```bash
-python -m src.main revisar --prompt B --decisao aprovar --justificativa "Conforme esperado"
-python -m src.main avaliar --modalidade stt \
-  --gabarito dados/gabaritos/entrada_audio.json \
-  --arquivo dados/processados/entrada_audio_transcricao_bruta.txt
+streamlit run src/app.py
 ```
-- Mostrar: WER, campos críticos, pontuação de qualidade.
 
----
+## Bloco 4 — Auditoria, matriz integrada e limitações (2 min)
 
-## Bloco 4 — Evidências e encerramento (2 min)
-
-**O que mostrar:**
-- `resultados/logs/audit.jsonl` — hashes dos originais, execução, duração, decisões.
-- `resultados/revisoes/` — aprovações vinculadas a hash, operador, data.
-- `.env.example` sem credenciais, `.gitignore` cobrindo `.env`.
-- Gabaritos commitados no Git antes das execuções reais.
-
-**Encerramento:**
-- Limitações honestas: amostra pequena, Vision expõe dados, TTS sem verificação automática.
-- O que seria diferente em produção: OCR especializado, interface web, base de dados de protocolos.
-- `python scripts/verificar_entrega.py` — resultado OK antes de compactar.
-
----
-
-## Checklist pré-apresentação
-
-- [ ] `.env` com chave válida configurado
-- [ ] `python -m unittest discover -s testes -v` — OK
-- [ ] `python scripts/verificar_entrega.py` — OK
-- [ ] Execuções reais realizadas (STT, OCR, TTS, imagem, prompts, injection)
-- [ ] Caso aprovado e caso rejeitado/corrigido registrados
-- [ ] Revisão visual da peça registrada
-- [ ] Roteiro ensaiado (cronometrar os 12 min)
+- Conferência da matriz `T01` a `T15` (`15/15` aprovados) e dos logs sanitizados (`resultados/logs/audit.jsonl` e `resultados/logs/consultas.jsonl`):
+```bash
+python -m src.desafio2_cli avaliar-integrado
+python scripts/verificar_entrega.py
+```
+- Limitações: amostra reduzida de avaliação, limiar `0.40` ajustado para o acervo sintético, confiança não calibrada do classificador e ausência de cálculo monetário automático.

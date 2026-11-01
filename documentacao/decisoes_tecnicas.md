@@ -1,71 +1,25 @@
-# Decisões técnicas
+# Decisões Técnicas
 
-## Arquitetura e escopo
+## 1. Separação de módulos e configuração
 
-O protótipo separa o processamento local (`src/text_processing.py`), as chamadas ao provedor (`src/llm_client.py`), os textos canônicos dos prompts (`prompts/*.txt`), seu carregador (`src/prompts.py`) e a auditoria (`src/audit.py`). O comando padrão não depende da API. O comando `prompts` executa o experimento remoto A/B/C.
+- `config.json` concentra modelos, temperaturas, limites de tokens, timeouts, caminhos e parâmetros do RAG (`top_k`, `similarity_threshold`, `max_calls_per_run`).
+- `OPENAI_API_KEY` fica apenas em `.env` (ignorado pelo Git). `.env.example` documenta as variáveis sem valores reais.
+- As regras de negócio ficam nos módulos de serviço (`src/nlp.py`, `src/rag.py`, `src/guardrails.py`, `src/sentiment.py`, `src/vector_store.py`, `src/metrics.py`). A CLI (`src/desafio2_cli.py`) e a interface Streamlit (`src/app.py`) apenas consomem esses serviços.
 
-A implementação multimodal completa (áudio, OCR/visão, síntese de voz e geração de imagem) foi realizada na versão v4 do plano, integrando os módulos `audio.py`, `vision.py`, `image_generation.py`, `review.py`, `roteiro.py`, `gabarito.py` e `evaluation.py`.
+## 2. Escolha de modelos e bibliotecas
 
-## Configuração e chamadas
-
-- `config.json` fornece modelo, temperatura, limite de tokens e timeout; `OPENAI_MODEL` permite sobrescrever o modelo.
-- A chave é lida de `OPENAI_API_KEY` via `.env`, ignorado pelo Git. `.env.example` não contém credenciais.
-- A chamada usa o SDK oficial da OpenAI e envia instruções confiáveis no papel `system`, separadas do conteúdo recebido no papel `user`.
-- O conteúdo externo é delimitado e tratado como dado. A entrada da demonstração é minimizada antes do envio.
-- O experimento C usa o metaprompt para produzir um prompt e aplica esse resultado à mesma tarefa e entrada dos prompts A e B.
-
-## Seleção de modelo e tradeoffs
-
-| Alternativa | Custo | Privacidade e abertura | Capacidade no projeto | Evidência |
-|---|---|---|---|---|
-| OpenAI `gpt-4o-mini` | Cobrança depende de tokens; sem cálculo monetário nesta entrega | Serviço hospedado e proprietário; o texto minimizado ainda é enviado ao provedor | Validado no fluxo textual e multimodal | Chamada real executada |
-| Modelo hospedado de maior porte | Custo possivelmente maior; não medido | Continua dependendo de provedor externo e licença proprietária | Poderia melhorar qualidade, mas não foi integrado | Não testado |
-| Modelo local de pesos abertos | Sem tarifa por chamada, mas requer hardware | Pode manter o texto localmente | Depende de escolher modelo e integrar runtime | Não testado |
-
-`gpt-4o-mini` foi escolhido como baseline reproduzível. Para STT: `gpt-4o-transcribe`. Para TTS: `gpt-4o-mini-tts`. Para imagem: `gpt-image-2.5-flare`, modelo rápido indicado pela documentação atual da OpenAI. O antigo `gpt-image-1` foi retirado da API em 23/10/2026.
-
-## Dados, auditoria e validação
-
-- Extração, classificação e minuta são locais e não alegam ser resultado da API.
-- A auditoria JSONL registra identificador, origem, modalidade, modelo, parâmetros, duração, uso de tokens, resultado/erro e revisão humana pendente. A chave e o conteúdo bruto não são registrados no log.
-- As saídas do experimento e metadados são armazenados em `resultados/avaliacao_prompts.json`.
-- O comando `revisar` permite aprovar, rejeitar ou registrar pedido de nova geração, vinculando a decisão ao identificador original.
-- O custo monetário não é calculado: não há tabela de preço versionada. O uso de tokens é mantido para cálculo posterior.
-
-## Ambiente verificado
-
-Ambiente validado em 29/10/2026: Python 3.14.7, OpenAI SDK 3.41.0 e python-dotenv 1.2.4. `requirements.txt` define faixas compatíveis; `requirements.lock` fixa o conjunto exato instalado. A suíte de 146 testes passou com esse lockfile.
-
----
-
-## Decisões multimodais (implementação v4)
-
-### PDF e OCR: pypdfium2 vs PyMuPDF
-
-**Escolha: `pypdfium2` (licença Apache/BSD-like).**
-
-| Biblioteca | Licença | Observação |
+| Componente | Escolha | Motivo |
 |---|---|---|
-| `pypdfium2` | Apache 2.0 / BSD | Recomendada para protótipos e uso acadêmico sem restrições |
-| `PyMuPDF` | AGPL-3.0 ou comercial | AGPL exige abertura do código derivado; mais restritivo |
+| Geração e extração estruturada | `gpt-4o-mini` (`Responses.parse`) | Suporte nativo a schema Pydantic estrito com baixo custo por chamada e `temperature=0`. |
+| Embeddings | `text-embedding-3-small` (`1536` dim.) | Boa recuperação multilíngue (português e PDF em inglês `ACV-MATR-004`) no ChromaDB local. |
+| Banco vetorial | `chromadb.PersistentClient` | Persistência local em disco (`dados/indice/chroma`), filtro por metadados e exclusão por `document_id`. |
+| Leitura de PDF e OCR | `PyMuPDF` (acervo textual) / `pypdfium2` + Tesseract (OCR) | Extração de texto com número de página no acervo e OCR local antes de acionar Vision. |
+| Áudio e imagem (Desafio 1) | `gpt-4o-transcribe`, `gpt-4o-mini-tts`, `gpt-image-2.5-flare` + Pillow | Transcrição com proveniência, leitura restrita a roteiro aprovado por hash e rótulo sintético composto localmente. |
 
-### OCR: dois momentos de decisão
+## 3. Validação, RAG e sentimentos
 
-1. **Antes do Vision:** sinais locais (confiança Tesseract, texto incompleto, ruído) decidem se o Vision é necessário. O gabarito **nunca** influencia essa decisão.
-2. **Depois do Vision:** comparação campo a campo; divergência vira `INCERTO` e exige confirmação humana.
-
-### TTS: roteiro canônico aprovado
-
-O roteiro de leitura é gerado de forma **determinística** (função Python, sem LLM), junto com a minuta. Os dois são aprovados com hash SHA-256. O TTS recebe o roteiro exatamente como aprovado. A `instructions` da API controla apenas entonação.
-
-### Imagem: sob demanda e independente do atendimento
-
-A peça visual pode ser gerada sem minuta aprovada (para fins de demonstração). O texto institucional, brasão e rótulo são sobrepostos localmente com Pillow; a IA gera apenas o fundo ilustrativo.
-
-### Aprovação: vinculada a (caso, versão, hash)
-
-Nenhuma aprovação é sobrescrita. Criar `v2` não altera a vigente automaticamente. O campo `versao_atual` é controlado pelo operador.
-
-### Gabarito: só para avaliação
-
-O gabarito exige `status: VALIDADO_HUMANO`, `elaborado_por` e `data_elaboracao` preenchidos pela equipe. O comando `avaliar` recusa gabaritos pendentes. Os comandos `audio`, `ocr`, `prompts` e `processar-texto` nunca exigem gabarito.
+- **Schema vs. regra de negócio (`RF14`):** `FichaSolicitacao` rejeita tipos inválidos e chaves extras via Pydantic; `validar_ficha()` verifica existência da data no calendário, suporte literal no texto, limite de 100 palavras no resumo e consistência de `campos_ausentes`.
+- **Estratégia de chunking (`RF17`, `RF18`):** `structural` (17 chunks) e `fixed_400_overlap_80` (11 chunks) empataram em `5/5` no `hits@3`. Adotamos `structural` como padrão por manter seções inteiras e registrar o cabeçalho nos metadados.
+- **Abstenção e conflito (`RF19`):** consultas com similaridade máxima abaixo de `0.40` param antes da geração (`sem_evidencia`). Divergências entre documentos vigentes de mesma prioridade retornam `conflito_de_fontes` sem escolher uma regra automaticamente.
+- **Sentimentos (`RF22`):** o modelo classifica uma avaliação por vez (`positiva`, `negativa`, `neutra`, `indeterminada`), marcando ironia ou críticas mistas para revisão. Totais e percentuais são calculados em Python (`agregar_sentimentos()`).
+- **Exclusão e auditoria (`RF23`, `RF24`):** a remoção de um documento em `src/vector_store.py` apaga seus chunks do ChromaDB e marca execuções RAG dependentes para revisão humana. Logs JSONL passam por sanitização central de chaves, CPFs e e-mails.
