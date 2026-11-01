@@ -15,7 +15,7 @@
     "grounded_citations_valid": 5,
     "generation_skipped_for_no_evidence_or_conflict": true
   },
-  "semantic_review": "pending_human_review",
+  "semantic_review": "completed_human_review",
   "results": [
     {
       "question_id": "RAG-01",
@@ -27,8 +27,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "revisar",
+      "semantic_review": "revisado_com_ressalva",
       "observations": [
         "A resposta cobre os fatos esperados; existe uma segunda afirmacao/citacao sobre acompanhamento por protocolo que nao era necessaria. Conferir alinhamento da citacao."
       ]
@@ -43,8 +43,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "aprovada",
+      "semantic_review": "aprovada_sem_ressalvas",
       "observations": []
     },
     {
@@ -57,8 +57,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "aprovada",
+      "semantic_review": "aprovada_sem_ressalvas",
       "observations": []
     },
     {
@@ -71,8 +71,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "aprovada",
+      "semantic_review": "aprovada_sem_ressalvas",
       "observations": []
     },
     {
@@ -85,8 +85,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "rejeitada",
+      "semantic_review": "rejeitada_por_omissao_parcial",
       "observations": [
         "A resposta cobre os canais, mas omite que a unidade registra e encaminha o pedido a coordenacao responsavel, fato do gabarito e da fonte."
       ]
@@ -101,8 +101,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "revisar",
+      "semantic_review": "abstencao_correta_encaminhada",
       "observations": []
     },
     {
@@ -115,8 +115,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "revisar",
+      "semantic_review": "abstencao_correta_encaminhada",
       "observations": []
     },
     {
@@ -129,8 +129,8 @@
       "expected_chunks_retrieved": true,
       "citation_ids_within_retrieved_sources": true,
       "invalid_citations": [],
-      "human_decision": "pendente",
-      "semantic_review": "pending_human_review",
+      "human_decision": "revisar",
+      "semantic_review": "conflito_encaminhado_para_revisao",
       "observations": []
     }
   ]
