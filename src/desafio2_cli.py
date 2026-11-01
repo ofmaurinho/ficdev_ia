@@ -16,7 +16,7 @@ from src.nlp import (
     registrar_revisao_ficha,
 )
 from src.rag import consultar_rag, registrar_revisao_rag
-from src.rag_evaluation import avaliar_chunking
+from src.rag_evaluation import avaliar_cenarios_rag, avaliar_chunking
 from src.schemas import demonstrar_json_vs_schema
 from src.sentiment import avaliar_conjunto_sentimentos
 from src.vector_store import (
@@ -46,6 +46,7 @@ def _parser() -> argparse.ArgumentParser:
     index.add_argument("--listar", action="store_true", help="Lista os documentos já persistidos")
     retrieve = commands.add_parser("avaliar-recuperacao", help="Compara as duas estratégias nas cinco perguntas respondíveis")
     retrieve.add_argument("--estrategia", action="append", choices=("structural", "fixed_400_overlap_80"))
+    commands.add_parser("avaliar-cenarios-rag", help="Executa e revisa as oito consultas do gabarito RAG")
     process = commands.add_parser("compreender", help="Extrai e valida a ficha de um TXT ou JSON de STT/OCR")
     process.add_argument("--arquivo", required=True)
     process.add_argument("--id")
@@ -85,6 +86,8 @@ def main(argv: list[str] | None = None) -> int:
             result = listar_documentos_indexados(config=config) if args.listar else indexar_acervo(strategy=args.estrategia, config=config)
         elif args.command == "avaliar-recuperacao":
             result = avaliar_chunking(config=config, strategies=tuple(args.estrategia or ("structural", "fixed_400_overlap_80")))
+        elif args.command == "avaliar-cenarios-rag":
+            result = avaliar_cenarios_rag(config=config)
         elif args.command == "compreender":
             source = Path(args.arquivo)
             if not source.is_absolute():

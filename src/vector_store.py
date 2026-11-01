@@ -320,6 +320,18 @@ def demonstrar_exclusao_documento(
     """Demonstra RF24/T14: busca antes da exclusão, remove documento/derivados e verifica ausência na busca."""
     cfg, settings = _settings(config)
     emb_client = client or _client(cfg)
+    results_dir = Path(settings.get("paths", {}).get("results_directory", cfg.get("results_dir", "resultados")))
+    if not results_dir.is_absolute():
+        results_dir = _root() / results_dir
+    rag_dir = results_dir / "rag"
+    rag_snapshots: dict[Path, str] = {}
+    if restaurar_apos_teste and rag_dir.is_dir():
+        for rag_file in rag_dir.glob("*.json"):
+            try:
+                rag_snapshots[rag_file] = rag_file.read_text(encoding="utf-8")
+            except OSError:
+                pass
+
     antes = search_chunks(query, top_k=3, config=cfg, client=emb_client)
     presentes_antes = [c["chunk_id"] for c in antes if c["metadata"].get("document_id") == document_id]
 
@@ -331,7 +343,16 @@ def demonstrar_exclusao_documento(
 
     restaurado = False
     if restaurar_apos_teste:
-        indexar_acervo(config=cfg, client=emb_client)
+        estrategias_cfg = list(settings.get("chunking", {}).get("strategies", {}).keys()) or ["structural"]
+        colecoes_afetadas = set((exclusao.get("collections") or {}).keys())
+        for strat in estrategias_cfg:
+            col_name = _collection_name(strat, cfg)
+            if col_name in colecoes_afetadas or strat == settings.get("chunking", {}).get("strategy_selected", "structural"):
+                if hasattr(emb_client, "begin_run"):
+                    emb_client.begin_run(int(settings.get("llm", {}).get("max_calls_per_run", 20)))
+                indexar_acervo(strategy=strat, config=cfg, client=emb_client)
+        for rag_file, raw_content in rag_snapshots.items():
+            rag_file.write_text(raw_content, encoding="utf-8")
         restaurado = True
 
     relatorio = {
