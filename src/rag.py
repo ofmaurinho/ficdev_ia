@@ -13,6 +13,11 @@ from pathlib import Path
 from typing import Any
 
 from src.audit import AuditLogger, sanitize_log_payload
+from src.guardrails import (
+    avaliar_entrada_guardrail,
+    avaliar_recuperacao_guardrail,
+    avaliar_saida_guardrail,
+)
 from src.llm_client import APIClientError, CallLimitExceededError, OpenAIClient, RateLimitError, RequestTimeoutError, ServiceUnavailableError
 from src.schemas import FichaSolicitacao, RespostaRAG
 from src.providers import RetrievalGenerationProvider, StructuredGenerationProvider
@@ -251,6 +256,38 @@ def consultar_rag(
         minimum_calls = 1 + int(generation_provider == "openai")
         if maximum_calls < minimum_calls:
             raise CallLimitExceededError("O limite configurado não comporta a consulta e geração mínimas do RAG.")
+        guard_in = avaliar_entrada_guardrail(pergunta, config=cfg)
+        if guard_in.decisao in {"bloquear", "revisar"}:
+            result = {
+                "execution_id": execution_id, "created_at": now,
+                "question_hash": question_hash, "schema_version": schema_version, "prompt_version": prompt_version,
+                "index_version": INDEX_VERSION,
+                "provider": settings.get("generation", {}).get("provider", "openai"),
+                "model": settings.get("generation", {}).get("model"),
+                "status": "revisao_humana", "answer": None, "minuta": None, "sources": [],
+                "retrieved_chunks": [], "generation_called": False, "api_calls": 0,
+                "error_type": "GuardrailEntrada",
+                "decision_reason": guard_in.motivos[0] if guard_in.motivos else "bloqueio_guardrail",
+                "guardrail": guard_in.model_dump(mode="json"),
+                "message": "Entrada bloqueada ou retida pelos guardrails antes da consulta.",
+                "human_decision": "pendente", "error": None,
+                "duration_seconds": round(time.perf_counter() - started, 3),
+            }
+            output_path = _save_result(cfg, result)
+            log_record = {
+                "execution_id": execution_id, "timestamp": now, "event": "rag_guardrail_entrada",
+                "status": result["status"], "question_hash": question_hash,
+                "prompt_version": prompt_version, "schema_version": schema_version,
+                "provider": result["provider"], "model": result["model"],
+                "generation_called": False, "error_type": result["error_type"],
+                "decision_reason": result["decision_reason"], "api_calls": 0,
+                "retrieved_chunk_ids": [], "index_version": INDEX_VERSION,
+                "duration_seconds": result["duration_seconds"], "human_decision": "pendente",
+            }
+            _append_query_log(_relative_path(audit_dir) / "logs" / "consultas.jsonl", log_record)
+            audit.log_event("rag_guardrail_entrada", result["status"], log_record, execution_id=execution_id)
+            result["result_path"] = output_path.as_posix()
+            return result
         validated_ficha = None
         if ficha_solicitacao is not None:
             ficha_model = FichaSolicitacao.model_validate(ficha_solicitacao)
@@ -263,7 +300,8 @@ def consultar_rag(
         calls_after_retrieval = getattr(api_client, "api_calls_made", calls_before + 1)
         threshold = float(settings.get("retrieval", {}).get("min_similarity", 0.25))
         above_threshold = [item for item in retrieved if item["similarity"] >= threshold]
-        sources = _sources(above_threshold)
+        guard_rec, safe_chunks, blocked_chunks = avaliar_recuperacao_guardrail(above_threshold, config=cfg)
+        sources = _sources(safe_chunks)
         result: dict[str, Any] = {
             "execution_id": execution_id, "created_at": now,
             "question_hash": question_hash, "schema_version": schema_version, "prompt_version": prompt_version,
@@ -271,18 +309,26 @@ def consultar_rag(
             "provider": settings.get("generation", {}).get("provider", "openai"),
             "model": settings.get("generation", {}).get("model"), "status": None,
             "answer": None, "minuta": None, "sources": sources,
-            "retrieved_chunks": [{"chunk_id": item["chunk_id"], "similarity": item["similarity"], "distance": item["distance"]} for item in above_threshold],
+            "retrieved_chunks": [{"chunk_id": item["chunk_id"], "similarity": item["similarity"], "distance": item["distance"]} for item in safe_chunks],
             "threshold": threshold, "threshold_calibrated": bool(settings.get("retrieval", {}).get("threshold_calibrated", False)),
             "human_decision": "pendente", "error": None,
         }
-        if not above_threshold:
+        if blocked_chunks:
+            result["status"] = "revisao_humana"
+            result["error_type"] = "GuardrailRecuperacao"
+            result["decision_reason"] = "injecao_indireta_acervo"
+            result["blocked_chunk_ids"] = blocked_chunks
+            result["message"] = "Trecho recuperado contém instrução suspeita; bloqueado antes da geração."
+            result["generation_called"] = False
+            generation_meta = {"provider": None, "model": None, "usage": None, "custo_estimado": None}
+        elif not safe_chunks:
             result["status"] = "sem_evidencia"
             result["message"] = "O acervo não apresentou trecho acima do limiar configurado; encaminhar para revisão humana."
             result["generation_called"] = False
             generation_meta = {"provider": None, "model": None, "usage": None, "custo_estimado": None}
         else:
             today = datetime.now(timezone.utc).date().isoformat()
-            conflict = _conflito(above_threshold, today, safe_question, settings)
+            conflict = _conflito(safe_chunks, today, safe_question, settings)
             if conflict:
                 result["status"] = "conflito_de_fontes"
                 result["conflict"] = conflict
@@ -295,11 +341,17 @@ def consultar_rag(
                     result["solicitacao_validada"] = {
                         key: validated_ficha.get(key) for key in ("assunto", "pedido", "categoria", "campos_ausentes")
                     }
-                response, generation_meta = _generate(safe_question, above_threshold, config=cfg, client=api_client,
+                response, generation_meta = _generate(safe_question, safe_chunks, config=cfg, client=api_client,
                                                       ficha_solicitacao=validated_ficha)
-                allowed_ids = {item["chunk_id"] for item in above_threshold}
+                allowed_ids = {item["chunk_id"] for item in safe_chunks}
                 cited_ids = {item.chunk_id for item in response.citacoes}
                 invalid_citations = sorted(cited_ids - allowed_ids)
+                guard_out, clean_answer = avaliar_saida_guardrail(
+                    response.resposta,
+                    citacoes=list(cited_ids),
+                    chunks_permitidos=allowed_ids,
+                    config=cfg,
+                )
                 if response.conflito_na_evidencia:
                     if conflict:
                         result["status"] = "conflito_de_fontes"
@@ -312,13 +364,13 @@ def consultar_rag(
                     result["decision_reason"] = "abstencao_do_modelo_com_trechos_acima_do_limiar"
                     result["abstention_reason"] = response.motivo_revisao
                     result["message"] = "O modelo se absteve apesar de haver trechos acima do limiar; revisão humana necessária."
-                elif not response.resposta.strip() or not response.citacoes or invalid_citations:
+                elif not clean_answer.strip() or not response.citacoes or invalid_citations or guard_out.decisao != "permitir":
                     result["status"] = "revisao_humana"
-                    result["error_type"] = "resposta_sem_citacao_verificavel"
+                    result["error_type"] = "resposta_sem_citacao_verificavel" if invalid_citations or not response.citacoes else "guardrail_saida"
                 else:
                     result["status"] = "fundamentada"
-                    result["answer"] = response.resposta
-                    result["minuta"] = response.resposta
+                    result["answer"] = clean_answer
+                    result["minuta"] = clean_answer
                 result["generation_called"] = generation_meta.get("provider") == "openai" and getattr(api_client, "api_calls_made", calls_after_retrieval) > calls_after_retrieval
                 result["citations"] = [item.model_dump(mode="json") for item in response.citacoes if item.chunk_id in allowed_ids]
                 result["invalid_citations"] = invalid_citations
@@ -342,7 +394,7 @@ def consultar_rag(
             "error_type": result.get("error_type"),
             "decision_reason": result.get("decision_reason"),
             "api_calls": result["api_calls"],
-            "retrieved_chunk_ids": [item["chunk_id"] for item in above_threshold] if "above_threshold" in locals() else [],
+            "retrieved_chunk_ids": [item["chunk_id"] for item in safe_chunks] if "safe_chunks" in locals() else [],
             "index_strategy": strategy or settings.get("chunking", {}).get("strategy_selected"),
             "index_version": INDEX_VERSION,
             "duration_seconds": result["duration_seconds"], "status_final": result["status"],
@@ -378,11 +430,18 @@ def consultar_rag(
         return result
 
 
-def registrar_revisao_rag(execution_id: str, decision: str, justification: str, *, config: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Persiste decisão humana desacoplada da futura interface; não envia resposta."""
+def registrar_revisao_rag(
+    execution_id: str,
+    decision: str,
+    justification: str,
+    *,
+    operator: str = "operador_revisor",
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Persiste decisão humana desacoplada da interface; não envia resposta."""
     allowed = {"aprovada", "rejeitada", "revisar"}
-    if decision not in allowed or not justification.strip():
-        raise ValueError("Decisão deve ser aprovada, rejeitada ou revisar, com justificativa não vazia.")
+    if decision not in allowed or not justification.strip() or not str(operator or "").strip():
+        raise ValueError("Decisão deve ser aprovada, rejeitada ou revisar, com justificativa e operador não vazios.")
     cfg, settings = _settings(config)
     results = settings.get("paths", {}).get("results_directory", "resultados")
     path = _relative_path(results) / "rag" / f"{execution_id}.json"
@@ -394,11 +453,13 @@ def registrar_revisao_rag(execution_id: str, decision: str, justification: str, 
     result["human_decision"] = decision
     safe_justification = _redigir_pergunta(justification)
     result["human_justification"] = safe_justification
+    result["reviewed_by"] = _redigir_pergunta(operator.strip())
     result["reviewed_at"] = datetime.now(timezone.utc).isoformat()
     path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     audit_dir = settings.get("paths", {}).get("results_directory", "resultados")
     event = {"execution_id": execution_id, "timestamp": result["reviewed_at"], "event": "revisao_humana",
-             "decision": decision, "justification_hash": hashlib.sha256(safe_justification.encode("utf-8")).hexdigest(),
+             "decision": decision, "operator_hash": hashlib.sha256(result["reviewed_by"].encode("utf-8")).hexdigest()[:16],
+             "justification_hash": hashlib.sha256(safe_justification.encode("utf-8")).hexdigest(),
              "status": result.get("status"), "provider": result.get("provider"), "model": result.get("model")}
     _append_query_log(_relative_path(audit_dir) / "logs" / "consultas.jsonl", event)
     AuditLogger(str(_relative_path(audit_dir) / "logs")).log_event("rag_revisao_humana", decision, event, execution_id=execution_id)

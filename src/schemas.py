@@ -18,6 +18,8 @@ TipoEntidade = Literal[
     "pessoa", "orgao", "local", "data", "protocolo", "curso",
     "turno", "carga_horaria", "atividade", "outro",
 ]
+PolaridadeSentimento = Literal["positiva", "negativa", "neutra", "indeterminada"]
+DecisaoGuardrail = Literal["permitir", "revisar", "bloquear"]
 
 
 class ContratoEstrito(BaseModel):
@@ -59,6 +61,23 @@ class RespostaRAG(ContratoEstrito):
     resposta: StrictStr = Field(description="Resposta institucional concisa; vazia quando não há suporte.")
     citacoes: list[CitacaoRAG] = Field(description="IDs de chunks que sustentam afirmações da resposta.")
     motivo_revisao: StrictStr | None = Field(description="Motivo de abstenção/revisão ou null.")
+
+
+class AnaliseSentimento(ContratoEstrito):
+    id: StrictStr = Field(description="Identificador da avaliação.")
+    polaridade: PolaridadeSentimento = Field(description="positiva, negativa, neutra ou indeterminada.")
+    justificativa: StrictStr = Field(description="Justificativa curta baseada apenas no texto.")
+    confianca_modelo: float = Field(ge=0.0, le=1.0, description="Estimativa não calibrada reportada pelo modelo.")
+    revisao_necessaria: StrictBool = Field(description="True quando houver ironia, mensagem mista ou falta de contexto.")
+    motivo_revisao: StrictStr | None = Field(description="Motivo de revisão quando aplicável.")
+
+
+class ResultadoGuardrail(ContratoEstrito):
+    decisao: DecisaoGuardrail
+    camada: Literal["entrada", "recuperacao", "saida"]
+    motivos: list[StrictStr]
+    moderacao_acionada: StrictBool
+    acao_recomendada: StrictStr
 
 
 class ErroRegraNegocio(ValueError):

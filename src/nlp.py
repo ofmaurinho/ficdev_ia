@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from src.audit import AuditLogger
+from src.guardrails import avaliar_entrada_guardrail, validar_arquivo_entrada
 from src.llm_client import (
     APIClientError,
     MissingAPIKeyError,
@@ -250,6 +251,9 @@ def processar_solicitacao(
     api_client: StructuredGenerationProvider | None = None
     calls_before = 0
     try:
+        guard = avaliar_entrada_guardrail(texto, max_chars=100_000, config=settings)
+        if guard.decisao == "bloquear":
+            raise ErroRegraNegocio(f"Solicitação bloqueada por guardrail: {', '.join(guard.motivos)}")
         api_client = cliente or _openai(settings)
         budget_limit = int(settings.get("desafio2", {}).get("llm", {}).get("max_calls_per_run", 20))
         if gerenciar_orcamento and hasattr(api_client, "begin_run"):
@@ -260,8 +264,10 @@ def processar_solicitacao(
             metadata["api_calls"] = api_client.api_calls_made - calls_before
         metadata["provider"] = metadata.get("provider", settings.get("desafio2", {}).get("llm", {}).get("provider", "openai"))
         alertas = validar_ficha(ficha, texto)
+        if guard.decisao == "revisar":
+            alertas.append(f"Guardrail acionado ({', '.join(guard.motivos)}); minuta automática bloqueada.")
         critical = any(name in ficha.campos_ausentes for name in ("protocolo", "data", "solicitante", "assunto", "pedido"))
-        pode_minutar = not critical and not alertas
+        pode_minutar = not critical and not alertas and guard.decisao == "permitir"
         minuta = None
         if pode_minutar:
             minuta = build_minuta({
@@ -278,6 +284,7 @@ def processar_solicitacao(
             "sha256_entrada": digest,
             "ficha": ficha.model_dump(mode="json"),
             "alertas_negocio": alertas,
+            "guardrail": guard.model_dump(mode="json"),
             "status": "revisao_humana" if ficha.revisao_humana_necessaria or not pode_minutar else "pronta_para_revisao",
             "minuta": minuta,
             "decisao_humana": "pendente",
@@ -317,9 +324,49 @@ def processar_solicitacao(
         raise APIClientError("Falha controlada ao compreender a solicitação.") from exc
 
 
+def registrar_revisao_ficha(
+    solicitacao_id: str,
+    decisao: str,
+    justificativa: str,
+    *,
+    operador: str = "operador_revisor",
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Registra decisão humana (aprovada, rejeitada ou revisar) em uma ficha processada."""
+    if decisao not in {"aprovada", "rejeitada", "revisar"} or not justificativa.strip() or not operador.strip():
+        raise ValueError("Decisão deve ser aprovada, rejeitada ou revisar, com justificativa e operador.")
+    settings = _config(config)
+    path = _path(settings, settings.get("processed_dir", "dados/processados")) / f"{solicitacao_id}_ficha.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"Ficha não encontrada: {solicitacao_id}")
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if decisao == "aprovada" and payload.get("minuta") is None:
+        raise ValueError("Ficha sem minuta ou com campos críticos ausentes não pode ser aprovada.")
+    payload["decisao_humana"] = decisao
+    payload["justificativa_revisao"] = minimize_text_for_provider(justificativa.strip())
+    payload["revisado_por"] = minimize_text_for_provider(operador.strip())
+    payload["revisado_em"] = datetime.now(timezone.utc).isoformat()
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    logger = AuditLogger(str(_path(settings, settings.get("results_dir", "resultados")) / "logs"))
+    logger.log_event(
+        "ficha_revisao_humana",
+        decisao,
+        {
+            "solicitacao_id_hash": hashlib.sha256(solicitacao_id.encode()).hexdigest()[:16],
+            "decisao": decisao,
+            "operador_hash": hashlib.sha256(operador.strip().encode()).hexdigest()[:16],
+        },
+        execution_id=payload.get("execution_id"),
+    )
+    return payload
+
+
 def carregar_texto_solicitacao(path: str | Path) -> str:
     """Lê TXT ou saídas JSON de texto/STT/OCR já existentes no Desafio 1."""
     source = Path(path)
+    guard_file = validar_arquivo_entrada(source, extensoes_permitidas={".txt", ".json"})
+    if guard_file.decisao == "bloquear":
+        raise ValueError(f"Arquivo inválido para compreensão: {', '.join(guard_file.motivos)}")
     if source.suffix.lower() == ".txt":
         return source.read_text(encoding="utf-8")
     if source.suffix.lower() != ".json":
