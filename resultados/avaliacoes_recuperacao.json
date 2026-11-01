@@ -1,6 +1,6 @@
 {
   "schema_version": "retrieval-evaluation.v1",
-  "measured_at": "2026-10-30T04:17:19.626944+00:00",
+  "measured_at": "2026-11-01T16:02:27.635179+00:00",
   "embedding_provider": "openai",
   "embedding_model": "text-embedding-3-small",
   "top_k": 3,
@@ -35,24 +35,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
-              "distance": 0.2678842544555664,
-              "similarity": 0.7321157455444336,
+              "distance": 0.26431477069854736,
+              "similarity": 0.7356852293014526,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
             },
             {
               "chunk_id": "chunk-d878fcbad887a1b100d38e86",
-              "distance": 0.2809722423553467,
-              "similarity": 0.7190277576446533,
+              "distance": 0.28087878227233887,
+              "similarity": 0.7191212177276611,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Atendimento por protocolo"
             },
             {
               "chunk_id": "chunk-3df52570f9d5a1ca9a9a358e",
-              "distance": 0.3475029468536377,
-              "similarity": 0.6524970531463623,
+              "distance": 0.3479125499725342,
+              "similarity": 0.6520874500274658,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": null
@@ -74,24 +74,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-c609e7f00a0bd43b8c87ae70",
-              "distance": 0.4157264232635498,
-              "similarity": 0.5842735767364502,
+              "distance": 0.4160301685333252,
+              "similarity": 0.5839698314666748,
               "document_id": "ACV-MATR-004",
               "page": 1,
               "section": "Course start date"
             },
             {
               "chunk_id": "chunk-ee286e172c1b4a942300965f",
-              "distance": 0.5284155607223511,
-              "similarity": 0.4715844392776489,
+              "distance": 0.5284490585327148,
+              "similarity": 0.47155094146728516,
               "document_id": "ACV-MATR-002",
               "page": null,
               "section": "Documentos de identificação"
             },
             {
               "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
-              "distance": 0.5547894835472107,
-              "similarity": 0.4452105164527893,
+              "distance": 0.5552223324775696,
+              "similarity": 0.4447776675224304,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
@@ -113,24 +113,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-fb59f32888fd655cfa45becb",
-              "distance": 0.378079354763031,
-              "similarity": 0.621920645236969,
+              "distance": 0.3781430721282959,
+              "similarity": 0.6218569278717041,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Main service desk"
             },
             {
               "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
-              "distance": 0.4113231897354126,
-              "similarity": 0.5886768102645874,
+              "distance": 0.4105309844017029,
+              "similarity": 0.5894690155982971,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
             },
             {
               "chunk_id": "chunk-15726baca91f32809a8c6775",
-              "distance": 0.4617655277252197,
-              "similarity": 0.5382344722747803,
+              "distance": 0.46170252561569214,
+              "similarity": 0.5382974743843079,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Accessibility requests"
@@ -152,24 +152,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
-              "distance": 0.2852070927619934,
-              "similarity": 0.7147929072380066,
+              "distance": 0.28514790534973145,
+              "similarity": 0.7148520946502686,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Prazo e confirmação"
             },
             {
               "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
-              "distance": 0.3478337526321411,
-              "similarity": 0.6521662473678589,
+              "distance": 0.3478522300720215,
+              "similarity": 0.6521477699279785,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Solicitação de recurso de acessibilidade"
             },
             {
               "chunk_id": "chunk-2d1a92b28c9981183caea9ab",
-              "distance": 0.4533042311668396,
-              "similarity": 0.5466957688331604,
+              "distance": 0.4530596137046814,
+              "similarity": 0.5469403862953186,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": null
@@ -191,24 +191,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
-              "distance": 0.3389168977737427,
-              "similarity": 0.6610831022262573,
+              "distance": 0.33894264698028564,
+              "similarity": 0.6610573530197144,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Solicitação de recurso de acessibilidade"
             },
             {
               "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
-              "distance": 0.4001747965812683,
-              "similarity": 0.5998252034187317,
+              "distance": 0.40015220642089844,
+              "similarity": 0.5998477935791016,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Prazo e confirmação"
             },
             {
               "chunk_id": "chunk-15726baca91f32809a8c6775",
-              "distance": 0.40988874435424805,
-              "similarity": 0.590111255645752,
+              "distance": 0.40989601612091064,
+              "similarity": 0.5901039838790894,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Accessibility requests"
@@ -246,24 +246,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
-              "distance": 0.2644408345222473,
-              "similarity": 0.7355591654777527,
+              "distance": 0.2644193172454834,
+              "similarity": 0.7355806827545166,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
             },
             {
               "chunk_id": "chunk-e13d159c27f636d824ed9d69",
-              "distance": 0.28064924478530884,
-              "similarity": 0.7193507552146912,
+              "distance": 0.28093135356903076,
+              "similarity": 0.7190686464309692,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Atendimento por protocolo"
             },
             {
               "chunk_id": "chunk-2361730c47b377871b15d08b",
-              "distance": 0.3696337938308716,
-              "similarity": 0.6303662061691284,
+              "distance": 0.3696292042732239,
+              "similarity": 0.6303707957267761,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Main service desk"
@@ -285,24 +285,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-f640ad438ab46c6c6a72266c",
-              "distance": 0.4156803488731384,
-              "similarity": 0.5843196511268616,
+              "distance": 0.4157050848007202,
+              "similarity": 0.5842949151992798,
               "document_id": "ACV-MATR-004",
               "page": 1,
               "section": "Course start date"
             },
             {
               "chunk_id": "chunk-156d5b9492aec2156dcc62e0",
-              "distance": 0.5284390449523926,
-              "similarity": 0.4715609550476074,
+              "distance": 0.5284518003463745,
+              "similarity": 0.4715481996536255,
               "document_id": "ACV-MATR-002",
               "page": null,
               "section": "Documentos de identificação"
             },
             {
               "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
-              "distance": 0.5552663803100586,
-              "similarity": 0.4447336196899414,
+              "distance": 0.5552199482917786,
+              "similarity": 0.44478005170822144,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
@@ -324,24 +324,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-2361730c47b377871b15d08b",
-              "distance": 0.3781728744506836,
-              "similarity": 0.6218271255493164,
+              "distance": 0.3780931830406189,
+              "similarity": 0.6219068169593811,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Main service desk"
             },
             {
               "chunk_id": "chunk-46bc0bb02c5cd161f3b1433c",
-              "distance": 0.41043221950531006,
-              "similarity": 0.5895677804946899,
+              "distance": 0.4105353355407715,
+              "similarity": 0.5894646644592285,
               "document_id": "ACV-ATEND-001",
               "page": null,
               "section": "Horário de atendimento presencial"
             },
             {
               "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
-              "distance": 0.4618109464645386,
-              "similarity": 0.5381890535354614,
+              "distance": 0.46177011728286743,
+              "similarity": 0.5382298827171326,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Accessibility requests"
@@ -363,24 +363,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-e8753e40143f3ee3e55f7986",
-              "distance": 0.2852070927619934,
-              "similarity": 0.7147929072380066,
+              "distance": 0.2851994037628174,
+              "similarity": 0.7148005962371826,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Prazo e confirmação"
             },
             {
               "chunk_id": "chunk-2a3ce9d9aad317e61bf53e31",
-              "distance": 0.3478337526321411,
-              "similarity": 0.6521662473678589,
+              "distance": 0.3478161096572876,
+              "similarity": 0.6521838903427124,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Solicitação de recurso de acessibilidade"
             },
             {
               "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
-              "distance": 0.509521484375,
-              "similarity": 0.490478515625,
+              "distance": 0.5095372796058655,
+              "similarity": 0.4904627203941345,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Accessibility requests"
@@ -402,24 +402,24 @@
           "retrieved": [
             {
               "chunk_id": "chunk-2a3ce9d9aad317e61bf53e31",
-              "distance": 0.3389168977737427,
-              "similarity": 0.6610831022262573,
+              "distance": 0.3388972282409668,
+              "similarity": 0.6611027717590332,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Solicitação de recurso de acessibilidade"
             },
             {
               "chunk_id": "chunk-e8753e40143f3ee3e55f7986",
-              "distance": 0.4001747965812683,
-              "similarity": 0.5998252034187317,
+              "distance": 0.4001384973526001,
+              "similarity": 0.5998615026473999,
               "document_id": "ACV-ACESS-003",
               "page": null,
               "section": "Prazo e confirmação"
             },
             {
               "chunk_id": "chunk-4d6ddfc0b444d75f811280d3",
-              "distance": 0.40988874435424805,
-              "similarity": 0.590111255645752,
+              "distance": 0.40987318754196167,
+              "similarity": 0.5901268124580383,
               "document_id": "ACV-ATEND-005",
               "page": 1,
               "section": "Accessibility requests"

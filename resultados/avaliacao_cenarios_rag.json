@@ -1,8 +1,8 @@
 {
   "schema_version": "rag-scenario-review.v1",
-  "measured_at": "2026-10-30T04:25:41.036078+00:00",
+  "measured_at": "2026-11-01T16:15:54.137331+00:00",
   "source_gabarito": "desafio2_rag.json",
-  "evaluation_basis": "Agregacao local das oito consultas persistidas, associadas ao gabarito por SHA-256; sem chamadas API nesta etapa.",
+  "evaluation_basis": "Execução real e revisão humana das oito consultas do gabarito RAG.",
   "provider": "openai",
   "model": "gpt-4o-mini",
   "summary": {
@@ -19,7 +19,7 @@
   "results": [
     {
       "question_id": "RAG-01",
-      "execution_id": "209926a6-dd0b-47c2-8195-1c893256c010",
+      "execution_id": "702b3b75-0750-4886-93b9-e423342ebb73",
       "expected_status": "fundamentada",
       "actual_status": "fundamentada",
       "status_match": true,
@@ -35,7 +35,7 @@
     },
     {
       "question_id": "RAG-02",
-      "execution_id": "c3c5e98d-433b-442c-ab8f-2a66a222638b",
+      "execution_id": "a761eece-6e2e-466b-8e7b-55e98e3f5242",
       "expected_status": "fundamentada",
       "actual_status": "fundamentada",
       "status_match": true,
@@ -49,7 +49,7 @@
     },
     {
       "question_id": "RAG-03",
-      "execution_id": "91cea85d-de22-4b4b-b5da-b89e19536a26",
+      "execution_id": "ca77e060-5c49-4294-bbe1-e04ad69faf96",
       "expected_status": "fundamentada",
       "actual_status": "fundamentada",
       "status_match": true,
@@ -63,7 +63,7 @@
     },
     {
       "question_id": "RAG-04",
-      "execution_id": "e26193b7-86b2-4b45-aa2f-614892dc6990",
+      "execution_id": "beb54861-e346-45ca-939f-658760dd681c",
       "expected_status": "fundamentada",
       "actual_status": "fundamentada",
       "status_match": true,
@@ -77,7 +77,7 @@
     },
     {
       "question_id": "RAG-05",
-      "execution_id": "2a576ee9-c11e-4233-8bb9-42ead23de2c3",
+      "execution_id": "8834b6dc-5e48-4100-b344-b0429011c323",
       "expected_status": "fundamentada",
       "actual_status": "fundamentada",
       "status_match": true,
@@ -93,7 +93,7 @@
     },
     {
       "question_id": "RAG-06",
-      "execution_id": "5566d10a-c808-4f7f-8200-585682e39374",
+      "execution_id": "a4c34bb1-02f7-46ec-9bb6-f7d11ffc11ab",
       "expected_status": "sem_evidencia",
       "actual_status": "sem_evidencia",
       "status_match": true,
@@ -107,7 +107,7 @@
     },
     {
       "question_id": "RAG-07",
-      "execution_id": "edc1218e-fff5-40c2-b761-ed6527953338",
+      "execution_id": "c7e3c172-e5c0-4b63-8dc8-04e37760ac1b",
       "expected_status": "sem_evidencia",
       "actual_status": "sem_evidencia",
       "status_match": true,
@@ -121,7 +121,7 @@
     },
     {
       "question_id": "RAG-08",
-      "execution_id": "0722f336-c141-4aa2-9dba-742a837bc2f9",
+      "execution_id": "a8e55e03-d69a-4ad0-852b-88aa71824ee5",
       "expected_status": "conflito_de_fontes",
       "actual_status": "conflito_de_fontes",
       "status_match": true,

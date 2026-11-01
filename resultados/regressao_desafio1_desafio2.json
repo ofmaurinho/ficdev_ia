@@ -1,6 +1,6 @@
 {
   "schema_version": "regressao-desafio1.v1",
-  "measured_at": "2026-11-01T15:34:12.703598+00:00",
+  "measured_at": "2026-11-01T16:46:48.438479+00:00",
   "total_casos": 3,
   "casos_concluidos": 3,
   "casos": [
@@ -8,14 +8,16 @@
       "caso_id": "REG-TEXTO",
       "modalidade_origem": "texto_desafio1",
       "arquivo_origem": "arquivos/entrada_texto.txt",
-      "execution_id": "daf41eb7-35a5-46ed-b818-031384fbbcd8",
+      "execution_id": "fb1499e7-68c7-47ad-a665-f09e621df149",
       "protocolo": "2026-000142",
       "data": "14/10/2026",
       "solicitante": "Marcos Vinícius de Almeida Santos",
       "categoria": "solicitacao_servico",
-      "campos_ausentes": [],
+      "campos_ausentes": [
+        "assunto"
+      ],
       "status": "revisao_humana",
-      "minuta_gerada": true,
+      "minuta_gerada": false,
       "decisao_humana": "pendente",
       "arquivo_saida": "/home/leo/Documentos/Fic_dev_ia/desafio-llm-2/ficdev_ia/dados/processados/REG-TEXTO_ficha.json"
     },
@@ -23,7 +25,7 @@
       "caso_id": "REG-AUDIO",
       "modalidade_origem": "audio_revisado_desafio1",
       "arquivo_origem": "dados/processados/entrada_audio_transcricao_revisada.txt",
-      "execution_id": "292d7e40-0ca7-485a-a346-c54b64adc599",
+      "execution_id": "436c52eb-0e44-40d1-8d1f-3b54c3bc97bb",
       "protocolo": "2026-000142",
       "data": "14 de outubro de 2026",
       "solicitante": "Marcos Vinícius de Almeida Santos",
@@ -38,15 +40,17 @@
       "caso_id": "REG-OCR",
       "modalidade_origem": "ocr_corrigido_desafio1",
       "arquivo_origem": "dados/processados/entrada_pdf_ocr_corrigido.txt",
-      "execution_id": "8bcbf796-f540-403c-8894-e4ae2c0a16ed",
+      "execution_id": "f094772b-c89f-4dda-b679-907d8d77abf3",
       "protocolo": null,
       "data": null,
       "solicitante": null,
-      "categoria": "solicitacao_servico",
+      "categoria": "revisao",
       "campos_ausentes": [
-        "data",
         "protocolo",
-        "solicitante"
+        "data",
+        "solicitante",
+        "assunto",
+        "pedido"
       ],
       "status": "revisao_humana",
       "minuta_gerada": false,

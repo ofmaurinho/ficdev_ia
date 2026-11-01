@@ -1,6 +1,6 @@
 {
   "schema_version": "matriz-rf23.v1",
-  "measured_at": "2026-11-01T15:37:22.965407+00:00",
+  "measured_at": "2026-11-01T16:50:02.179553+00:00",
   "metricas_consolidadas": {
     "acuracia_categorias_rf15": {
       "numerador": 6,
@@ -47,16 +47,16 @@
     }
   },
   "decisoes_humanas_rag": {
-    "aprovada": 3,
+    "aprovada": 4,
     "rejeitada": 1,
     "revisar": 4,
-    "pendente": 1
+    "pendente": 2
   },
   "decisoes_humanas_fichas": {
     "aprovada": 1,
     "rejeitada": 1,
     "revisar": 1,
-    "pendente": 0
+    "pendente": 6
   },
   "testes_obrigatorios": [
     {
@@ -154,7 +154,7 @@
       "requisito": "RF20/RF24",
       "entrada": "Registro de aprovação, rejeição e pedido de revisão nas consultas RAG e fichas NLP",
       "esperado": "Estados aprovada, rejeitada e revisar persistidos com operador e justificativa; sem envio automático",
-      "obtido": "RAG: aprovada=3, rejeitada=1, revisar=4; Fichas: aprovada=1, rejeitada=1, revisar=1",
+      "obtido": "RAG: aprovada=4, rejeitada=1, revisar=4; Fichas: aprovada=1, rejeitada=1, revisar=1",
       "evidencia": "resultados/rag/*.json e dados/processados/SOL-*_ficha.json",
       "situacao": "PASSOU"
     },
@@ -163,7 +163,7 @@
       "requisito": "RF21",
       "entrada": "Troca do provedor de geração para 'simulated' e simulação de falha/índice ausente",
       "esperado": "Índice vetorial preservado sem reindexar; falha tratada e registrada em consultas.jsonl",
-      "obtido": "Provedores registrados=['openai']; falhas/bloqueios tratados=1; índice preservado",
+      "obtido": "Provedores registrados=['openai', 'simulated']; falhas/bloqueios tratados=1; índice preservado",
       "evidencia": "resultados/logs/consultas.jsonl e resultados/logs/audit.jsonl",
       "situacao": "PASSOU"
     },

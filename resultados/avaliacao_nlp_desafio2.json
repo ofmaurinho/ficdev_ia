@@ -59,7 +59,7 @@
         },
         "assunto": {
           "esperado": "efetivação de matrícula em curso técnico",
-          "obtido": "Efetivação de matrícula no curso técnico em enfermagem",
+          "obtido": "Efetivação da matrícula no curso técnico em enfermagem",
           "acerto_literal": false
         }
       },
@@ -192,7 +192,7 @@
         },
         "assunto": {
           "esperado": "Informações sobre início e turno do curso Técnico em Administração",
-          "obtido": "Informação sobre início do curso Técnico em Administração",
+          "obtido": "Data de início do curso Técnico em Administração",
           "acerto_literal": false
         }
       },
@@ -251,7 +251,7 @@
         },
         "assunto": {
           "esperado": "Registro de recurso de acessibilidade",
-          "obtido": "Recurso de acessibilidade",
+          "obtido": null,
           "acerto_literal": false
         }
       },
@@ -306,7 +306,7 @@
         },
         "assunto": {
           "esperado": "informações sobre matrícula",
-          "obtido": "Matrícula no curso técnico",
+          "obtido": null,
           "acerto_literal": false
         }
       },
@@ -403,10 +403,6 @@
   ],
   "metricas_reais": true,
   "schema_version": "avaliacao-nlp.v1",
-  "measured_at": "2026-10-30T04:29:28.978690+00:00",
-  "source_gabarito": "desafio2_solicitacoes.json",
-  "gabarito_schema_version": "gabarito-solicitacoes.v2",
-  "prompt_version": "compreensao_solicitacao.v3",
-  "nlp_schema_version": "solicitacao.v2",
-  "evaluation_basis": "Reavaliacao local das seis fichas desta execucao contra gabarito v2 corrigido; normalizacao deterministica de entidades v2; sem chamadas API nesta etapa."
+  "measured_at": "2026-11-01T16:09:37.212563+00:00",
+  "source_gabarito": "desafio2_solicitacoes.json"
 }

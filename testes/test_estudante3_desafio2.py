@@ -163,17 +163,20 @@ class GuardrailsRF16Tests(unittest.TestCase):
 
     def test_validacao_arquivo_e_suite_adversarial(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
+            cfg = json.loads(json.dumps(self.cfg))
+            cfg["desafio2"]["paths"]["results_directory"] = str(Path(tmp) / "resultados")
+            cfg["results_dir"] = str(Path(tmp) / "resultados")
             caminho_exe = Path(tmp) / "script.exe"
             caminho_exe.write_text("invalido", encoding="utf-8")
-            res_ext = validar_arquivo_entrada(caminho_exe, config=self.cfg)
+            res_ext = validar_arquivo_entrada(caminho_exe, config=cfg)
             self.assertEqual(res_ext.decisao, "bloquear")
 
             caminho_txt = Path(tmp) / "valido.txt"
             caminho_txt.write_text("Solicitação válida de segunda via.", encoding="utf-8")
-            res_ok = validar_arquivo_entrada(caminho_txt, config=self.cfg)
+            res_ok = validar_arquivo_entrada(caminho_txt, config=cfg)
             self.assertEqual(res_ok.decisao, "permitir")
 
-            relatorio = avaliar_casos_adversariais(config=self.cfg)
+            relatorio = avaliar_casos_adversariais(config=cfg)
             self.assertEqual(relatorio["ataques_contidos"], 3)
             self.assertEqual(relatorio["total_ataques"], 3)
 
@@ -240,6 +243,7 @@ class ExclusaoRevisaoRF24Tests(unittest.TestCase):
     def test_exclusao_documento_remove_chunks_do_indice(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             cfg = json.loads((Path(__file__).resolve().parent.parent / "config.json").read_text(encoding="utf-8"))
+            cfg["desafio2"]["vector_store"]["persist_directory"] = str(Path(tmp) / "chroma")
             cfg["desafio2"]["paths"]["index_directory"] = str(Path(tmp) / "chroma")
             cfg["desafio2"]["paths"]["results_directory"] = str(Path(tmp) / "resultados")
             fake_emb = FakeEmbeddingProvider()
@@ -336,6 +340,15 @@ class InterfaceEMetricasTests(unittest.TestCase):
 
         t13 = verificar_agregacao_t13()
         self.assertTrue(t13["passou"])
+
+    def test_renderizacao_streamlit_apptest(self) -> None:
+        from streamlit.testing.v1 import AppTest
+
+        app_path = Path(__file__).resolve().parent.parent / "src" / "app.py"
+        at = AppTest.from_file(str(app_path))
+        at.run(timeout=15)
+        self.assertEqual(len(at.exception), 0)
+        self.assertEqual(len(at.tabs), 4)
 
 
 if __name__ == "__main__":

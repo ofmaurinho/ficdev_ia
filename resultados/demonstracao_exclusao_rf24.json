@@ -1,6 +1,6 @@
 {
   "schema_version": "exclusao-rf24.v1",
-  "measured_at": "2026-11-01T15:33:38.269187+00:00",
+  "measured_at": "2026-11-01T16:46:02.525697+00:00",
   "document_id": "ACV-ATEND-005",
   "query_verificacao": "Qual é o endereço do balcão principal em Serra Clara?",
   "chunks_do_documento_antes": [
@@ -9,17 +9,30 @@
   ],
   "exclusao": {
     "document_id": "ACV-ATEND-005",
-    "deleted_at": "2026-11-01T15:33:35.958573+00:00",
-    "chunks_removed": 3,
+    "deleted_at": "2026-11-01T16:45:59.028404+00:00",
+    "chunks_removed": 10,
     "collections": {
-      "acervo_institucional_structural": 3
+      "acervo_institucional_structural": 3,
+      "avaliacao_fixed_400_overlap_80_fixed_400_overlap_80": 2,
+      "avaliacao_structural_structural": 3,
+      "acervo_institucional_fixed_400_overlap_80": 2
     },
     "removed_chunk_ids": [
       "chunk-2db49ab9a3d92325a9f4c695",
       "chunk-fb59f32888fd655cfa45becb",
-      "chunk-15726baca91f32809a8c6775"
+      "chunk-15726baca91f32809a8c6775",
+      "chunk-2361730c47b377871b15d08b",
+      "chunk-4d6ddfc0b444d75f811280d3",
+      "chunk-2db49ab9a3d92325a9f4c695",
+      "chunk-fb59f32888fd655cfa45becb",
+      "chunk-15726baca91f32809a8c6775",
+      "chunk-2361730c47b377871b15d08b",
+      "chunk-4d6ddfc0b444d75f811280d3"
     ],
-    "derived_rag_affected": [],
+    "derived_rag_affected": [
+      "8834b6dc-5e48-4100-b344-b0429011c323",
+      "ca77e060-5c49-4294-bbe1-e04ad69faf96"
+    ],
     "derived_action": "invalidated"
   },
   "chunks_do_documento_apos_exclusao": [],

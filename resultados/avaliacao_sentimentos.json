@@ -1,8 +1,8 @@
 {
   "schema_version": "sentimento.v1",
   "prompt_version": "sentimento_atendimento.v1",
-  "measured_at": "2026-11-01T15:32:47.137627+00:00",
-  "duration_seconds": 17.496,
+  "measured_at": "2026-11-01T16:44:39.523274+00:00",
+  "duration_seconds": 16.888,
   "agregacao": {
     "total_recebido": 12,
     "duplicatas_removidas": 0,
@@ -61,7 +61,7 @@
       "analise": {
         "id": "AVA-001",
         "polaridade": "positiva",
-        "justificativa": "A equipe demonstrou paciência e eficiência ao explicar e resolver dúvidas.",
+        "justificativa": "A equipe demonstrou paciência e resolveu a dúvida, indicando um atendimento eficaz.",
         "confianca_modelo": 0.95,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -71,19 +71,19 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.866,
-        "response_id": "resp_09d4b66da9de3c6e006ae75b8e3c0087d295d1070e427e92b1",
+        "duration_seconds": 2.038,
+        "response_id": "resp_0f47f53ff7ac1b4f006ae76c6723c087d2a065faa788c84928",
         "usage": {
           "input_tokens": 481,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 59,
+          "output_tokens": 61,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 540
+          "total_tokens": 542
         },
         "api_calls_made": 1,
         "custo_estimado": null,
@@ -99,7 +99,7 @@
       "analise": {
         "id": "AVA-002",
         "polaridade": "positiva",
-        "justificativa": "A avaliação expressa satisfação com o atendimento e a orientação recebida.",
+        "justificativa": "O atendimento foi descrito como bom e as orientações foram úteis.",
         "confianca_modelo": 0.95,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -109,8 +109,8 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.577,
-        "response_id": "resp_0c705cb4cead0fd1006ae75b8fb0e487d2b05067b6420b35ff",
+        "duration_seconds": 1.623,
+        "response_id": "resp_00233d4a3842a162006ae76c68d9d087d28ea90b8d4ac7ad48",
         "usage": {
           "input_tokens": 481,
           "input_tokens_details": {
@@ -147,8 +147,8 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.597,
-        "response_id": "resp_0f0929dfa7449e29006ae75b91429c87d2897a96fc8dc10da0",
+        "duration_seconds": 1.243,
+        "response_id": "resp_0e8bfb2de1f8896f006ae76c6a7b6c87d2808ca71fd447da2d",
         "usage": {
           "input_tokens": 476,
           "input_tokens_details": {
@@ -175,7 +175,7 @@
       "analise": {
         "id": "AVA-004",
         "polaridade": "negativa",
-        "justificativa": "A avaliação expressa insatisfação devido à longa espera e falta de resposta.",
+        "justificativa": "A avaliação expressa insatisfação e frustração sobre o atendimento recebido.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -185,8 +185,8 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.196,
-        "response_id": "resp_062fda7c37f328c2006ae75b92d9d887d2b4d30b05881ba16f",
+        "duration_seconds": 1.517,
+        "response_id": "resp_0007fa60f1c16734006ae76c6bb1b487d292c6e3906b53c76a",
         "usage": {
           "input_tokens": 481,
           "input_tokens_details": {
@@ -213,7 +213,7 @@
       "analise": {
         "id": "AVA-005",
         "polaridade": "negativa",
-        "justificativa": "A informação incompleta indica insatisfação.",
+        "justificativa": "A avaliação destaca que a informação estava incompleta, resultando em uma experiência insatisfatória.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -223,19 +223,19 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.157,
-        "response_id": "resp_0b7e02ae049e9600006ae75b94023087d292d60db1ca0cf759",
+        "duration_seconds": 1.248,
+        "response_id": "resp_03361c3848264eb7006ae76c6d2eb487d29d8019a45365fa9a",
         "usage": {
           "input_tokens": 480,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 54,
+          "output_tokens": 64,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 534
+          "total_tokens": 544
         },
         "api_calls_made": 5,
         "custo_estimado": null,
@@ -251,7 +251,7 @@
       "analise": {
         "id": "AVA-006",
         "polaridade": "negativa",
-        "justificativa": "A avaliação destaca a rispidez do atendente e a falta de explicação, indicando uma experiência insatisfatória.",
+        "justificativa": "A avaliação destaca que o atendente foi ríspido e não explicou o procedimento, sinalizando insatisfação.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -261,19 +261,19 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.542,
-        "response_id": "resp_06e28c8903bbc728006ae75b952b6087d2b413b61fdb710783",
+        "duration_seconds": 1.434,
+        "response_id": "resp_01bad5d9eabb12d1006ae76c6e6f8c87d29f99e374dbc53155",
         "usage": {
           "input_tokens": 481,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 69,
+          "output_tokens": 68,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 550
+          "total_tokens": 549
         },
         "api_calls_made": 6,
         "custo_estimado": null,
@@ -289,7 +289,7 @@
       "analise": {
         "id": "AVA-007",
         "polaridade": "neutra",
-        "justificativa": "A avaliação descreve uma ação sem expressar juízo de valor positivo ou negativo.",
+        "justificativa": "A avaliação é descritiva, sem expressar elogios ou críticas.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -299,19 +299,19 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.542,
-        "response_id": "resp_0da6ce212771cded006ae75b96bd9887d2a6bf741e351c26c8",
+        "duration_seconds": 1.254,
+        "response_id": "resp_0f5e3582dd9d43bf006ae76c6fe23c87d28e7b3b6f6c0619db",
         "usage": {
           "input_tokens": 483,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 62,
+          "output_tokens": 60,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 545
+          "total_tokens": 543
         },
         "api_calls_made": 7,
         "custo_estimado": null,
@@ -327,7 +327,7 @@
       "analise": {
         "id": "AVA-008",
         "polaridade": "neutra",
-        "justificativa": "O comentário é informativo, sem emoções ou julgamentos claros.",
+        "justificativa": "A avaliação é apenas uma informação factual sem opiniões ou sentimentos expressos.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": false,
         "motivo_revisao": null
@@ -337,19 +337,19 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.089,
-        "response_id": "resp_0b71170276c529b5006ae75b9842d487d2b14d94cc8e42d8e4",
+        "duration_seconds": 1.614,
+        "response_id": "resp_04f8d2b324056488006ae76c71299087d28b415b0b1ee391f4",
         "usage": {
           "input_tokens": 483,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 58,
+          "output_tokens": 59,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 541
+          "total_tokens": 542
         },
         "api_calls_made": 8,
         "custo_estimado": null,
@@ -365,8 +365,8 @@
       "analise": {
         "id": "AVA-009",
         "polaridade": "neutra",
-        "justificativa": "A avaliação é informativa, sem expressar claramente satisfação ou insatisfação.",
-        "confianca_modelo": 0.85,
+        "justificativa": "A avaliação é informativa e não expressa uma opinião positiva ou negativa clara.",
+        "confianca_modelo": 0.7,
         "revisao_necessaria": false,
         "motivo_revisao": null
       },
@@ -375,8 +375,8 @@
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.139,
-        "response_id": "resp_09fe6e77f35af214006ae75b9958c887d28234d9de5865e7aa",
+        "duration_seconds": 1.228,
+        "response_id": "resp_07fb0e2d510a9cec006ae76c72bd2c87d2a96f6c499d4e68a2",
         "usage": {
           "input_tokens": 478,
           "input_tokens_details": {
@@ -403,29 +403,29 @@
       "analise": {
         "id": "AVA-010",
         "polaridade": "indeterminada",
-        "justificativa": "Elogio e crítica coexistem na avaliação, mas falta clareza sobre a experiência geral.",
+        "justificativa": "A avaliação contém um elogio e uma crítica, resultando em uma mensagem mista.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": true,
-        "motivo_revisao": null
+        "motivo_revisao": "Mensagem mista entre elogio e crítica."
       },
       "acerto_gabarito": true,
       "caso_incerto": true,
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.551,
-        "response_id": "resp_0eadba2e4f32c0ca006ae75b9a7c1887d28d01a67e730bd855",
+        "duration_seconds": 1.232,
+        "response_id": "resp_0ed83e7eb275e6bb006ae76c73f79c87d290b57a60a81dd5b9",
         "usage": {
           "input_tokens": 479,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 65,
+          "output_tokens": 72,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 544
+          "total_tokens": 551
         },
         "api_calls_made": 10,
         "custo_estimado": null,
@@ -441,29 +441,29 @@
       "analise": {
         "id": "AVA-011",
         "polaridade": "indeterminada",
-        "justificativa": "A avaliação contém elogio e crítica simultaneamente, o que gera ambiguidade no sentimento.",
+        "justificativa": "A avaliação contém elogio e crítica simultaneamente, gerando ambiguidade.",
         "confianca_modelo": 0.85,
         "revisao_necessaria": true,
-        "motivo_revisao": "Mensagem mista com elogio e crítica."
+        "motivo_revisao": "Mensagem mista entre elogio e crítica."
       },
       "acerto_gabarito": true,
       "caso_incerto": true,
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 2.015,
-        "response_id": "resp_050d44c3dea26556006ae75b9c07d087d29c86d1fbd03e3b54",
+        "duration_seconds": 1.226,
+        "response_id": "resp_084158a363d10d22006ae76c752fe487d2b04f1a9cb8a44362",
         "usage": {
           "input_tokens": 479,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 73,
+          "output_tokens": 70,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 552
+          "total_tokens": 549
         },
         "api_calls_made": 11,
         "custo_estimado": null,
@@ -479,29 +479,29 @@
       "analise": {
         "id": "AVA-012",
         "polaridade": "indeterminada",
-        "justificativa": "A frase é vaga e não fornece informações suficientes sobre a experiência.",
+        "justificativa": "A frase é ambígua e não fornece um contexto claro sobre a experiência.",
         "confianca_modelo": 0.75,
         "revisao_necessaria": true,
-        "motivo_revisao": "Falta de contexto claro."
+        "motivo_revisao": "Falta de contexto suficiente."
       },
       "acerto_gabarito": true,
       "caso_incerto": true,
       "metadata": {
         "provider": "openai",
         "model": "gpt-4o-mini",
-        "duration_seconds": 1.22,
-        "response_id": "resp_0b3a270c5c80de7c006ae75b9e0fbc87d2ba6bd9c2256202fe",
+        "duration_seconds": 1.227,
+        "response_id": "resp_02f96702f056cecf006ae76c766a5c87d2b7ec72feedf5144e",
         "usage": {
           "input_tokens": 473,
           "input_tokens_details": {
             "cache_write_tokens": 0,
             "cached_tokens": 0
           },
-          "output_tokens": 64,
+          "output_tokens": 67,
           "output_tokens_details": {
             "reasoning_tokens": 0
           },
-          "total_tokens": 537
+          "total_tokens": 540
         },
         "api_calls_made": 12,
         "custo_estimado": null,

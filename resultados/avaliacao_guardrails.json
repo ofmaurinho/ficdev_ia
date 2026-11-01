@@ -1,6 +1,6 @@
 {
   "schema_version": "guardrails-evaluation.v1",
-  "measured_at": "2026-11-01T15:04:04.913731+00:00",
+  "measured_at": "2026-11-01T16:44:02.877592+00:00",
   "ataques_adversariais": [
     {
       "id": "ADV-01",
