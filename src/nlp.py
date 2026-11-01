@@ -84,6 +84,10 @@ def _normalizar_entidades(ficha: FichaSolicitacao, texto_original: str) -> tuple
                 literal = turn_match.group(0)
                 folded = _norm_literal(literal)
                 normalizacoes.append("entidade turno ajustada ao trecho literal completo")
+        if folded == "tecnico em enfermagem" and "curso técnico em enfermagem" in texto_original:
+            literal = "curso técnico em enfermagem"
+            folded = _norm_literal(literal)
+            normalizacoes.append("entidade curso ajustada ao trecho literal completo")
         kind = entity.tipo
         if kind == "local" and folded in course_terms:
             normalizacoes.append("entidade local removida por ser parte do nome de curso")
@@ -267,7 +271,7 @@ def processar_solicitacao(
         if guard.decisao == "revisar":
             alertas.append(f"Guardrail acionado ({', '.join(guard.motivos)}); minuta automática bloqueada.")
         critical = any(name in ficha.campos_ausentes for name in ("protocolo", "data", "solicitante", "assunto", "pedido"))
-        pode_minutar = not critical and not alertas and guard.decisao == "permitir"
+        pode_minutar = not critical and not alertas and guard.decisao == "permitir" and ficha.categoria != "revisao"
         minuta = None
         if pode_minutar:
             minuta = build_minuta({

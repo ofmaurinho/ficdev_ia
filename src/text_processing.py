@@ -15,6 +15,7 @@ ALLOWED_CATEGORIES = {
     "elogio",
     "outros",
     "nao_classificado",
+    "revisao",
 }
 
 
