@@ -50,7 +50,9 @@
       "nlp_prompt": "compreensao_solicitacao.v3",
       "nlp_schema": "solicitacao.v2",
       "rag_prompt": "rag_institucional.v2",
-      "rag_schema": "rag-answer.v1"
+      "rag_schema": "rag-answer.v1",
+      "sentiment_prompt": "sentimento_atendimento.v1",
+      "sentiment_schema": "sentimento.v1"
     },
     "privacy": {
       "persist_original_request": false,
@@ -112,6 +114,10 @@
   "student_3_modules": [
     "audio",
     "vision",
-    "image_generation"
+    "image_generation",
+    "guardrails",
+    "sentiment",
+    "metrics",
+    "app"
   ]
 }
