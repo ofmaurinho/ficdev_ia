@@ -429,6 +429,6 @@
       ]
     }
   ],
-  "preferred_strategy": null,
-  "preference_decision": "pendente de revisão dos resultados e preservação de contexto; sem vencedor por intuição."
+  "preferred_strategy": "structural",
+  "preference_decision": "Escolhida a estratégia structural: ambas obtiveram 5/5 (100%) de acerto no top-3, mas a divisão por seção e parágrafo preserva os limites semânticos de cada regra institucional sem truncar frases em 400 caracteres nem duplicar texto por sobreposição."
 }

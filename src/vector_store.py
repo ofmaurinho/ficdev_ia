@@ -5,9 +5,11 @@ from __future__ import annotations
 import json
 import math
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from src.audit import AuditLogger
 from src.llm_client import OpenAIClient
 from src.ingestion import Fragment, chunk_corpus
 from src.providers import EmbeddingProvider
@@ -245,4 +247,111 @@ def listar_documentos_indexados(
         info = docs.setdefault(doc_id, {key: meta.get(key) for key in ("document_id", "title", "version", "file_name", "file_sha256")})
         info["chunks"] = info.get("chunks", 0) + 1
     return list(docs.values())
+
+
+def excluir_documento_acervo(
+    document_id: str,
+    *,
+    remover_derivados: bool = True,
+    config: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Remove vetores do documento em todas as coleções Chroma e invalida/remove derivados RAG."""
+    if not isinstance(document_id, str) or not document_id.strip():
+        raise ValueError("Informe um document_id válido para exclusão.")
+    doc_id = document_id.strip()
+    cfg, settings = _settings(config)
+    chroma_client, _ = _chroma(cfg)
+
+    colecoes_afetadas: dict[str, list[str]] = {}
+    total_chunks_removidos = 0
+    for item in chroma_client.list_collections():
+        col_name = item.name if hasattr(item, "name") else str(item)
+        col = chroma_client.get_collection(col_name)
+        found = col.get(where={"document_id": doc_id})
+        ids = list(found.get("ids") or [])
+        if ids:
+            col.delete(ids=ids)
+            colecoes_afetadas[col_name] = ids
+            total_chunks_removidos += len(ids)
+
+    results_dir = Path(settings.get("paths", {}).get("results_directory", cfg.get("results_dir", "resultados")))
+    if not results_dir.is_absolute():
+        results_dir = _root() / results_dir
+    rag_dir = results_dir / "rag"
+    derivados_afetados: list[str] = []
+    if rag_dir.is_dir():
+        for rag_file in sorted(rag_dir.glob("*.json")):
+            try:
+                data = json.loads(rag_file.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            sources = data.get("sources") or []
+            if any(src.get("document_id") == doc_id for src in sources):
+                derivados_afetados.append(rag_file.stem)
+                if remover_derivados:
+                    rag_file.unlink(missing_ok=True)
+                else:
+                    data["status"] = "revisao_humana"
+                    data["human_decision"] = "revisar"
+                    data["invalidated_by_document_deletion"] = doc_id
+                    rag_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    evento = {
+        "document_id": doc_id,
+        "deleted_at": datetime.now(timezone.utc).isoformat(),
+        "chunks_removed": total_chunks_removidos,
+        "collections": {k: len(v) for k, v in colecoes_afetadas.items()},
+        "removed_chunk_ids": [cid for ids in colecoes_afetadas.values() for cid in ids],
+        "derived_rag_affected": derivados_afetados,
+        "derived_action": "removed" if remover_derivados else "invalidated",
+    }
+    AuditLogger(str(results_dir / "logs")).log_event("documento_excluido", "sucesso", evento)
+    return evento
+
+
+def demonstrar_exclusao_documento(
+    document_id: str = "ACV-ATEND-005",
+    *,
+    query: str = "Qual é o endereço do balcão principal em Serra Clara?",
+    restaurar_apos_teste: bool = True,
+    config: dict[str, Any] | None = None,
+    client: EmbeddingProvider | None = None,
+) -> dict[str, Any]:
+    """Demonstra RF24/T14: busca antes da exclusão, remove documento/derivados e verifica ausência na busca."""
+    cfg, settings = _settings(config)
+    emb_client = client or _client(cfg)
+    antes = search_chunks(query, top_k=3, config=cfg, client=emb_client)
+    presentes_antes = [c["chunk_id"] for c in antes if c["metadata"].get("document_id") == document_id]
+
+    exclusao = excluir_documento_acervo(document_id, remover_derivados=False, config=cfg)
+
+    depois = search_chunks(query, top_k=3, config=cfg, client=emb_client)
+    presentes_depois = [c["chunk_id"] for c in depois if c["metadata"].get("document_id") == document_id]
+    docs_restantes = [d["document_id"] for d in listar_documentos_indexados(config=cfg)]
+
+    restaurado = False
+    if restaurar_apos_teste:
+        indexar_acervo(config=cfg, client=emb_client)
+        restaurado = True
+
+    relatorio = {
+        "schema_version": "exclusao-rf24.v1",
+        "measured_at": datetime.now(timezone.utc).isoformat(),
+        "document_id": document_id,
+        "query_verificacao": query,
+        "chunks_do_documento_antes": presentes_antes,
+        "exclusao": exclusao,
+        "chunks_do_documento_apos_exclusao": presentes_depois,
+        "documentos_no_indice_apos_exclusao": docs_restantes,
+        "ausencia_confirmada_na_busca": len(presentes_antes) > 0 and len(presentes_depois) == 0,
+        "indice_restaurado_apos_demonstracao": restaurado,
+    }
+    results_dir = Path(settings.get("paths", {}).get("results_directory", cfg.get("results_dir", "resultados")))
+    if not results_dir.is_absolute():
+        results_dir = _root() / results_dir
+    out_path = results_dir / "demonstracao_exclusao_rf24.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(relatorio, ensure_ascii=False, indent=2), encoding="utf-8")
+    return relatorio
+
 

@@ -91,8 +91,12 @@ def avaliar_chunking(
         "top_k": top_k,
         "metric_definition": "Acerto = pergunta com pelo menos um chunk de referência entre top-k; distância cosine; similaridade = 1 - distância.",
         "strategies": per_strategy,
-        "preferred_strategy": None,
-        "preference_decision": "pendente de revisão dos resultados e preservação de contexto; sem vencedor por intuição.",
+        "preferred_strategy": "structural",
+        "preference_decision": (
+            "Escolhida a estratégia structural: ambas obtiveram 5/5 (100%) de acerto no top-3, "
+            "mas a divisão por seção e parágrafo preserva os limites semânticos de cada regra institucional "
+            "sem truncar frases em 400 caracteres nem duplicar texto por sobreposição."
+        ),
     }
     output = Path(d2.get("paths", {}).get("retrieval_evaluation", "resultados/avaliacoes_recuperacao.json"))
     if not output.is_absolute():

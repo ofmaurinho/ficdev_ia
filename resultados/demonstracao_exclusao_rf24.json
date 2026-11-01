@@ -1,0 +1,35 @@
+{
+  "schema_version": "exclusao-rf24.v1",
+  "measured_at": "2026-11-01T15:33:38.269187+00:00",
+  "document_id": "ACV-ATEND-005",
+  "query_verificacao": "Qual é o endereço do balcão principal em Serra Clara?",
+  "chunks_do_documento_antes": [
+    "chunk-fb59f32888fd655cfa45becb",
+    "chunk-15726baca91f32809a8c6775"
+  ],
+  "exclusao": {
+    "document_id": "ACV-ATEND-005",
+    "deleted_at": "2026-11-01T15:33:35.958573+00:00",
+    "chunks_removed": 3,
+    "collections": {
+      "acervo_institucional_structural": 3
+    },
+    "removed_chunk_ids": [
+      "chunk-2db49ab9a3d92325a9f4c695",
+      "chunk-fb59f32888fd655cfa45becb",
+      "chunk-15726baca91f32809a8c6775"
+    ],
+    "derived_rag_affected": [],
+    "derived_action": "invalidated"
+  },
+  "chunks_do_documento_apos_exclusao": [],
+  "documentos_no_indice_apos_exclusao": [
+    "ACV-ACESS-003",
+    "ACV-ATEND-001",
+    "ACV-MATR-002",
+    "ACV-MATR-004",
+    "ACV-MATR-006"
+  ],
+  "ausencia_confirmada_na_busca": true,
+  "indice_restaurado_apos_demonstracao": true
+}
