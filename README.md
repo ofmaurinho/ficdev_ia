@@ -157,104 +157,48 @@ Para uma verificação limpa, crie um ambiente virtual, instale `requirements.lo
 
 ## Continuidade — Desafio Prático 2
 
-Esta evolução cobre o recorte dos Estudantes 1 e 2: RF14/15 (ficha Pydantic, validação de negócio, NLP e comparação com gabarito) e RF17/18/19/21 (extração, chunking, Chroma persistente, avaliação de recuperação, RAG, provedor e auditoria). Os módulos de texto, áudio e OCR do Desafio 1 permanecem; `src.nlp.processar_arquivo_solicitacao()` aceita TXT e JSON que contenha texto. Para os resultados atuais de STT/OCR, use os TXT revisados/corrigidos em `dados/processados/`, pois os JSON legados guardam campos/metadados, não o texto integral.
+A evolução do protótipo cobre os requisitos RF14 a RF24 (Estudantes 1, 2 e 3):
 
-O acervo fictício explícito está em `dados/originais/acervo/manifest.json`: seis documentos, três TXT e três PDFs textuais. A ingestão lê somente os caminhos do manifesto e rejeita caminhos fora do diretório do acervo. PDFs de desafio, aulas e editais em `arquivos/` não são indexados. Solicitações e gabaritos ficam em `dados/originais/solicitacoes/` e `dados/gabaritos/desafio2_solicitacoes.json`; oito perguntas RAG e IDs determinísticos dos chunks esperados estão em `dados/gabaritos/desafio2_rag.json`. As doze avaliações e três referências adversariais estão separadas em `dados/originais/avaliacoes/`; classificação de sentimentos e guardrails completos não foram implementados nesta etapa.
+- **RF14 e RF15 (`src/schemas.py`, `src/nlp.py`):** extração estruturada com Pydantic estrito (`solicitacao.v2`), validação de regras de negócio pós-schema, classificação em conjunto fechado, resumo de até 100 palavras e extração de entidades literais.
+- **RF16 (`src/guardrails.py`):** guardrails em três camadas (entrada, recuperação e saída), validação de extensão/tamanho de arquivo, filtro de escopo, contenção de injeção direta e indireta, bloqueio de exfiltração de segredos e limite de chamadas por execução (`max_calls_per_run`).
+- **RF17 e RF18 (`src/ingestion.py`, `src/vector_store.py`, `src/rag_evaluation.py`):** ingestão restrita aos seis documentos do manifesto (`dados/originais/acervo/manifest.json`), índice persistente em ChromaDB (`dados/indice/chroma`) com embeddings `text-embedding-3-small` (1536 dimensões) e seleção da estratégia `structural` (17 chunks, 5/5 no top-3) por preservar seções normativas completas sem truncamento.
+- **RF19 e RF21 (`src/rag.py`, `src/providers.py`):** RAG fundamentado com citações verificadas nos chunks recuperados, abstenção antes da geração quando a similaridade máxima fica abaixo de 0,40, detecção explícita de conflito entre fontes vigentes e troca de provedor de geração (`openai` ou `simulated`) sem reindexar o acervo.
+- **RF20 (`src/app.py`):** interface local em Streamlit com quatro abas (Acervo e Índice, Solicitações e NLP, Consulta RAG e Revisão, Sentimentos e Métricas), exibindo `"não localizado"` para campos nulos e limpando arquivos temporários de upload em bloco `finally`.
+- **RF22 (`src/sentiment.py`):** classificação individual das 12 avaliações fictícias (`positiva`, `negativa`, `neutra`, `indeterminada`), encaminhamento automático para revisão em casos mistos, irônicos ou sem contexto, vedação de inferências psicológicas e agregação determinística em Python com deduplicação por ID e proteção contra lista vazia.
+- **RF23 e RF24 (`src/metrics.py`, `src/vector_store.py`):** exclusão de documentos do índice com invalidação de resultados RAG derivados, persistência de decisões humanas (`pendente`, `aprovada`, `rejeitada`, `revisar`) com identificação do operador, regressão das entradas de texto, áudio e OCR do Desafio 1 e matriz consolidada T01–T15.
 
-Os comandos de serviço são independentes do CLI do Desafio 1 e foram confirmados em `src/desafio2_cli.py`:
+### Comandos do Desafio 2
 
-```powershell
+CLI de serviços (`src/desafio2_cli.py`):
+
+```bash
 python -m src.desafio2_cli demonstrar-schema
-python -m src.desafio2_cli indexar
+python -m src.desafio2_cli indexar --estrategia structural
 python -m src.desafio2_cli listar
 python -m src.desafio2_cli avaliar-recuperacao
-python -m src.desafio2_cli compreender --arquivo dados/originais/solicitacoes/SOL-001_audio_desafio1.txt
+python -m src.desafio2_cli compreender --arquivo dados/originais/solicitacoes/SOL-001_audio_desafio1.txt --id SOL-001
 python -m src.desafio2_cli avaliar-solicitacoes
 python -m src.desafio2_cli consultar --pergunta "Em quais dias e horários funciona o Núcleo Fictício de Atendimento?"
-python -m src.desafio2_cli revisar --execution-id ID_DA_EXECUCAO --decisao revisar --justificativa "Conferir a fonte com a unidade."
+python -m src.desafio2_cli revisar --execution-id ID_DA_EXECUCAO --decisao revisar --justificativa "Conferir a fonte com a unidade." --operador "servidor_atendimento"
+python -m src.desafio2_cli revisar-ficha --id REG-TEXTO --decisao aprovada --justificativa "Dados conferidos." --operador "servidor_atendimento"
+python -m src.desafio2_cli avaliar-guardrails
+python -m src.desafio2_cli classificar-sentimentos
+python -m src.desafio2_cli excluir-documento --documento ACV-ATEND-005 --demonstrar
+python -m src.desafio2_cli regressao
+python -m src.desafio2_cli avaliar-integrado
 ```
 
-`demonstrar-schema` é local e não chama API. `indexar`, `compreender`, `avaliar-solicitacoes`, `avaliar-recuperacao` e `consultar` usam embeddings ou geração OpenAI conforme a operação e podem gerar custos; exigem chave válida no `.env` ou no ambiente. Em 30/10/2026, a configuração OpenAI foi exercitada com respostas estruturadas e embeddings; tokens e duração são registrados quando fornecidos pelo SDK, mas o custo monetário não é calculado.
+Interface Streamlit (RF20):
 
-`config.json` contém configuração não secreta sob `desafio2`: geração OpenAI (`gpt-4o-mini`), embeddings `text-embedding-3-small` com dimensão 1536 e Chroma persistente em `dados/indice/chroma`. A recuperação usa top-k=3 e limiar 0,40, calibrado apenas para separar os oito cenários fictícios atuais (as cinco consultas respondíveis tiveram similaridade máxima >=0,444; as duas sem resposta ficaram <=0,334). Esse ajuste não generaliza automaticamente. O adaptador passa vetores explicitamente ao Chroma; o banco retorna distância cosine e o código expõe similaridade como `1 - distância`. Trocar modelo de geração mantém o índice; mudar embedding/dimensão ou chunking abre uma coleção incompatível e requer reindexação.
+```bash
+streamlit run src/app.py
+```
 
-A comparação RF18 usa `structural` (seção/parágrafo, sem sobreposição) e `fixed_400_overlap_80` (caracteres, sobreposição de 80), nas mesmas cinco perguntas respondíveis, embedding e top-k. A execução de 30/10/2026 obteve 5/5 hits em ambas as estratégias em `resultados/avaliacoes_recuperacao.json`; empate de hits não escolhe uma estratégia sem revisão de contexto.
+### Resultados consolidados do Desafio 2
 
-RF19 pode retornar `fundamentada`, `sem_evidencia`, `conflito_de_fontes` ou `revisao_humana`. A execução dos oito cenários está em `resultados/avaliacao_cenarios_rag.json`: 8/8 estados corresponderam ao gabarito; as cinco respostas fundamentadas citaram chunks recuperados e não tiveram IDs de citação inválidos. As duas ausências foram bloqueadas antes da geração e o conflito de matrícula foi encaminhado sem escolher uma regra. Cada fonte contém documento, versão, ID estável do chunk, página/seção, excerto literal, distância e similaridade. A consulta é salva em `resultados/rag/<execution_id>.json` e `resultados/logs/consultas.jsonl`, com pergunta minimizada/mascarada, hash, fontes, status e decisão pendente. A geração fundamentada continua sujeita a revisão humana. O provedor alternativo `simulated` foi exercitado como dry-run identificado: não gera resposta e não equivale ao modelo real; a recuperação ainda exige embeddings.
+- **Solicitações (RF14/RF15 — `resultados/avaliacao_nlp_desafio2.json`):** 6/6 categorias corretas, 19/25 campos literais, 25/25 entidades literais após normalização determinística e 6/20 correspondências lexicais diretas nos resumos. Em `SOL-001`, o resumo omitiu a regra de faltas dos primeiros dias; o caso permanece marcado para revisão.
+- **Guardrails (RF16 — `resultados/avaliacao_guardrails.json`):** 3/3 ataques adversariais contidos (`ADV-01`, `ADV-02`, `ADV-03`) e 4/4 controles de escopo, tamanho, extensão e limite de chamadas aprovados.
+- **Recuperação e RAG (RF17/RF18/RF19 — `resultados/avaliacoes_recuperacao.json`, `resultados/avaliacao_cenarios_rag.json`):** 5/5 acertos no top-3 nas duas estratégias (escolhida `structural`); 8/8 cenários RAG com status correto (5 fundamentadas com citações válidas, 2 abstenções sem chamar geração e 1 conflito detectado). Em `RAG-05`, a resposta omitiu o encaminhamento à coordenação e foi rejeitada na revisão humana.
+- **Sentimentos (RF22 — `resultados/avaliacao_sentimentos.json`):** 12/12 avaliações classificadas de acordo com o gabarito (3 positivas, 3 negativas, 3 neutras e 3 indeterminadas encaminhadas para revisão).
+- **Exclusão, regressão e matriz T01–T15 (RF23/RF24 — `resultados/matriz_testes_rf23.json`):** remoção de `ACV-ATEND-005` confirmada na busca (2 chunks antes, 0 após exclusão), 3/3 casos de regressão do Desafio 1 processados e 15/15 testes obrigatórios (T01 a T15) aprovados. A suíte automatizada passa com **169 testes** (`python -m unittest discover -s testes -v`).
 
-RF14/RF15 foram executados nos seis casos fictícios com `compreensao_solicitacao.v2`. O relatório atual `resultados/avaliacao_nlp_desafio2.json` registra 4/6 categorias, 19/24 campos literais, 6/20 correspondências lexicais de fatos do resumo e revocação literal de entidades 10/25; a correspondência lexical não substitui revisão semântica. As duas rodadas anteriores estão preservadas em `resultados/avaliacao_nlp_desafio2_rodada_1.json` e `_rodada_2.json`. O sistema mantém as seis fichas em revisão humana; nenhuma delas foi aprovada automaticamente.
-
-Estudante 3: RF16 completo, RF20/Streamlit e RF22/painel não foram implementados. RF23/RF24, remoção de documento com derivados e demonstração de decisões humanas são pendências compartilhadas. O estado real, contratos de serviço e sequência de continuação estão em [CONTINUIDADE_ESTUDANTE_3.md](documentacao/CONTINUIDADE_ESTUDANTE_3.md). O roteiro com os artefatos e comparações para aprovação manual de RF14/RF15/RF17/RF18/RF19/RF21 está em [revisao_manual_desafio2_estudantes_1_2.md](documentacao/revisao_manual_desafio2_estudantes_1_2.md). Detalhes do schema e da demonstração JSON/schema estão em [desafio2_rf14_rf15.md](documentacao/desafio2_rf14_rf15.md).
-
-## Modelos e parâmetros
-
-- Provedor: OpenAI Responses API.
-- Modelo: `OPENAI_MODEL`, com fallback para `config.json` (`gpt-4o-mini` no exemplo).
-- Temperatura, `max_output_tokens` e timeout vêm de `config.json`.
-- Versões da última execução limpa: Python 3.14.7, OpenAI SDK 3.41.0, python-dotenv 1.2.4, Pillow 13.0.0, pytesseract 0.3.13, pypdfium2 5.14.0 e mutagen 1.48.1. `requirements.lock` registra as dependências exatas dessa execução; `requirements.txt` mantém faixas para instalação flexível.
-- O uso de tokens é registrado quando fornecido pelo provedor. O custo não é calculado porque não há tabela de preços versionada; o registro declara essa limitação.
-
-## Logs e rastreabilidade
-
-- Pasta de logs: `resultados/logs/`.
-- Formato: JSON Lines (`.jsonl`).
-- Nunca são registrados segredos, chaves ou tokens.
-
-## Metodologia de prompts
-
-Os textos canônicos ficam em `prompts/system.txt`, `prompts/task_spec.txt`, `prompts/prompt_a.txt`, `prompts/prompt_b.txt` e `prompts/prompt_c.txt`; `src/prompts.py` os carrega e associa versões e esquema JSON. Eles seguem a estrutura:
-
-- Prompt A: zero-shot curto.
-- Prompt B: estruturado em persona, contexto, tarefa, formato e critérios de sucesso.
-- Prompt C: metaprompt executado para gerar um prompt aprimorado; o prompt gerado é então aplicado à mesma tarefa e entrada de A e B.
-
-As chamadas usam a mesma configuração e o mesmo texto minimizado. Saídas, prompts aplicados, metadados de resposta e identificador da auditoria são salvos em `resultados/avaliacao_prompts.json`. A revisão humana permanece pendente até que a equipe registre sua decisão com o comando `revisar`; a matriz comparativa está em `documentacao/matriz_avaliacao_prompts.md`.
-
-## Critérios de avaliação
-
-- fidelidade ao contexto;
-- ausência de dados inventados;
-- completude;
-- formato;
-- tom institucional;
-- identificação de campos ausentes;
-- segurança;
-- duração;
-- utilidade.
-
-Escala sugerida: 1 a 5, com justificativa por critério.
-
-## Limitações conhecidas
-
-- A integração real com a OpenAI exige chave válida e configuração do ambiente.
-- O experimento controla a variável modelo usando `gpt-4o-mini`; não há benchmark empírico entre provedores/modelos nem cálculo de preço vigente.
-- A imagem precisa de inspeção visual humana antes de ser marcada como utilizável.
-- STT e OCR podem retornar campos críticos ausentes ou divergentes e exigem confirmação humana antes da minuta.
-- O projeto é acadêmico e não substitui revisão humana nem conformidade jurídica completa.
-
-## Segurança e privacidade
-
-- O conteúdo recebido é tratado como não confiável.
-- Chaves e segredos não são registrados nos logs.
-- Os dados no repositório são fictícios, conforme o desafio.
-- O protótipo não deve ser usado para ações institucionais reais.
-
-## Privacidade e limites
-
-Use somente dados fictícios. O processamento local preserva o texto de entrada no JSON estruturado; antes das chamadas à API, o projeto remove data/local de nascimento e campos adicionais com CPF, RG, nome da mãe e e-mail. Nome do solicitante, protocolo e data do atendimento permanecem porque são necessários ao cenário e devem ser fictícios. Logs não armazenam texto bruto nem chave.
-
-O sistema não envia respostas automaticamente. As saídas são rascunhos e precisam de conferência humana. A revisão só muda de pendente quando um operador registra explicitamente a decisão. A solução não substitui avaliação de segurança, jurídica ou de conformidade LGPD.
-
-## Atualização de correções do Desafio 2 (30/10/2026)
-
-O estado vigente de RF14/RF15 está configurado em `config.json`: prompt `compreensao_solicitacao.v3` e schema `solicitacao.v2`. O gabarito `dados/gabaritos/desafio2_solicitacoes.json` também foi revisado para v2. Os relatórios e fichas gerados antes dessa alteração continuam preservados como histórico: suas métricas se referem ao gabarito/prompt anteriores e não validam a versão atual. Nenhuma nova geração paga foi feita durante essa correção.
-
-Para RF18, a análise dos resultados existentes está em [analise_rf18_relevancia.md](documentacao/analise_rf18_relevancia.md). As duas estratégias mantêm 5/5 hits@3; há resultados não responsivos entre os primeiros colocados e o chunk de canais de RAG-05 aparece em terceiro. A análise não escolhe vencedor nem altera o benchmark ou índice histórico.
-
-As correções acrescentam limite configurável de chamadas OpenAI por execução, sanitização central de auditoria, remoção do texto original dos novos artefatos NLP, revisão humana para abstenções/conflitos não verificados e metadados de decisão em falhas RAG. Durante esta etapa, a suíte local passou com **157 testes**, incluindo 11 novos testes direcionados com provedores simulados. Os testes não chamam a API. O índice Chroma, as entradas originais e os resultados históricos não foram regravados.
-
-## Validação da reexecução — 30/10/2026
-
-O relatório detalhado da rodada após a limpeza está em [relatorio_reexecucao_desafio2_2026-10-30.md](documentacao/relatorio_reexecucao_desafio2_2026-10-30.md). A revisão encontrou e corrigiu caracteres de acentuação no gabarito v2 e duas regras de normalização local de entidades; as fichas da rodada foram reavaliadas sem novas chamadas OpenAI. Métricas atualizadas: categorias 6/6, campos literais 19/25, correspondência lexical de fatos 6/20 e entidades 25/25 após a normalização determinística. Fidelidade semântica continua pendente.
-
-RF17 foi confirmado com seis documentos e 17 chunks estruturais; RF18 empatou em 5/5 nas duas estratégias. RF19 teve 8/8 estados corretos e citações válidas entre as cinco respostas fundamentadas, mas RAG-05 ainda omite o encaminhamento à coordenação e RAG-01 tem uma citação extra que precisa de revisão. As aprovações humanas seguem pendentes. O Estudante 3 pode iniciar RF16/RF20/RF22 em paralelo; não marcar RF14/RF15/RF19 como aprovação humana final.

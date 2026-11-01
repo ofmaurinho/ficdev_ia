@@ -142,8 +142,29 @@ python -m unittest discover -s testes -v
 
 ## 9. Continuidade — Desafio Prático 2
 
-Esta versão acrescenta serviços de extração estruturada/NLP (RF14/15) e ingestão, chunking, Chroma persistente, avaliação de recuperação e RAG configurável/auditado (RF17/18/19/21), sem substituir os fluxos do Desafio 1. O estado por requisito, contratos para Streamlit e pendências do Estudante 3 estão em `documentacao/CONTINUIDADE_ESTUDANTE_3.md`.
+A evolução do protótipo incorpora extração estruturada, guardrails em camadas, busca vetorial com RAG fundamentado, interface Streamlit, análise de sentimentos e trilha completa de revisão e exclusão (RF14 a RF24), mantendo os módulos multimodais do Desafio 1.
 
-O acervo fictício contém seis documentos listados em `dados/originais/acervo/manifest.json`; arquivos de aulas, desafios e editais em `arquivos/` não são incluídos automaticamente. As solicitações, gabaritos e casos adversariais do Desafio 2 estão em seus diretórios dedicados. A indexação usa PyMuPDF para PDFs com camada textual e ChromaDB persistente, com embeddings calculados explicitamente pela OpenAI. O índice não foi populado nesta etapa.
+### 9.1 Novos componentes
 
-Validação não paga: módulos foram carregados para a demonstração do schema; o CLI demonstrou três casos de JSON válido recusados pelo schema, e a extração local gerou 17 chunks estruturais e 11 fixos. Não foram chamadas APIs, criados embeddings, executadas consultas, medidas taxas/latências/custos ou adicionados arquivos de teste. A disponibilidade e as permissões de `gpt-4o-mini`/`text-embedding-3-small` devem ser verificadas após a configuração manual de `OPENAI_API_KEY`.
+| Componente | Arquivo | Função |
+|---|---|---|
+| Schemas e regras de negócio | `src/schemas.py` | Contratos `FichaSolicitacao`, `RespostaRAG`, `AnaliseSentimento`, `ResultadoGuardrail` e validação pós-schema |
+| Compreensão NLP | `src/nlp.py` | Extração estruturada, resumo (até 100 palavras), classificação, entidades literais e revisão de fichas |
+| Guardrails | `src/guardrails.py` | Validação de entrada, recuperação e saída, filtro de dados indevidos e avaliação adversarial |
+| Ingestão e chunking | `src/ingestion.py` | Leitura restrita ao manifesto (`manifest.json`), extração de PDF com página e chunkers `structural` e `fixed_400_overlap_80` |
+| Índice vetorial | `src/vector_store.py` | ChromaDB persistente (`dados/indice/chroma`), busca cosine (`1 - distância`) e exclusão de documento/derivados |
+| Avaliação de recuperação | `src/rag_evaluation.py` | Comparação das duas estratégias nas cinco perguntas respondíveis |
+| Serviço RAG | `src/rag.py` | Recuperação, abstenção antes da geração, detecção de conflito, geração com citações e revisão humana |
+| Análise de sentimentos | `src/sentiment.py` | Classificação individual de avaliações e agregação determinística em Python |
+| Métricas e matriz RF23 | `src/metrics.py` | Verificadores locais (T01, T02, T13), regressão do Desafio 1 (T15) e consolidação da matriz T01–T15 |
+| Interface Streamlit | `src/app.py` | Painel local em quatro abas para acervo, solicitações, RAG e sentimentos/métricas |
+| CLI do Desafio 2 | `src/desafio2_cli.py` | Comandos de indexação, compreensão, consulta, revisão, guardrails, sentimentos, exclusão e avaliação integrada |
+
+### 9.2 Resultados medidos e limitações
+
+- **RF14 e RF15 (`resultados/avaliacao_nlp_desafio2.json`):** 6/6 categorias corretas, 19/25 campos literais, 25/25 entidades literais após normalização e 6/20 correspondências lexicais diretas nos resumos. Em `SOL-001`, o resumo omitiu a regra de cancelamento por faltas nos primeiros dias; o caso permanece em estado `revisar`.
+- **RF16 (`resultados/avaliacao_guardrails.json`):** 3/3 casos adversariais (`ADV-01`, `ADV-02`, `ADV-03`) bloqueados sem exposição de segredos e 4/4 controles de escopo, tamanho, extensão e limite de chamadas (`max_calls_per_run`) validados.
+- **RF17, RF18 e RF19 (`resultados/avaliacoes_recuperacao.json`, `resultados/avaliacao_cenarios_rag.json`):** 6 documentos do manifesto indexados sem duplicação na reindexação; 5/5 acertos no top-3 em ambas as estratégias (adotada `structural` por manter seções completas); 8/8 cenários RAG com status correto (5 fundamentadas com citações válidas, 2 abstenções sem geração e 1 conflito detectado). Em `RAG-05`, a resposta omitiu o encaminhamento à coordenação e foi registrada como `rejeitada`. O limiar de similaridade `0.40` foi calibrado nos oito casos fictícios e pode exigir ajuste em acervos maiores.
+- **RF22 (`resultados/avaliacao_sentimentos.json`):** 12/12 avaliações classificadas conforme o gabarito (3 positivas, 3 negativas, 3 neutras e 3 indeterminadas marcadas para revisão). A confiança exibida pelo modelo é estimativa não calibrada; contagens e proporções são calculadas em código Python.
+- **RF23 e RF24 (`resultados/demonstracao_exclusao_rf24.json`, `resultados/regressao_desafio1_desafio2.json`, `resultados/matriz_testes_rf23.json`):** exclusão de `ACV-ATEND-005` removeu seus 3 chunks do índice e zerou sua presença na busca (2 chunks antes, 0 depois); 3/3 entradas do Desafio 1 (texto, áudio revisado e OCR corrigido) foram reexecutadas no fluxo novo; 15/15 testes obrigatórios (T01 a T15) e 169 testes unitários passaram.
+

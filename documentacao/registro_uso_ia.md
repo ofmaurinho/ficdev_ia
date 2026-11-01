@@ -56,3 +56,8 @@ O assistente revisou RF14/RF15/RF17/RF18/RF19/RF21 e implementou ajustes locais:
 ### Reexecução e validações locais (30/10/2026)
 
 Na validação posterior à limpeza, foram encontradas substituições de acentos por `?` em chaves/valores do gabarito NLP v2. O gabarito foi reparado com base nos TXT fictícios. Também foram corrigidas as regras determinísticas de normalização de entidades para não classificar parte do nome de um curso como local, completar o eixo tecnológico e manter a forma literal do turno. As fichas atuais foram revalidadas e as métricas recalculadas offline; não houve chamada OpenAI nesta etapa. A suíte passou com 157 testes. O relatório descreve lacunas semânticas remanescentes que exigem revisão da equipe.
+
+### Conclusão das entregas do Estudante 3 e integração RF23/RF24 (01/11/2026)
+
+Foram implementados os módulos `src/guardrails.py` (RF16), `src/sentiment.py` (RF22), `src/metrics.py` (RF23), `src/app.py` (RF20) e a exclusão de documentos e derivados em `src/vector_store.py` (RF24), além de `testes/test_estudante3_desafio2.py`. Com a chave configurada em `.env`, foram executados o índice persistente, a classificação das 12 avaliações fictícias (12/12 acertos no gabarito), a demonstração de exclusão de `ACV-ATEND-005` (2 chunks antes, 0 após exclusão), a regressão dos 3 casos do Desafio 1 (3/3 concluídos) e a consolidação da matriz T01–T15 (15/15 aprovados). A suíte automatizada passou com 169 testes sem expor credenciais.
+
