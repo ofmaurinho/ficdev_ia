@@ -1,0 +1,67 @@
+{
+  "solicitacao_id": "SOL-005",
+  "execution_id": "b0b7f909-1f77-4bf6-be74-fbb15123a547",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "cfccc93c0cb7311491e411a492c0a87623a395cfed6add27ba3b903275b1ec00",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": null,
+    "data": null,
+    "solicitante": null,
+    "assunto": null,
+    "pedido": "Solicito informações sobre a matrícula no curso técnico.",
+    "categoria": "informacao",
+    "resumo": "O solicitante pede informações sobre a matrícula no curso técnico, mas não inclui seu protocolo, nome ou data. A solicitação é ambígua, pois não há detalhes suficientes sobre o tipo de informações requeridas.",
+    "entidades": [],
+    "campos_ausentes": [
+      "protocolo",
+      "data",
+      "solicitante",
+      "assunto"
+    ],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [
+    "Há campo(s) crítico(s) ausente(s); não produzir minuta automática."
+  ],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": null,
+  "decisao_humana": "rejeitada",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 1.859,
+    "response_id": "resp_065ff0f4fae6be29006ae7643d5d4087d2b0179685a0993563",
+    "usage": {
+      "input_tokens": 1422,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 145,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1567
+    },
+    "api_calls_made": 5,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:35.087031+00:00",
+  "justificativa_revisao": "Solicitação sem protocolo, data e nome do solicitante; solicitar identificadores antes de minutar.",
+  "revisado_por": "Servidor Revisor 01",
+  "revisado_em": "2026-11-01T16:10:11.063455+00:00"
+}

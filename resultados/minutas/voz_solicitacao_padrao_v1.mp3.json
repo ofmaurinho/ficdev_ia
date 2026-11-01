@@ -1,0 +1,27 @@
+{
+  "caso_id": "solicitacao_padrao",
+  "versao": 1,
+  "roteiro_sha256": "cbd97114208aa059afa1b9b44664e4993c16d64bf49a9963905a7f6565334851",
+  "minuta_sha256": "d8f11f3f2d66e850efa7579a78bfe1bbbcaf05cbdf7f989e1318c7a5de299830",
+  "audio": "voz_solicitacao_padrao_v1.mp3",
+  "audio_sha256": "f85c09ea3b9dc63ff73468d471bd663a106fc16879bc6c3f83e7dafc944fd28b",
+  "voz": "alloy",
+  "modelo": "gpt-4o-mini-tts",
+  "instrucoes_entonacao": "Fale em português do Brasil, em tom institucional: claro, calmo e cordial, em ritmo pausado. Leia números, datas e protocolos devagar.",
+  "texto_enviado_identico_ao_roteiro_aprovado": true,
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini-tts",
+    "duration_seconds": 11.042,
+    "response_id": null,
+    "usage": {},
+    "api_calls_made": 1,
+    "custo_estimado": null,
+    "voice": "alloy",
+    "instructions": "Fale em português do Brasil, em tom institucional: claro, calmo e cordial, em ritmo pausado. Leia números, datas e protocolos devagar.",
+    "formato": "mp3",
+    "caracteres_enviados": 686,
+    "bytes_audio": 946560
+  },
+  "escuta_humana_registrada": false
+}

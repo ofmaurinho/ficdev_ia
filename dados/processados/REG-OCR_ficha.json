@@ -1,0 +1,104 @@
+{
+  "solicitacao_id": "REG-OCR",
+  "execution_id": "f094772b-c89f-4dda-b679-907d8d77abf3",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "868b017d40cbc94f6836749ffe84f223cfaa59ff282eec1181e9a5e1ee7aade2",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": null,
+    "data": null,
+    "solicitante": null,
+    "assunto": null,
+    "pedido": null,
+    "categoria": "revisao",
+    "resumo": "MARCOS VITÓRIUS DE ALMEIDA SANTOS solicita matrícula na ESCOLA TÉCNICA ESTADUAL DE CUIABÁ para o CURSO TÉCNICO EM ENFERMAGEM no turno NOTURNO, com início previsto para 01/02/2027. A matrícula é condicionada à presença nos primeiros dias de aula, conforme normas mencionadas.",
+    "entidades": [
+      {
+        "tipo": "pessoa",
+        "texto_literal": "MARCOS VITÓRIUS DE ALMEIDA SANTOS",
+        "observacao": null
+      },
+      {
+        "tipo": "local",
+        "texto_literal": "CUIABÁ",
+        "observacao": null
+      },
+      {
+        "tipo": "curso",
+        "texto_literal": "TÉCNICO EM ENFERMAGEM",
+        "observacao": null
+      },
+      {
+        "tipo": "turno",
+        "texto_literal": "NOTURNO",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "01/02/2027",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "04/01/2026",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "12/05/2008",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [
+      "protocolo",
+      "data",
+      "solicitante",
+      "assunto",
+      "pedido"
+    ],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [
+    "Há campo(s) crítico(s) ausente(s); não produzir minuta automática."
+  ],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": null,
+  "decisao_humana": "pendente",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 4.484,
+    "response_id": "resp_0495005528d8cfd4006ae76cf42f0c87d2b3621e84cebbbab4",
+    "usage": {
+      "input_tokens": 1782,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 419,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2201
+    },
+    "api_calls_made": 1,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade data extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:46:48.437949+00:00"
+}

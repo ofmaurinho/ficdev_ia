@@ -1,0 +1,108 @@
+{
+  "solicitacao_id": "REG-AUDIO",
+  "execution_id": "436c52eb-0e44-40d1-8d1f-3b54c3bc97bb",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "1d28276eed24fdc9c48c7f65771e8466445aadf07de0fc6de9c1ebc04f3cea56",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "2026-000142",
+    "data": "14 de outubro de 2026",
+    "solicitante": "Marcos Vinícius de Almeida Santos",
+    "assunto": "Efetivação de matrícula no curso técnico em enfermagem",
+    "pedido": "Pedir a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde e perguntar quais documentos ainda preciso apresentar.",
+    "categoria": "solicitacao_servico",
+    "resumo": "Marcos Vinícius de Almeida Santos solicita a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde, com carga horária de 1.200 horas no período noturno. Ele pede informações sobre os documentos adicionais necessários para a matrícula.",
+    "entidades": [
+      {
+        "tipo": "protocolo",
+        "texto_literal": "2026-000142",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "14 de outubro de 2026",
+        "observacao": null
+      },
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Marcos Vinícius de Almeida Santos",
+        "observacao": null
+      },
+      {
+        "tipo": "curso",
+        "texto_literal": "curso técnico em enfermagem",
+        "observacao": null
+      },
+      {
+        "tipo": "carga_horaria",
+        "texto_literal": "1.200 horas",
+        "observacao": null
+      },
+      {
+        "tipo": "turno",
+        "texto_literal": "noturno",
+        "observacao": null
+      },
+      {
+        "tipo": "local",
+        "texto_literal": "Cuiabá",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "12 de agosto de 2008",
+        "observacao": null
+      },
+      {
+        "tipo": "outro",
+        "texto_literal": "Eixo Tecnológico de Saúde",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": "MINUTA INSTITUCIONAL (RASCUNHO)\n\nProtocolo: 2026-000142\nData: 14 de outubro de 2026\nSolicitante: Marcos Vinícius de Almeida Santos\nAssunto: Efetivação de matrícula no curso técnico em enfermagem\n\nSolicitação:\nPedir a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde e perguntar quais documentos ainda preciso apresentar.\n\nObservações:\n- Este é um rascunho institucional e deve ser validado por pessoa responsável antes do envio final.\n- Os dados foram extraídos somente do conteúdo fornecido e não foram inventados.\n- Campos ausentes ou pendentes: nenhum campo obrigatório identificado.\n- Qualquer informação adicional ou correção deve ser confirmada antes de encaminhamento.",
+  "decisao_humana": "pendente",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 3.735,
+    "response_id": "resp_0414f39e2d261c84006ae76cf0a6c887d28bf5eff95021aff4",
+    "usage": {
+      "input_tokens": 1585,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 335,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1920
+    },
+    "api_calls_made": 1,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade data extraida localmente do texto de origem",
+      "entidade outro extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente",
+      "campos_ausentes alinhado aos campos críticos nulos"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:46:43.944201+00:00"
+}

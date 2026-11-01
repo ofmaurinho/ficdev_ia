@@ -1,0 +1,102 @@
+{
+  "execution_id": "a761eece-6e2e-466b-8e7b-55e98e3f5242",
+  "created_at": "2026-11-01T16:15:41.303753+00:00",
+  "question_hash": "60ef08fb1fa525db65e613fb1da601a7d07830a40d64adc2471addc5c8a1bcd4",
+  "schema_version": "rag-answer.v1",
+  "prompt_version": "rag_institucional.v2",
+  "index_version": "rag-index.v1",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "status": "fundamentada",
+  "answer": "O curso técnico fictício de Enfermagem começa em 01 de fevereiro de 2027, no turno da noite.",
+  "minuta": "O curso técnico fictício de Enfermagem começa em 01 de fevereiro de 2027, no turno da noite.",
+  "sources": [
+    {
+      "document_id": "ACV-MATR-004",
+      "document": "ACV-MATR-004.pdf",
+      "title": "Calendário fictício de matrícula e início do curso",
+      "version": "1.0",
+      "chunk_id": "chunk-c609e7f00a0bd43b8c87ae70",
+      "page": 1,
+      "section": "Course start date",
+      "section_id": "sec-course-start-date-p002",
+      "excerpt": "Documento ACV-MATR-004 — Calendário fictício de matrícula e início do curso — versão 1.0 — seção Course start date — página 1\nThe fictional Nursing Technician course begins on 2027-02-01.\nThe schedule is the evening shift. The enrollment confirmation is issued\nby the school unit after the submitted documents are checked.",
+      "distance": 0.41568028926849365,
+      "similarity": 0.5843197107315063
+    },
+    {
+      "document_id": "ACV-MATR-002",
+      "document": "ACV-MATR-002.txt",
+      "title": "Relação fictícia de documentos para matrícula",
+      "version": "1.0",
+      "chunk_id": "chunk-ee286e172c1b4a942300965f",
+      "page": null,
+      "section": "Documentos de identificação",
+      "section_id": "sec-documentos-de-identifica-o-p002",
+      "excerpt": "Documento ACV-MATR-002 — Relação fictícia de documentos para matrícula — versão 1.0 — seção Documentos de identificação\nPara iniciar matrícula no curso técnico fictício, apresentar documento oficial de identificação com foto e comprovante de inscrição no CPF. Cópias simples podem ser apresentadas para conferência presencial.",
+      "distance": 0.5284390449523926,
+      "similarity": 0.4715609550476074
+    },
+    {
+      "document_id": "ACV-ATEND-001",
+      "document": "ACV-ATEND-001.txt",
+      "title": "Horários fictícios do Núcleo de Atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "page": null,
+      "section": "Horário de atendimento presencial",
+      "section_id": "sec-hor-rio-de-atendimento-presencial-p002",
+      "excerpt": "Documento ACV-ATEND-001 — Horários fictícios do Núcleo de Atendimento — versão 1.0 — seção Horário de atendimento presencial\nO Núcleo Fictício de Atendimento de Serra Clara funciona de segunda a sexta-feira, das 8h às 16h, exceto feriados informados no calendário institucional. Não é necessário agendamento para obter orientação geral.",
+      "distance": 0.5547662973403931,
+      "similarity": 0.44523370265960693
+    }
+  ],
+  "retrieved_chunks": [
+    {
+      "chunk_id": "chunk-c609e7f00a0bd43b8c87ae70",
+      "similarity": 0.5843197107315063,
+      "distance": 0.41568028926849365
+    },
+    {
+      "chunk_id": "chunk-ee286e172c1b4a942300965f",
+      "similarity": 0.4715609550476074,
+      "distance": 0.5284390449523926
+    },
+    {
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "similarity": 0.44523370265960693,
+      "distance": 0.5547662973403931
+    }
+  ],
+  "threshold": 0.4,
+  "threshold_calibrated": true,
+  "human_decision": "aprovada",
+  "error": null,
+  "generation_called": true,
+  "citations": [
+    {
+      "chunk_id": "chunk-c609e7f00a0bd43b8c87ae70",
+      "afirmacao": "O curso técnico fictício de Enfermagem começa em 01 de fevereiro de 2027 e é no turno da noite."
+    }
+  ],
+  "invalid_citations": [],
+  "abstention_reason": null,
+  "usage": {
+    "input_tokens": 1041,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 114,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1155
+  },
+  "cost": null,
+  "api_calls": 2,
+  "duration_seconds": 2.914,
+  "human_justification": "Resposta e citações conferidas contra o acervo institucional.",
+  "reviewed_by": "Servidor Revisor 01",
+  "reviewed_at": "2026-11-01T16:15:44.218576+00:00"
+}

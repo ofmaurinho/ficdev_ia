@@ -20,6 +20,10 @@ __pycache__/
 htmlcov/
 coverage.xml
 
+# Documentos externos de referência e enunciado (não fazem parte do acervo fictício)
+/arquivos/Desafio_*.pdf
+/arquivos/EDITAL*.pdf
+
 # Arquivos intermediários de imagem
 *_fundo_ia.png
 
@@ -29,20 +33,16 @@ coverage.xml
 !/dados/originais/solicitacoes/
 !/dados/originais/avaliacoes/
 
-# Estado e saídas regeneráveis do Desafio 2
+# Índice vetorial binário local (reconstruído via comando indexar)
 /dados/indice/
 
-# Fichas e intermediários derivados; os TXT revisados manualmente ficam versionáveis
-/dados/processados/*.json
+# Intermediários brutos de transcrição e OCR (fichas JSON e textos revisados são entregáveis)
 /dados/processados/entrada_audio_transcricao_bruta.txt
 /dados/processados/entrada_pdf_ocr_tesseract.txt
 /dados/processados/entrada_pdf_ocr_vision.txt
 
-# Artefatos de execução, logs e relatórios reproduzíveis
-/resultados/logs/
-/resultados/rag/
+# Estado transitório de geração
 /resultados/artefatos/
-/resultados/minutas/
 
 # Arquivos temporários de editores e SO
 .idea/

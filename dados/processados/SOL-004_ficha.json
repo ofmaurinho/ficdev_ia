@@ -1,0 +1,86 @@
+{
+  "solicitacao_id": "SOL-004",
+  "execution_id": "037078b1-24a0-42f5-8cd8-38e3b2174eb8",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "0749e39df4cf29281137319eeaab60d24e79f20b49f6bae51103e4f402939a28",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "FIC-2026-044",
+    "data": "20/10/2026",
+    "solicitante": "Rafael Nunes",
+    "assunto": null,
+    "pedido": "Registro de um recurso de acessibilidade para uma atividade escolar.",
+    "categoria": "solicitacao_servico",
+    "resumo": "Rafael Nunes solicita o registro de um recurso de acessibilidade para uma atividade escolar e pede orientação sobre como encaminhar o pedido. Não foi informado diagnóstico.",
+    "entidades": [
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Rafael Nunes",
+        "observacao": null
+      },
+      {
+        "tipo": "atividade",
+        "texto_literal": "atividade escolar",
+        "observacao": null
+      },
+      {
+        "tipo": "protocolo",
+        "texto_literal": "FIC-2026-044",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "20/10/2026",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [
+      "assunto"
+    ],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [
+    "Há campo(s) crítico(s) ausente(s); não produzir minuta automática."
+  ],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": null,
+  "decisao_humana": "pendente",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 2.263,
+    "response_id": "resp_039eb0e37c578f7b006ae7643b1e8887d292414957478c353e",
+    "usage": {
+      "input_tokens": 1458,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 177,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1635
+    },
+    "api_calls_made": 4,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade protocolo extraida localmente do texto de origem",
+      "entidade data extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:33.227424+00:00"
+}

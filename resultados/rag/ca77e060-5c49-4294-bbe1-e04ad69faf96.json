@@ -1,0 +1,102 @@
+{
+  "execution_id": "ca77e060-5c49-4294-bbe1-e04ad69faf96",
+  "created_at": "2026-11-01T16:15:44.219350+00:00",
+  "question_hash": "7a18efadadc0c4c54cc733e206ab2d12849fe5a143960f72036137ea847c3fa5",
+  "schema_version": "rag-answer.v1",
+  "prompt_version": "rag_institucional.v2",
+  "index_version": "rag-index.v1",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "status": "fundamentada",
+  "answer": "O endereço do balcão principal em Serra Clara é Rua das Acácias, 120, Centro.",
+  "minuta": "O endereço do balcão principal em Serra Clara é Rua das Acácias, 120, Centro.",
+  "sources": [
+    {
+      "document_id": "ACV-ATEND-005",
+      "document": "ACV-ATEND-005.pdf",
+      "title": "Localização fictícia dos pontos de atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+      "page": 1,
+      "section": "Main service desk",
+      "section_id": "sec-main-service-desk-p002",
+      "excerpt": "Documento ACV-ATEND-005 — Localização fictícia dos pontos de atendimento — versão 1.0 — seção Main service desk — página 1\nThe fictional service desk is at Rua das Acacias, 120, Centro, Serra Clara.\nOpening hours are Monday through Friday, 8:00 to 16:00, except holidays.",
+      "distance": 0.3781284689903259,
+      "similarity": 0.6218715310096741
+    },
+    {
+      "document_id": "ACV-ATEND-001",
+      "document": "ACV-ATEND-001.txt",
+      "title": "Horários fictícios do Núcleo de Atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "page": null,
+      "section": "Horário de atendimento presencial",
+      "section_id": "sec-hor-rio-de-atendimento-presencial-p002",
+      "excerpt": "Documento ACV-ATEND-001 — Horários fictícios do Núcleo de Atendimento — versão 1.0 — seção Horário de atendimento presencial\nO Núcleo Fictício de Atendimento de Serra Clara funciona de segunda a sexta-feira, das 8h às 16h, exceto feriados informados no calendário institucional. Não é necessário agendamento para obter orientação geral.",
+      "distance": 0.4114116430282593,
+      "similarity": 0.5885883569717407
+    },
+    {
+      "document_id": "ACV-ATEND-005",
+      "document": "ACV-ATEND-005.pdf",
+      "title": "Localização fictícia dos pontos de atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-15726baca91f32809a8c6775",
+      "page": 1,
+      "section": "Accessibility requests",
+      "section_id": "sec-accessibility-requests-p003",
+      "excerpt": "Documento ACV-ATEND-005 — Localização fictícia dos pontos de atendimento — versão 1.0 — seção Accessibility requests — página 1\nRequests for an accessibility resource can be delivered at the main desk\nor sent to acessibilidade@serraclara.example. The unit records the request\nand forwards it to the responsible coordination team.",
+      "distance": 0.4617727994918823,
+      "similarity": 0.5382272005081177
+    }
+  ],
+  "retrieved_chunks": [
+    {
+      "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+      "similarity": 0.6218715310096741,
+      "distance": 0.3781284689903259
+    },
+    {
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "similarity": 0.5885883569717407,
+      "distance": 0.4114116430282593
+    },
+    {
+      "chunk_id": "chunk-15726baca91f32809a8c6775",
+      "similarity": 0.5382272005081177,
+      "distance": 0.4617727994918823
+    }
+  ],
+  "threshold": 0.4,
+  "threshold_calibrated": true,
+  "human_decision": "aprovada",
+  "error": null,
+  "generation_called": true,
+  "citations": [
+    {
+      "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+      "afirmacao": "O endereço do balcão principal em Serra Clara é Rua das Acácias, 120, Centro."
+    }
+  ],
+  "invalid_citations": [],
+  "abstention_reason": null,
+  "usage": {
+    "input_tokens": 1042,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 102,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1144
+  },
+  "cost": null,
+  "api_calls": 2,
+  "duration_seconds": 2.063,
+  "human_justification": "Endereço e fonte conferidos contra o documento ACV-ATEND-005.",
+  "reviewed_by": "Servidor Revisor 01",
+  "reviewed_at": "2026-11-01T16:15:46.286583+00:00"
+}

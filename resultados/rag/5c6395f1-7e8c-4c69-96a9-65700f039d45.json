@@ -1,0 +1,85 @@
+{
+  "execution_id": "5c6395f1-7e8c-4c69-96a9-65700f039d45",
+  "created_at": "2026-11-01T16:49:50.579404+00:00",
+  "question_hash": "66f239df151cf2ac9f7beb105af920fc3d88700008a587d2db7fba711151e555",
+  "schema_version": "rag-answer.v1",
+  "prompt_version": "rag_institucional.v2",
+  "index_version": "rag-index.v1",
+  "provider": "simulated",
+  "model": "dry-run-v1",
+  "status": "revisao_humana",
+  "answer": null,
+  "minuta": null,
+  "sources": [
+    {
+      "document_id": "ACV-ATEND-001",
+      "document": "ACV-ATEND-001.txt",
+      "title": "Horários fictícios do Núcleo de Atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "page": null,
+      "section": "Horário de atendimento presencial",
+      "section_id": "sec-hor-rio-de-atendimento-presencial-p002",
+      "excerpt": "Documento ACV-ATEND-001 — Horários fictícios do Núcleo de Atendimento — versão 1.0 — seção Horário de atendimento presencial\nO Núcleo Fictício de Atendimento de Serra Clara funciona de segunda a sexta-feira, das 8h às 16h, exceto feriados informados no calendário institucional. Não é necessário agendamento para obter orientação geral.",
+      "distance": 0.36274147033691406,
+      "similarity": 0.6372585296630859
+    },
+    {
+      "document_id": "ACV-ATEND-001",
+      "document": "ACV-ATEND-001.txt",
+      "title": "Horários fictícios do Núcleo de Atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-d878fcbad887a1b100d38e86",
+      "page": null,
+      "section": "Atendimento por protocolo",
+      "section_id": "sec-atendimento-por-protocolo-p003",
+      "excerpt": "Documento ACV-ATEND-001 — Horários fictícios do Núcleo de Atendimento — versão 1.0 — seção Atendimento por protocolo\nSolicitações registradas recebem um número de protocolo. O acompanhamento presencial é feito no balcão de atendimento, de segunda a sexta-feira, das 8h às 16h. O prazo de resposta depende da unidade responsável e não é definido por este documento.",
+      "distance": 0.36386168003082275,
+      "similarity": 0.6361383199691772
+    },
+    {
+      "document_id": "ACV-ATEND-005",
+      "document": "ACV-ATEND-005.pdf",
+      "title": "Localização fictícia dos pontos de atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+      "page": 1,
+      "section": "Main service desk",
+      "section_id": "sec-main-service-desk-p002",
+      "excerpt": "Documento ACV-ATEND-005 — Localização fictícia dos pontos de atendimento — versão 1.0 — seção Main service desk — página 1\nThe fictional service desk is at Rua das Acacias, 120, Centro, Serra Clara.\nOpening hours are Monday through Friday, 8:00 to 16:00, except holidays.",
+      "distance": 0.39800071716308594,
+      "similarity": 0.6019992828369141
+    }
+  ],
+  "retrieved_chunks": [
+    {
+      "chunk_id": "chunk-9e6d25e7554c41ae8851f68c",
+      "similarity": 0.6372585296630859,
+      "distance": 0.36274147033691406
+    },
+    {
+      "chunk_id": "chunk-d878fcbad887a1b100d38e86",
+      "similarity": 0.6361383199691772,
+      "distance": 0.36386168003082275
+    },
+    {
+      "chunk_id": "chunk-fb59f32888fd655cfa45becb",
+      "similarity": 0.6019992828369141,
+      "distance": 0.39800071716308594
+    }
+  ],
+  "threshold": 0.4,
+  "threshold_calibrated": true,
+  "human_decision": "pendente",
+  "error": null,
+  "decision_reason": "abstencao_do_modelo_com_trechos_acima_do_limiar",
+  "abstention_reason": "dry_run: nenhuma geração real foi executada.",
+  "message": "Simulação identificada; nenhuma resposta real foi gerada.",
+  "generation_called": false,
+  "citations": [],
+  "invalid_citations": [],
+  "usage": null,
+  "cost": null,
+  "api_calls": 1,
+  "duration_seconds": 1.799
+}

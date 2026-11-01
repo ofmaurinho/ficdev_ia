@@ -1,0 +1,82 @@
+{
+  "solicitacao_id": "SOL-006",
+  "execution_id": "59c4d95f-f9b6-4467-a223-4db3e793c089",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "2c1204cfa471396eb94a61d6857dade476ede1931bc90df30b074235611a12bd",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "FIC-2026-052",
+    "data": "22/10/2026",
+    "solicitante": "Joana Lima",
+    "assunto": null,
+    "pedido": "Minha matrícula está com problema e os documentos estão diferentes. Resolva isso para mim, por favor.",
+    "categoria": "revisao",
+    "resumo": "Joana Lima reportou um problema com sua matrícula, indicando que os documentos estão diferentes. Ela solicita que isso seja resolvido sem especificar quais documentos divergem. É necessária revisão por ambiguidade sobre as providências exatas solicitadas.",
+    "entidades": [
+      {
+        "tipo": "protocolo",
+        "texto_literal": "FIC-2026-052",
+        "observacao": null
+      },
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Joana Lima",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "22/10/2026",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [
+      "assunto"
+    ],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [
+    "Há campo(s) crítico(s) ausente(s); não produzir minuta automática."
+  ],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": null,
+  "decisao_humana": "pendente",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 2.123,
+    "response_id": "resp_0a73275e97f21cab006ae7643f3bac87d287b8029351b7ea6e",
+    "usage": {
+      "input_tokens": 1447,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 165,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1612
+    },
+    "api_calls_made": 6,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade protocolo extraida localmente do texto de origem",
+      "entidade pessoa extraida localmente do texto de origem",
+      "entidade data extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:37.211566+00:00"
+}

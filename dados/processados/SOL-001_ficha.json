@@ -1,0 +1,111 @@
+{
+  "solicitacao_id": "SOL-001",
+  "execution_id": "29bd875b-5ba0-4bfc-8495-6adfa0c1c975",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "8516580db97fadfbb7f0f9111f4e2cf4ffa50f21798ff527a96b9574a5554cef",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "2026-000142",
+    "data": "14 de outubro de 2026",
+    "solicitante": "Marcos Vinícius de Almeida Santos",
+    "assunto": "Efetivação da matrícula no curso técnico em enfermagem",
+    "pedido": "Pedir a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde, com carga horária de 1.200 horas noturno e informar quais os documentos ainda preciso apresentar.",
+    "categoria": "solicitacao_servico",
+    "resumo": "Marcos Vinícius de Almeida Santos solicita a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde, com carga horária de 1.200 horas no turno noturno, e pergunta sobre os documentos que ainda precisa apresentar. Nascimento e documentos pessoais foram omitidos.",
+    "entidades": [
+      {
+        "tipo": "protocolo",
+        "texto_literal": "2026-000142",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "14 de outubro de 2026",
+        "observacao": null
+      },
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Marcos Vinícius de Almeida Santos",
+        "observacao": null
+      },
+      {
+        "tipo": "curso",
+        "texto_literal": "curso técnico em enfermagem",
+        "observacao": null
+      },
+      {
+        "tipo": "carga_horaria",
+        "texto_literal": "1.200 horas",
+        "observacao": null
+      },
+      {
+        "tipo": "turno",
+        "texto_literal": "noturno",
+        "observacao": null
+      },
+      {
+        "tipo": "local",
+        "texto_literal": "Cuiabá",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "12 de agosto de 2008",
+        "observacao": null
+      },
+      {
+        "tipo": "outro",
+        "texto_literal": "Eixo Tecnológico de Saúde",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": "MINUTA INSTITUCIONAL (RASCUNHO)\n\nProtocolo: 2026-000142\nData: 14 de outubro de 2026\nSolicitante: Marcos Vinícius de Almeida Santos\nAssunto: Efetivação da matrícula no curso técnico em enfermagem\n\nSolicitação:\nPedir a efetivação da matrícula no curso técnico em enfermagem do Eixo Tecnológico de Saúde, com carga horária de 1.200 horas noturno e informar quais os documentos ainda preciso apresentar.\n\nObservações:\n- Este é um rascunho institucional e deve ser validado por pessoa responsável antes do envio final.\n- Os dados foram extraídos somente do conteúdo fornecido e não foram inventados.\n- Campos ausentes ou pendentes: nenhum campo obrigatório identificado.\n- Qualquer informação adicional ou correção deve ser confirmada antes de encaminhamento.",
+  "decisao_humana": "revisar",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 4.611,
+    "response_id": "resp_044e9475461e70fd006ae764315dc487d2ac735fd5453b6ce9",
+    "usage": {
+      "input_tokens": 1585,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 362,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1947
+    },
+    "api_calls_made": 1,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade data extraida localmente do texto de origem",
+      "entidade outro extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente",
+      "campos_ausentes alinhado aos campos críticos nulos"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:25.429650+00:00",
+  "justificativa_revisao": "Solicitação oriunda de transcrição de áudio; confirmar documentos pendentes no acervo.",
+  "revisado_por": "Servidor Revisor 01",
+  "revisado_em": "2026-11-01T16:10:10.795364+00:00"
+}

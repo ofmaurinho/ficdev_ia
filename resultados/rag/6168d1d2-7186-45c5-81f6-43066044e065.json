@@ -1,0 +1,32 @@
+{
+  "execution_id": "6168d1d2-7186-45c5-81f6-43066044e065",
+  "created_at": "2026-11-01T15:36:57.953368+00:00",
+  "question_hash": "7ccaa3e82a088fcc8d93858ad44eb0d1ab3e14969624ce728da524e0654bbb65",
+  "schema_version": "rag-answer.v1",
+  "prompt_version": "rag_institucional.v2",
+  "index_version": "rag-index.v1",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "status": "revisao_humana",
+  "answer": null,
+  "minuta": null,
+  "sources": [],
+  "retrieved_chunks": [],
+  "generation_called": false,
+  "api_calls": 0,
+  "error_type": "GuardrailEntrada",
+  "decision_reason": "fora_de_escopo",
+  "guardrail": {
+    "decisao": "bloquear",
+    "camada": "entrada",
+    "motivos": [
+      "fora_de_escopo"
+    ],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Bloquear execução e registrar motivo sanitizado."
+  },
+  "message": "Entrada bloqueada ou retida pelos guardrails antes da consulta.",
+  "human_decision": "pendente",
+  "error": null,
+  "duration_seconds": 0.001
+}

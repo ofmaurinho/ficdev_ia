@@ -1,0 +1,17 @@
+MINUTA INSTITUCIONAL (RASCUNHO)
+
+Protocolo: 2026-000142
+Data: 14/10/2026
+Solicitante: Marcos Vinícius de Almeida Santos
+Assunto: Solicitação de matrícula
+
+Solicitação:
+a efetivação da minha matrícula no curso Técnico em Enfermagem, eixo tecnológico Saúde, com carga horária de 1200 horas, turno noturno
+
+Observações:
+- Este é um rascunho institucional e deve ser validado por pessoa responsável antes do envio final.
+- Os dados foram extraídos somente do conteúdo fornecido e não foram inventados.
+- Campos ausentes ou pendentes: nenhum campo obrigatório identificado.
+- Qualquer informação adicional ou correção deve ser confirmada antes de encaminhamento.
+
+Fonte: arquivos/entrada_texto.txt.

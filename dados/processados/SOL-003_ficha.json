@@ -1,0 +1,80 @@
+{
+  "solicitacao_id": "SOL-003",
+  "execution_id": "bb59c370-1f4f-46b0-bf40-ec00855a8ff7",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "c30ecc35be5974e0daaa53d9e81cbf68f439d97aa81de5e8706fcd08e6fc01b0",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "FIC-2026-031",
+    "data": "18/10/2026",
+    "solicitante": "Ana Clara Ribeiro",
+    "assunto": "Data de início do curso Técnico em Administração",
+    "pedido": "Solicito informação sobre a data de início do curso Técnico em Administração e o turno previsto.",
+    "categoria": "informacao",
+    "resumo": "Ana Clara Ribeiro solicita informações sobre a data de início do curso Técnico em Administração e o turno previsto. A informação esperada é clara, mas os dados do curso específico não foram fornecidos.",
+    "entidades": [
+      {
+        "tipo": "curso",
+        "texto_literal": "Técnico em Administração",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "18/10/2026",
+        "observacao": null
+      },
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Ana Clara Ribeiro",
+        "observacao": null
+      },
+      {
+        "tipo": "protocolo",
+        "texto_literal": "FIC-2026-031",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": "MINUTA INSTITUCIONAL (RASCUNHO)\n\nProtocolo: FIC-2026-031\nData: 18/10/2026\nSolicitante: Ana Clara Ribeiro\nAssunto: Data de início do curso Técnico em Administração\n\nSolicitação:\nSolicito informação sobre a data de início do curso Técnico em Administração e o turno previsto.\n\nObservações:\n- Este é um rascunho institucional e deve ser validado por pessoa responsável antes do envio final.\n- Os dados foram extraídos somente do conteúdo fornecido e não foram inventados.\n- Campos ausentes ou pendentes: nenhum campo obrigatório identificado.\n- Qualquer informação adicional ou correção deve ser confirmada antes de encaminhamento.",
+  "decisao_humana": "pendente",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 2.762,
+    "response_id": "resp_0a21b9a08516dd1b006ae7643861a887d2ad82fdb1f870d339",
+    "usage": {
+      "input_tokens": 1445,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 235,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1680
+    },
+    "api_calls_made": 3,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "campos_ausentes alinhado aos campos críticos nulos"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:30.962727+00:00"
+}

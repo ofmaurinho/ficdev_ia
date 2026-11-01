@@ -103,8 +103,11 @@ def verificar_estrutura() -> None:
         "src/app.py",
         "src/desafio2_cli.py",
         "dados/originais/acervo/manifest.json",
+        "dados/originais/avaliacoes/avaliacoes_ficticias.json",
+        "dados/originais/avaliacoes/avaliacoes_adversariais.json",
         "dados/gabaritos/desafio2_solicitacoes.json",
         "dados/gabaritos/desafio2_rag.json",
+        "documentacao/avaliacao_rag.md",
         "resultados/avaliacao_nlp_desafio2.json",
         "resultados/avaliacoes_recuperacao.json",
         "resultados/avaliacao_cenarios_rag.json",
@@ -113,6 +116,7 @@ def verificar_estrutura() -> None:
         "resultados/demonstracao_exclusao_rf24.json",
         "resultados/regressao_desafio1_desafio2.json",
         "resultados/matriz_testes_rf23.json",
+        "resultados/logs/consultas.jsonl",
     ]
     for rel in obrigatorios:
         p = ROOT / rel
@@ -277,7 +281,7 @@ def verificar_cli() -> None:
         _fail(f"desafio2_cli --help falhou: {result_d2.stderr[:200]}")
 
     comandos_d2 = [
-        "indexar", "avaliar-recuperacao", "compreender", "avaliar-solicitacoes",
+        "indexar", "avaliar-recuperacao", "avaliar-cenarios-rag", "compreender", "avaliar-solicitacoes",
         "consultar", "revisar", "revisar-ficha", "avaliar-guardrails",
         "classificar-sentimentos", "excluir-documento", "regressao",
         "avaliar-integrado", "demonstrar-schema", "listar",

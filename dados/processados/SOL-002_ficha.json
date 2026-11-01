@@ -1,0 +1,92 @@
+{
+  "solicitacao_id": "SOL-002",
+  "execution_id": "f5bada0c-2f62-4a6d-8c42-8b19d02e7def",
+  "schema_version": "solicitacao.v2",
+  "prompt_version": "compreensao_solicitacao.v3",
+  "sha256_entrada": "ae3475074b294049a5bb9b09ec33a730864ad652279054ee1c8fe7c73d937cb6",
+  "ficha": {
+    "versao_esquema": "solicitacao.v2",
+    "protocolo": "FIC-2026-038",
+    "data": "19/10/2026",
+    "solicitante": "Bruno Costa",
+    "assunto": "Matrícula no curso Técnico em Administração",
+    "pedido": "Solicito a matrícula no curso Técnico em Administração, no turno noturno.",
+    "categoria": "solicitacao_servico",
+    "resumo": "Bruno Costa solicita a matrícula no curso Técnico em Administração, no turno noturno, e já entregou o formulário de inscrição. Ele pede confirmação do próximo passo.",
+    "entidades": [
+      {
+        "tipo": "curso",
+        "texto_literal": "Técnico em Administração",
+        "observacao": null
+      },
+      {
+        "tipo": "turno",
+        "texto_literal": "turno noturno",
+        "observacao": null
+      },
+      {
+        "tipo": "protocolo",
+        "texto_literal": "FIC-2026-038",
+        "observacao": null
+      },
+      {
+        "tipo": "pessoa",
+        "texto_literal": "Bruno Costa",
+        "observacao": null
+      },
+      {
+        "tipo": "data",
+        "texto_literal": "19/10/2026",
+        "observacao": null
+      }
+    ],
+    "campos_ausentes": [],
+    "inferencias": [],
+    "revisao_humana_necessaria": true,
+    "motivo_revisao": null
+  },
+  "alertas_negocio": [],
+  "guardrail": {
+    "decisao": "permitir",
+    "camada": "entrada",
+    "motivos": [],
+    "moderacao_acionada": false,
+    "acao_recomendada": "Prosseguir com o fluxo normal."
+  },
+  "status": "revisao_humana",
+  "minuta": "MINUTA INSTITUCIONAL (RASCUNHO)\n\nProtocolo: FIC-2026-038\nData: 19/10/2026\nSolicitante: Bruno Costa\nAssunto: Matrícula no curso Técnico em Administração\n\nSolicitação:\nSolicito a matrícula no curso Técnico em Administração, no turno noturno.\n\nObservações:\n- Este é um rascunho institucional e deve ser validado por pessoa responsável antes do envio final.\n- Os dados foram extraídos somente do conteúdo fornecido e não foram inventados.\n- Campos ausentes ou pendentes: nenhum campo obrigatório identificado.\n- Qualquer informação adicional ou correção deve ser confirmada antes de encaminhamento.",
+  "decisao_humana": "aprovada",
+  "metadata": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "duration_seconds": 2.767,
+    "response_id": "resp_099bf54c54b5feeb006ae76435909887d288518736ab5bd4e3",
+    "usage": {
+      "input_tokens": 1456,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 185,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1641
+    },
+    "api_calls_made": 2,
+    "custo_estimado": null,
+    "status": "completed",
+    "normalizacoes_negocio": [
+      "entidade turno ajustada ao trecho literal completo",
+      "entidade protocolo extraida localmente do texto de origem",
+      "entidade pessoa extraida localmente do texto de origem",
+      "entidade data extraida localmente do texto de origem",
+      "entidades estruturadas e literais foram completadas/normalizadas localmente"
+    ],
+    "api_calls": 1
+  },
+  "gerado_em": "2026-11-01T16:09:28.199079+00:00",
+  "justificativa_revisao": "Dados e protocolo conferidos; minuta preliminar aprovada para consulta ao acervo.",
+  "revisado_por": "Servidor Revisor 01",
+  "revisado_em": "2026-11-01T16:10:10.555550+00:00"
+}

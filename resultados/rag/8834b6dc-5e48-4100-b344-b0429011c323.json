@@ -1,0 +1,106 @@
+{
+  "execution_id": "8834b6dc-5e48-4100-b344-b0429011c323",
+  "created_at": "2026-11-01T16:15:48.823609+00:00",
+  "question_hash": "26bb4685f3f551e938f5af890b917ad41ff2ef8cb3f2bb0b8975b88d6b136787",
+  "schema_version": "rag-answer.v1",
+  "prompt_version": "rag_institucional.v2",
+  "index_version": "rag-index.v1",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "status": "fundamentada",
+  "answer": "Você pode encaminhar o pedido de acessibilidade pelo canal de atendimento da unidade ou enviá-lo para o e-mail acessibilidade@serraclara.example. A equipe vai registrar o pedido e encaminhá-lo à coordenação responsável.",
+  "minuta": "Você pode encaminhar o pedido de acessibilidade pelo canal de atendimento da unidade ou enviá-lo para o e-mail acessibilidade@serraclara.example. A equipe vai registrar o pedido e encaminhá-lo à coordenação responsável.",
+  "sources": [
+    {
+      "document_id": "ACV-ACESS-003",
+      "document": "ACV-ACESS-003.txt",
+      "title": "Orientação fictícia para solicitar acessibilidade",
+      "version": "1.0",
+      "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
+      "page": null,
+      "section": "Solicitação de recurso de acessibilidade",
+      "section_id": "sec-solicita-o-de-recurso-de-acessibilidade-p002",
+      "excerpt": "Documento ACV-ACESS-003 — Orientação fictícia para solicitar acessibilidade — versão 1.0 — seção Solicitação de recurso de acessibilidade\nO estudante pode solicitar recurso de acessibilidade pelo canal de atendimento da unidade, informando qual recurso precisa. A equipe deve registrar o pedido e encaminhá-lo à coordenação responsável, sem exigir diagnóstico médico neste fluxo informativo.",
+      "distance": 0.3389168977737427,
+      "similarity": 0.6610831022262573
+    },
+    {
+      "document_id": "ACV-ACESS-003",
+      "document": "ACV-ACESS-003.txt",
+      "title": "Orientação fictícia para solicitar acessibilidade",
+      "version": "1.0",
+      "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
+      "page": null,
+      "section": "Prazo e confirmação",
+      "section_id": "sec-prazo-e-confirma-o-p003",
+      "excerpt": "Documento ACV-ACESS-003 — Orientação fictícia para solicitar acessibilidade — versão 1.0 — seção Prazo e confirmação\nQuando possível, encaminhe a solicitação com cinco dias úteis de antecedência da atividade. Se o prazo não puder ser cumprido, a equipe deve registrar a situação para avaliação individual; não há garantia automática de disponibilidade do recurso.",
+      "distance": 0.40017473697662354,
+      "similarity": 0.5998252630233765
+    },
+    {
+      "document_id": "ACV-ATEND-005",
+      "document": "ACV-ATEND-005.pdf",
+      "title": "Localização fictícia dos pontos de atendimento",
+      "version": "1.0",
+      "chunk_id": "chunk-15726baca91f32809a8c6775",
+      "page": 1,
+      "section": "Accessibility requests",
+      "section_id": "sec-accessibility-requests-p003",
+      "excerpt": "Documento ACV-ATEND-005 — Localização fictícia dos pontos de atendimento — versão 1.0 — seção Accessibility requests — página 1\nRequests for an accessibility resource can be delivered at the main desk\nor sent to acessibilidade@serraclara.example. The unit records the request\nand forwards it to the responsible coordination team.",
+      "distance": 0.40988898277282715,
+      "similarity": 0.5901110172271729
+    }
+  ],
+  "retrieved_chunks": [
+    {
+      "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
+      "similarity": 0.6610831022262573,
+      "distance": 0.3389168977737427
+    },
+    {
+      "chunk_id": "chunk-28c9f3bec14f97b7c9e93cab",
+      "similarity": 0.5998252630233765,
+      "distance": 0.40017473697662354
+    },
+    {
+      "chunk_id": "chunk-15726baca91f32809a8c6775",
+      "similarity": 0.5901110172271729,
+      "distance": 0.40988898277282715
+    }
+  ],
+  "threshold": 0.4,
+  "threshold_calibrated": true,
+  "human_decision": "rejeitada",
+  "error": null,
+  "generation_called": true,
+  "citations": [
+    {
+      "chunk_id": "chunk-9b747c73a5e0a67a0a20e3cc",
+      "afirmacao": "O estudante pode solicitar recurso de acessibilidade pelo canal de atendimento da unidade."
+    },
+    {
+      "chunk_id": "chunk-15726baca91f32809a8c6775",
+      "afirmacao": "Requests for an accessibility resource can be delivered at the main desk or sent to acessibilidade@serraclara.example."
+    }
+  ],
+  "invalid_citations": [],
+  "abstention_reason": null,
+  "usage": {
+    "input_tokens": 1049,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 174,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1223
+  },
+  "cost": null,
+  "api_calls": 2,
+  "duration_seconds": 3.176,
+  "human_justification": "A resposta cobre os canais, mas omite que a unidade registra e encaminha o pedido a coordenacao responsavel, fato do gabarito e da fonte.",
+  "reviewed_by": "Servidor Revisor 01",
+  "reviewed_at": "2026-11-01T16:15:52.000245+00:00"
+}
