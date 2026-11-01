@@ -1,0 +1,513 @@
+{
+  "schema_version": "sentimento.v1",
+  "prompt_version": "sentimento_atendimento.v1",
+  "measured_at": "2026-11-01T15:32:47.137627+00:00",
+  "duration_seconds": 17.496,
+  "agregacao": {
+    "total_recebido": 12,
+    "duplicatas_removidas": 0,
+    "total_unico": 12,
+    "denominador": 12,
+    "filtro_aplicado": {
+      "polaridade": null,
+      "apenas_revisao": false
+    },
+    "contagem_por_polaridade": {
+      "positiva": 3,
+      "negativa": 3,
+      "neutra": 3,
+      "indeterminada": 3
+    },
+    "proporcoes": {
+      "positiva": {
+        "numerador": 3,
+        "denominador": 12,
+        "proporcao": 0.25
+      },
+      "negativa": {
+        "numerador": 3,
+        "denominador": 12,
+        "proporcao": 0.25
+      },
+      "neutra": {
+        "numerador": 3,
+        "denominador": 12,
+        "proporcao": 0.25
+      },
+      "indeterminada": {
+        "numerador": 3,
+        "denominador": 12,
+        "proporcao": 0.25
+      }
+    },
+    "casos_para_revisao": {
+      "numerador": 3,
+      "denominador": 12,
+      "proporcao": 0.25
+    },
+    "acuracia_gabarito": {
+      "numerador": 12,
+      "denominador": 12,
+      "acuracia": 1.0
+    },
+    "nota_metodologica": "Contagens e proporções calculadas deterministicamente em código. A confiança informada pelo modelo é estimativa não calibrada e não representa probabilidade nem pesquisa de opinião da população."
+  },
+  "resultados": [
+    {
+      "id": "AVA-001",
+      "texto": "A equipe explicou cada etapa com paciência e resolveu minha dúvida.",
+      "rotulo_gabarito": "positiva",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-001",
+        "polaridade": "positiva",
+        "justificativa": "A equipe demonstrou paciência e eficiência ao explicar e resolver dúvidas.",
+        "confianca_modelo": 0.95,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.866,
+        "response_id": "resp_09d4b66da9de3c6e006ae75b8e3c0087d295d1070e427e92b1",
+        "usage": {
+          "input_tokens": 481,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 59,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 540
+        },
+        "api_calls_made": 1,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-002",
+      "texto": "Fui bem atendida e recebi a orientação que precisava.",
+      "rotulo_gabarito": "positiva",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-002",
+        "polaridade": "positiva",
+        "justificativa": "A avaliação expressa satisfação com o atendimento e a orientação recebida.",
+        "confianca_modelo": 0.95,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.577,
+        "response_id": "resp_0c705cb4cead0fd1006ae75b8fb0e487d2b05067b6420b35ff",
+        "usage": {
+          "input_tokens": 481,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 59,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 540
+        },
+        "api_calls_made": 2,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-003",
+      "texto": "O atendimento foi cordial e muito organizado.",
+      "rotulo_gabarito": "positiva",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-003",
+        "polaridade": "positiva",
+        "justificativa": "O atendimento foi descrito como cordial e organizado, indicando uma experiência satisfatória.",
+        "confianca_modelo": 0.95,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.597,
+        "response_id": "resp_0f0929dfa7449e29006ae75b91429c87d2897a96fc8dc10da0",
+        "usage": {
+          "input_tokens": 476,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 61,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 537
+        },
+        "api_calls_made": 3,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-004",
+      "texto": "Esperei muito e saí sem resposta para o meu pedido.",
+      "rotulo_gabarito": "negativa",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-004",
+        "polaridade": "negativa",
+        "justificativa": "A avaliação expressa insatisfação devido à longa espera e falta de resposta.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.196,
+        "response_id": "resp_062fda7c37f328c2006ae75b92d9d887d2b4d30b05881ba16f",
+        "usage": {
+          "input_tokens": 481,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 61,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 542
+        },
+        "api_calls_made": 4,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-005",
+      "texto": "A informação recebida estava incompleta e precisei voltar.",
+      "rotulo_gabarito": "negativa",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-005",
+        "polaridade": "negativa",
+        "justificativa": "A informação incompleta indica insatisfação.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.157,
+        "response_id": "resp_0b7e02ae049e9600006ae75b94023087d292d60db1ca0cf759",
+        "usage": {
+          "input_tokens": 480,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 54,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 534
+        },
+        "api_calls_made": 5,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-006",
+      "texto": "O atendente foi ríspido e não explicou o procedimento.",
+      "rotulo_gabarito": "negativa",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-006",
+        "polaridade": "negativa",
+        "justificativa": "A avaliação destaca a rispidez do atendente e a falta de explicação, indicando uma experiência insatisfatória.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.542,
+        "response_id": "resp_06e28c8903bbc728006ae75b952b6087d2b413b61fdb710783",
+        "usage": {
+          "input_tokens": 481,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 69,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 550
+        },
+        "api_calls_made": 6,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-007",
+      "texto": "Compareci ao balcão às 10h e entreguei o formulário.",
+      "rotulo_gabarito": "neutra",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-007",
+        "polaridade": "neutra",
+        "justificativa": "A avaliação descreve uma ação sem expressar juízo de valor positivo ou negativo.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.542,
+        "response_id": "resp_0da6ce212771cded006ae75b96bd9887d2a6bf741e351c26c8",
+        "usage": {
+          "input_tokens": 483,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 62,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 545
+        },
+        "api_calls_made": 7,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-008",
+      "texto": "Recebi o protocolo FIC-2026-044 por e-mail.",
+      "rotulo_gabarito": "neutra",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-008",
+        "polaridade": "neutra",
+        "justificativa": "O comentário é informativo, sem emoções ou julgamentos claros.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.089,
+        "response_id": "resp_0b71170276c529b5006ae75b9842d487d2b14d94cc8e42d8e4",
+        "usage": {
+          "input_tokens": 483,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 58,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 541
+        },
+        "api_calls_made": 8,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-009",
+      "texto": "A unidade informou que o setor responsável fará contato.",
+      "rotulo_gabarito": "neutra",
+      "justificativa_gabarito": null,
+      "analise": {
+        "id": "AVA-009",
+        "polaridade": "neutra",
+        "justificativa": "A avaliação é informativa, sem expressar claramente satisfação ou insatisfação.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": false,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": false,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.139,
+        "response_id": "resp_09fe6e77f35af214006ae75b9958c887d28234d9de5865e7aa",
+        "usage": {
+          "input_tokens": 478,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 61,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 539
+        },
+        "api_calls_made": 9,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-010",
+      "texto": "Resolveram minha dúvida, mas a espera foi longa.",
+      "rotulo_gabarito": "ambigua_mista",
+      "justificativa_gabarito": "Há avaliação positiva do resultado e negativa do tempo de espera; manter mista/revisão.",
+      "analise": {
+        "id": "AVA-010",
+        "polaridade": "indeterminada",
+        "justificativa": "Elogio e crítica coexistem na avaliação, mas falta clareza sobre a experiência geral.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": true,
+        "motivo_revisao": null
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": true,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.551,
+        "response_id": "resp_0eadba2e4f32c0ca006ae75b9a7c1887d28d01a67e730bd855",
+        "usage": {
+          "input_tokens": 479,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 65,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 544
+        },
+        "api_calls_made": 10,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-011",
+      "texto": "Que atendimento maravilhoso: mandaram voltar pela terceira vez.",
+      "rotulo_gabarito": "ambigua_mista",
+      "justificativa_gabarito": "A expressão inicial pode ser ironia; a crítica explícita pede contexto e revisão.",
+      "analise": {
+        "id": "AVA-011",
+        "polaridade": "indeterminada",
+        "justificativa": "A avaliação contém elogio e crítica simultaneamente, o que gera ambiguidade no sentimento.",
+        "confianca_modelo": 0.85,
+        "revisao_necessaria": true,
+        "motivo_revisao": "Mensagem mista com elogio e crítica."
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": true,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 2.015,
+        "response_id": "resp_050d44c3dea26556006ae75b9c07d087d29c86d1fbd03e3b54",
+        "usage": {
+          "input_tokens": 479,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 73,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 552
+        },
+        "api_calls_made": 11,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    },
+    {
+      "id": "AVA-012",
+      "texto": "Foi diferente desta vez.",
+      "rotulo_gabarito": "ambigua_mista",
+      "justificativa_gabarito": "Sem contexto ou valência clara; não forçar polaridade, classificar como indeterminada/revisão.",
+      "analise": {
+        "id": "AVA-012",
+        "polaridade": "indeterminada",
+        "justificativa": "A frase é vaga e não fornece informações suficientes sobre a experiência.",
+        "confianca_modelo": 0.75,
+        "revisao_necessaria": true,
+        "motivo_revisao": "Falta de contexto claro."
+      },
+      "acerto_gabarito": true,
+      "caso_incerto": true,
+      "metadata": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "duration_seconds": 1.22,
+        "response_id": "resp_0b3a270c5c80de7c006ae75b9e0fbc87d2ba6bd9c2256202fe",
+        "usage": {
+          "input_tokens": 473,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cached_tokens": 0
+          },
+          "output_tokens": 64,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 537
+        },
+        "api_calls_made": 12,
+        "custo_estimado": null,
+        "status": "completed",
+        "ajustes_regras": []
+      }
+    }
+  ]
+}
