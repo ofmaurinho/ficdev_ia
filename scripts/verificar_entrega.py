@@ -91,6 +91,28 @@ def verificar_estrutura() -> None:
         "arquivos/entrada_texto_injecao.txt",
         "documentacao/decisoes_tecnicas.md",
         "documentacao/registro_uso_ia.md",
+        "src/schemas.py",
+        "src/nlp.py",
+        "src/guardrails.py",
+        "src/ingestion.py",
+        "src/vector_store.py",
+        "src/rag.py",
+        "src/rag_evaluation.py",
+        "src/sentiment.py",
+        "src/metrics.py",
+        "src/app.py",
+        "src/desafio2_cli.py",
+        "dados/originais/acervo/manifest.json",
+        "dados/gabaritos/desafio2_solicitacoes.json",
+        "dados/gabaritos/desafio2_rag.json",
+        "resultados/avaliacao_nlp_desafio2.json",
+        "resultados/avaliacoes_recuperacao.json",
+        "resultados/avaliacao_cenarios_rag.json",
+        "resultados/avaliacao_guardrails.json",
+        "resultados/avaliacao_sentimentos.json",
+        "resultados/demonstracao_exclusao_rf24.json",
+        "resultados/regressao_desafio1_desafio2.json",
+        "resultados/matriz_testes_rf23.json",
     ]
     for rel in obrigatorios:
         p = ROOT / rel
@@ -247,6 +269,25 @@ def verificar_cli() -> None:
             _ok(f"  comando '{cmd}' documentado")
         else:
             _warn(f"  comando '{cmd}' não encontrado no --help")
+
+    result_d2 = _run(sys.executable, "-m", "src.desafio2_cli", "--help")
+    if result_d2.returncode == 0:
+        _ok("python -m src.desafio2_cli --help")
+    else:
+        _fail(f"desafio2_cli --help falhou: {result_d2.stderr[:200]}")
+
+    comandos_d2 = [
+        "indexar", "avaliar-recuperacao", "compreender", "avaliar-solicitacoes",
+        "consultar", "revisar", "revisar-ficha", "avaliar-guardrails",
+        "classificar-sentimentos", "excluir-documento", "regressao",
+        "avaliar-integrado", "demonstrar-schema", "listar",
+    ]
+    help_d2 = result_d2.stdout + result_d2.stderr
+    for cmd in comandos_d2:
+        if cmd in help_d2:
+            _ok(f"  comando Desafio 2 '{cmd}' documentado")
+        else:
+            _fail(f"  comando Desafio 2 '{cmd}' não encontrado no --help")
 
 
 # ---------------------------------------------------------------------------
